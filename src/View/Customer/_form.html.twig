@@ -1,0 +1,11 @@
+{# TODO : manage errors display #}
+
+<form method="post">
+	<input type="hidden" value="{{ customer.id }}" name="id">
+	<input type="text" value="{{ customer.firstname }}" name="firstname">
+    <input type="text" value="{{ customer.lastname }}" name="lastname">
+    <input type="email" value="{{ customer.email }}" name="email">
+    <input type="tel" value="{{ customer.phone }}" name="phone">
+    <input type="text" value="{{ customer.password }}" name="password">
+	<input type="submit" value="Valider">
+</form>
