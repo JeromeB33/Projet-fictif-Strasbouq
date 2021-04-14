@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Model\CommandeManager;
 
@@ -17,26 +15,39 @@ class CommandeController extends AbstractController
     }
 
     /**
-     * Show informations for a specific order
+     * Show all informations
      */
-    public function show():string
+    public function showAll(): string
     {
         $commandeManager = new CommandeManager();
-        $commandes = $commandeManager->showAll();
+        $commandes = $commandeManager->selectAll();
 
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandes' => $commandes]);
     }
 
     /**
-     * Add a new order
+     * Show informations by id
+     */
+    public function showById(int $id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $commandeManager = new CommandeManager();
+            $details = $commandeManager->selectOneById($id);
+
+            return $this->twig->render("Commande/indexCommande.html.twig", ['details' => $details]);
+        }
+    }
+
+    /**
+     * Add a new command
      */
     public function add()
     {
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST')
-        {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $total = trim($_POST['totalAmount']);
+            $total = (int) $total;
 
             // TODO validations (length, format...)
 
@@ -46,6 +57,19 @@ class CommandeController extends AbstractController
                 $commandeManager->insert($total);
         }
 
-        return $this->twig->render('Commande/indexCommande.html.twig');
+        header("Location: /Commande/show");
+    }
+
+
+    /*
+     * Delete a command and his details
+     */
+    public function suppr(int $id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $commandeManager = new CommandeManager();
+            $commandeManager->delete($id);
+            header("Location: /Commande/index");
+        }
     }
 }

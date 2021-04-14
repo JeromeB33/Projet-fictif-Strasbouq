@@ -4,11 +4,25 @@
     Hello this is the commande page <hr/>
 
     {% for commande in commandes %}
-        {{ commande['totalAmount'] }}
+        {{ commande.totalAmount }} || {{ commande.id }}
+        <form action="/Commande/suppr/{{ commande.id }}" method="POST">
+            <button>Delete</button>
+        </form>
+        <form action="/Commande/showById/{{ commande.id }}" method="POST">
+            <button>Show</button>
+        </form>
+
     {% endfor %}
+    {% if details is defined %}
+        {% if details is empty %}
+            Nothing to display
+            {% else %}
+                Commande id : {{ details.command_id }} </br>
+                Customer id : {{ details.customer_id }} </br>
+        {% endif %}
+    {% endif %}
 
-
-    <h1>add test</h1>
+    <h1>add command</h1>
 
     <form method="post" action="/Commande/add">
         <input type="number" name="totalAmount">
