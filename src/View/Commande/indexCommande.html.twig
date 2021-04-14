@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    Hello this is the commande page <hr/>
+
+    {% for commande in commandes %}
+        {{ commande['totalAmount'] }}
+    {% endfor %}
+
+
+    <h1>add test</h1>
+
+    <form method="post" action="/Commande/add">
+        <input type="number" name="totalAmount">
+        <input type="submit">
+    </form>
+
+{% endblock %}
