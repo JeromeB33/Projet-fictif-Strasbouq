@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Model;
+
+class CommandStatusManager extends AbstractManager
+{
+    public const TABLE = "commandStatus";
+
+    public function insertStatus(array $command): void
+    {
+        $query = ("INSERT INTO " . self::TABLE . "(command_id, isprepared, ispick) 
+                    VALUES (:command_id, :isprepared, :ispick)");
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('command_id', $command['command_id']);
+        $statement->bindValue('isprepared', $command['isprepared']);
+        $statement->bindValue('ispick', $command['ispick']);
+        $statement->execute();
+    }
+
+    public function selectOneById(int $commandId)
+    {
+        // prepared request
+        $statement = $this->pdo->prepare("SELECT * FROM " . static::TABLE . " WHERE command_id=:id");
+        $statement->bindValue('id', $commandId, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function editStatus(int $id, $ispick, $isprepared)
+    {
+        $query = ("UPDATE " . self::TABLE . " SET isprepared = :isprepared, ispick= :ispick WHERE command_id=$id");
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('ispick', $ispick);
+        $statement->bindValue('isprepared', $isprepared);
+        $statement->execute();
+
+        header("Location: /Command/showAll");
+    }
+}

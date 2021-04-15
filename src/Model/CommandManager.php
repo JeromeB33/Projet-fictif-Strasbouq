@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class CommandeManager extends AbstractManager
+class CommandManager extends AbstractManager
 {
     public const TABLE = "command";
     public const TABLE_2 = "commandDetails";
@@ -17,6 +17,10 @@ class CommandeManager extends AbstractManager
         $statement->execute();
     }
 
+
+    /*
+         *  insert command details in database
+         */
     public function insertCommandDetails(array $commande): void
     {
         $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, command_id, customer_id, dataorder, datapick) 

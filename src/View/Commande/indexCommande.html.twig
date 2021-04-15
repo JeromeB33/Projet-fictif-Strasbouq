@@ -5,10 +5,10 @@
 
     {% for commande in commandes %}
         {{ commande.totalAmount }} || {{ commande.id }}
-        <form action="/Commande/suppr/{{ commande.id }}" method="POST">
+        <form action="/Command/suppr/{{ commande.id }}" method="POST">
             <button>Delete</button>
         </form>
-        <form action="/Commande/showById/{{ commande.id }}" method="POST">
+        <form action="/Command/showById/{{ commande.id }}" method="POST">
             <button>Show</button>
         </form>
 
@@ -20,24 +20,64 @@
                 Commande id : {{ details.command_id }} </br>
                 Customer id : {{ details.customer_id }} </br>
                 Pick date : {{ details.datapick }}
+
+                <form action="/CommandStatus/showById/{{ details.command_id }}" method="POST">
+                    <button>Show status</button>
+                </form>
+
                 <h1>Edit pick date</h1>
 
-                <form action="/Commande/editDatePickById/{{ details.command_id }}" method="POST">
+                <form action="/Command/editDatePickById/{{ details.command_id }}" method="POST">
                     <label for="newDataPick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="newDataPick"></label><br/>
                     <input type="submit">
                 </form>
         {% endif %}
     {% endif %}
 
+    {% if status is defined %}
+        {% if status is empty %}
+            There are any status defined
+        {% else %}
+            is prepared ?  : {{ status.isprepared }} </br>
+            is pick ?  : {{ status.ispick}} </br>
+
+            <h1>Edit status </h1>
+
+            <form action="/CommandStatus/editStatus/{{ status.command_id }}" method="POST">
+                <label for="isprepared"> is prepared?
+                    <select  name="isprepared">
+                        <option value="default" selected disabled>Pick a option but not this one</option>
+                        <option value="false">False</option>
+                        <option value="true">True</option>
+                    </select>
+                </label><br/>
+                <label for="ispick"> is pick?
+                    <select  name="ispick">
+                        <option value="default" selected disabled>Pick a option but not this one</option>
+                        <option value="false">False</option>
+                        <option value="true">True</option>
+                    </select>
+                </label><br/>
+                <input type="submit">
+            </form>
+
+        {% endif %}
+    {% endif %}
+
+
+
+
 
     <h1>add command</h1>
 
-    <form method="post" action="/Commande/add">
+    <form method="post" action="/Command/add">
         <label for="totalAMount"> Total amount<input type="number" name="totalAmount"></label><br/>
         <label for="customer_id"> customer <input type="number" name="customer_id"></label><br/>
         <label for="stock_id"> stock<input type="number" name="stock_id"></label><br/>
         <label for="datapick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="datapick"></label><br/>
         <input type="hidden" name="command_id" >
+        <input type="hidden" name="isprepared" value="false" >
+        <input type="hidden" name="ispick" value="false" >
         <input type="submit" value="add">
     </form>
 

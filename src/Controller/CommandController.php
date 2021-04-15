@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use App\Model\CommandeManager;
+use App\Model\CommandManager;
+use App\Model\CommandStatusManager;
 
-class CommandeController extends AbstractController
+class CommandController extends AbstractController
 {
     public function index(): string
     {
-        //$commandeManager = new CommandeManager();
-        //$commandes = $commandeManager->selectAll();
-
         return $this->twig->render("Commande/indexCommande.html.twig");
     }
 
@@ -19,7 +17,7 @@ class CommandeController extends AbstractController
      */
     public function showAll(): string
     {
-        $commandeManager = new CommandeManager();
+        $commandeManager = new CommandManager();
         $commandes = $commandeManager->selectAll();
 
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandes' => $commandes]);
@@ -31,7 +29,7 @@ class CommandeController extends AbstractController
     public function showById(int $id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $commandeManager = new CommandeManager();
+            $commandeManager = new CommandManager();
             $details = $commandeManager->selectOneById($id);
 
             return $this->twig->render("Commande/indexCommande.html.twig", ['details' => $details]);
@@ -39,7 +37,7 @@ class CommandeController extends AbstractController
     }
 
     /**
-     * Add a new command
+     * Add a new command with its details and status
      */
     public function add()
     {
@@ -56,12 +54,39 @@ class CommandeController extends AbstractController
             }
 
             // if validation is ok, insert and redirection
-            $commandeManager = new CommandeManager();
+            /*
+             * insert command
+            */
+            $commandeManager = new CommandManager();
             $commandeManager->insertCommand($commande);
-
+            /*
+             * take id of the last input in command to associate the command details and status
+             */
             $lastID = $commandeManager->selectLastId();
             $commande['command_id'] = (int) $lastID[0];
+            /*
+            * insert command details
+            */
             $commandeManager->insertCommandDetails($commande);
+            /*
+             * test to transform in booleen
+             */
+            if ($commande['ispick'] === 'false') {
+                $commande['ispick'] = 0;
+            } elseif ($commande['ispick'] === 'true') {
+                $commande['ispick'] = 1;
+            }
+
+            if ($commande['isprepared'] === 'false') {
+                $commande['isprepared'] = 0;
+            } elseif ($commande['isprepared'] === 'true') {
+                $commande['isprepared'] = 1;
+            }
+            /*
+            * insert command status
+            */
+            $commandStatusManager = new CommandStatusManager();
+            $commandStatusManager->insertStatus($commande);
         }
 
         header("Location: /Commande/showAll");
@@ -69,12 +94,12 @@ class CommandeController extends AbstractController
 
 
     /*
-     * Delete a command and his details
+     * Delete a command
      */
     public function suppr(int $id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $commandeManager = new CommandeManager();
+            $commandeManager = new CommandManager();
             $commandeManager->delete($id);
             header("Location: /Commande/showAll");
         }
@@ -87,7 +112,7 @@ class CommandeController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newDate = $_POST['newDataPick'];
-            $commandManager = new CommandeManager();
+            $commandManager = new CommandManager();
 
             $commandManager->editDatePicksById($id, $newDate);
             header("Location: /Commande/showAll");
