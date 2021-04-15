@@ -46,18 +46,25 @@ class CommandeController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $total = trim($_POST['totalAmount']);
-            $total = (int) $total;
+            $commande = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
+            if (!empty($_POST)) {
+                $commande['totalAmount'] = (int) $commande['totalAmount'];
+                $commande['customer_id'] = (int) $commande['customer_id'];
+                $commande['stock_id'] = (int) $commande['stock_id'];
+            }
 
             // if validation is ok, insert and redirection
             $commandeManager = new CommandeManager();
+            $commandeManager->insertCommand($commande);
 
-                $commandeManager->insert($total);
+            $lastID = $commandeManager->selectLastId();
+            $commande['command_id'] = (int) $lastID[0];
+            $commandeManager->insertCommandDetails($commande);
         }
 
-        header("Location: /Commande/show");
+        header("Location: /Commande/showAll");
     }
 
 
@@ -69,7 +76,7 @@ class CommandeController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $commandeManager = new CommandeManager();
             $commandeManager->delete($id);
-            header("Location: /Commande/index");
+            header("Location: /Commande/showAll");
         }
     }
 }

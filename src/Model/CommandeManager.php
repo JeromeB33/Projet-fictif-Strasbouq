@@ -7,16 +7,33 @@ class CommandeManager extends AbstractManager
     public const TABLE = "command";
     public const TABLE_2 = "commandDetails";
 
-    public function insert(int $total): void
+    /*
+     *  insert command in database
+     */
+    public function insertCommand(array $commande): void
     {
         $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (totalAmount) VALUES (:totalAmount)");
-        $statement->bindValue('totalAmount', $total, \PDO::PARAM_INT);
+        $statement->bindValue('totalAmount', $commande['totalAmount'], \PDO::PARAM_INT);
         $statement->execute();
     }
 
-    /**
+    public function insertCommandDetails(array $commande): void
+    {
+        $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, command_id, customer_id, dataorder, datapick) 
+                    VALUES (:stock_id, :command_id, :customer_id, :dataorder, :datapick)");
+        $req = $this->pdo->prepare($query);
+        $req->bindValue('stock_id', $commande['stock_id'], \PDO::PARAM_INT);
+        $req->bindValue('customer_id', $commande['customer_id'], \PDO::PARAM_INT);
+        $req->bindValue('command_id', $commande['command_id'], \PDO::PARAM_INT);
+        $req->bindValue('dataorder', date('Y-m-d H:i:s', time()));
+        $req->bindValue('datapick', $commande['datapick']);
+        $req->execute();
+    }
+
+
+
+    /*
      * Get one row from database by ID.
-     *
      */
     public function selectOneById(int $commandId)
     {
@@ -26,5 +43,15 @@ class CommandeManager extends AbstractManager
         $statement->execute();
 
         return $statement->fetch();
+    }
+
+    /*
+     * Select last id in table
+     */
+    public function selectLastId()
+    {
+        // prepared request
+        $statement = $this->pdo->query("SELECT max(id)  FROM " . static::TABLE);
+        return $statement->fetch(\PDO::FETCH_NUM);
     }
 }
