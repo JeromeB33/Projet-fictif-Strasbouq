@@ -79,4 +79,18 @@ class CommandeController extends AbstractController
             header("Location: /Commande/showAll");
         }
     }
+
+    /*
+     * edit a command details : date pick
+     */
+    public function editDatePickById($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $newDate = $_POST['newDataPick'];
+            $commandManager = new CommandeManager();
+
+            $commandManager->editDatePicksById($id, $newDate);
+            header("Location: /Commande/showAll");
+        }
+    }
 }

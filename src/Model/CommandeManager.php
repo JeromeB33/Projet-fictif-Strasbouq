@@ -54,4 +54,14 @@ class CommandeManager extends AbstractManager
         $statement = $this->pdo->query("SELECT max(id)  FROM " . static::TABLE);
         return $statement->fetch(\PDO::FETCH_NUM);
     }
+
+    /*
+     * Edit by id command details : date pick
+     */
+    public function editDatePicksById(int $id, $newDatePick): void
+    {
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE_2 . " SET datapick = :datapick WHERE command_id=$id");
+        $statement->bindValue('datapick', $newDatePick);
+        $statement->execute();
+    }
 }

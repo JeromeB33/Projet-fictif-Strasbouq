@@ -19,6 +19,13 @@
             {% else %}
                 Commande id : {{ details.command_id }} </br>
                 Customer id : {{ details.customer_id }} </br>
+                Pick date : {{ details.datapick }}
+                <h1>Edit pick date</h1>
+
+                <form action="/Commande/editDatePickById/{{ details.command_id }}" method="POST">
+                    <label for="newDataPick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="newDataPick"></label><br/>
+                    <input type="submit">
+                </form>
         {% endif %}
     {% endif %}
 
@@ -29,9 +36,9 @@
         <label for="totalAMount"> Total amount<input type="number" name="totalAmount"></label><br/>
         <label for="customer_id"> customer <input type="number" name="customer_id"></label><br/>
         <label for="stock_id"> stock<input type="number" name="stock_id"></label><br/>
-        <label for="datapick"> date pick<input type="date" placeholder="2011-01-13" name="datapick"></label><br/>
+        <label for="datapick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="datapick"></label><br/>
         <input type="hidden" name="command_id" >
-        <input type="submit">
+        <input type="submit" value="add">
     </form>
 
 {% endblock %}
