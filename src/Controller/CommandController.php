@@ -39,7 +39,7 @@ class CommandController extends AbstractController
     /**
      * Add a new command with its details and status
      */
-    public function add()
+    public function add(): void
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -92,11 +92,10 @@ class CommandController extends AbstractController
         header("Location: /Commande/showAll");
     }
 
-
     /*
      * Delete a command
      */
-    public function suppr(int $id)
+    public function suppr(int $id): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $commandeManager = new CommandManager();
@@ -108,7 +107,7 @@ class CommandController extends AbstractController
     /*
      * edit a command details : date pick
      */
-    public function editDatePickById($id)
+    public function editDatePickById($id): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newDate = $_POST['newDataPick'];
@@ -117,5 +116,16 @@ class CommandController extends AbstractController
             $commandManager->editDatePicksById($id, $newDate);
             header("Location: /Commande/showAll");
         }
+    }
+
+    /*
+     * liste the whole command
+     */
+    public function listCommand($id)
+    {
+        $commandManager = new CommandManager();
+        $commandList = $commandManager->listCommand($id);
+
+        return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
     }
 }

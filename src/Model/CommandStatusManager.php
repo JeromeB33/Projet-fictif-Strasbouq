@@ -6,6 +6,9 @@ class CommandStatusManager extends AbstractManager
 {
     public const TABLE = "commandStatus";
 
+    /*
+    * insert command status false by default
+     */
     public function insertStatus(array $command): void
     {
         $query = ("INSERT INTO " . self::TABLE . "(command_id, isprepared, ispick) 
@@ -17,6 +20,9 @@ class CommandStatusManager extends AbstractManager
         $statement->execute();
     }
 
+    /*
+     * select by id
+     */
     public function selectOneById(int $commandId)
     {
         // prepared request
@@ -26,7 +32,9 @@ class CommandStatusManager extends AbstractManager
 
         return $statement->fetch();
     }
-
+    /*
+    * edit command status
+    */
     public function editStatus(int $id, $ispick, $isprepared)
     {
         $query = ("UPDATE " . self::TABLE . " SET isprepared = :isprepared, ispick= :ispick WHERE command_id=$id");

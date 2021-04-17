@@ -33,6 +33,9 @@ class CommandStatusController extends AbstractController
         }
     }
 
+    /*
+    * edit status
+    */
     public function editStatus($id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

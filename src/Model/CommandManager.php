@@ -68,4 +68,17 @@ class CommandManager extends AbstractManager
         $statement->bindValue('datapick', $newDatePick);
         $statement->execute();
     }
+
+    /*
+     * select all tuple with same comman_id to have the whole command with each stock id
+     */
+
+    public function listCommand(int $id): array
+    {
+        $query = ("SELECT * FROM commandDetails d 
+                    INNER JOIN command c ON d.command_id = c.id 
+                    INNER JOIN commandStatus s ON s.command_id= d.command_id WHERE d.command_id=" . $id);
+        $statement = $this->pdo->query($query);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
