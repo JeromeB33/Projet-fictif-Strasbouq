@@ -39,16 +39,19 @@ class CustomerController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $customer = array_map('trim', $_POST);
+            $errors = $this->validate($customer);
 
             // TODO validations (length, format...)
 
             // if validation is ok, update and redirection
-            $customerManager->update($customer);
-            header('Location: /customer/show/'.$id);
+            if (empty($errors)) {
+                $customerManager->update($customer);
+                header('Location: /customer/show/'.$id);
+            }
         }
 
         return $this->twig->render('Customer/edit.html.twig', [
-            'customer' => $customer,
+            'customer' => $customer, 'errors' => $errors,
         ]);
     }
 
@@ -57,19 +60,24 @@ class CustomerController extends AbstractController
      */
     public function add(): string
     {
+        $errors = [];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $customer = array_map('trim', $_POST);
+            $errors = $this->validate($customer);
 
             // TODO validations (length, format...)
 
             // if validation is ok, insert and redirection
-            $customerManager = new CustomerManager();
-            $id = $customerManager->insert($customer);
-            header('Location:/customer/show/'.$id);
+            if (empty($errors)) {
+                $customerManager = new CustomerManager();
+                $id = $customerManager->insert($customer);
+                header('Location:/customer/show/'.$id);
+            }
         }
 
-        return $this->twig->render('Customer/add.html.twig');
+        return $this->twig->render('Customer/add.html.twig', ['errors' => $errors]);
     }
 
     /**
@@ -82,5 +90,29 @@ class CustomerController extends AbstractController
             $customerManager->delete($id);
             header('Location:/customer/index');
         }
+    }
+
+    private function validate(array $customer): array
+    {
+        if (empty($customer['firstname'])) {
+            $errors[] = 'Prénom requis';
+        }
+        if (empty($customer['lastname'])) {
+            $errors[] = 'Nom requis';
+        }
+        if (empty($customer['email'])) {
+            $errors[] = 'Email requis';
+        }
+        if (!empty($customer['email']) && !filter_var($customer['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'Email non valide';
+        }
+        if (empty($customer['phone'])) {
+            $errors[] = 'Numéro de téléphone requis';
+        }
+        if (!empty($customer['phone']) && strlen($customer['phone']) != 10) {
+            $errors[] = 'Format du numéro de téléphone invalide';
+        }
+
+        return $errors ?? [];
     }
 }

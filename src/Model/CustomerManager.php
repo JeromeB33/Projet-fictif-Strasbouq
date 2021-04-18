@@ -5,6 +5,7 @@ namespace App\Model;
 class CustomerManager extends AbstractManager
 {
     public const TABLE = 'customer';
+    public const TABLE2 = 'bouquetCustomer';
 
     /**
      * Insert new item in database.

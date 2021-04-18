@@ -1,7 +1,12 @@
 {# TODO : manage errors display #}
 
 <form method="post">
-	<input type="hidden" value="{{ customer.id }}" name="id">    
+	<input type="hidden" value="{{ customer.id }}" name="id"> 
+    <ul>
+    {% for error in errors %}
+        <li> {{ error }} </li>
+    {% endfor %}
+    </ul>
     <div>
         <label for="firstname">Prénom</label><br>
         <input type="text" value="{{ customer.firstname }}" name="firstname">
