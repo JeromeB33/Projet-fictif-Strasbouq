@@ -1,0 +1,12 @@
+{# TODO : manage errors display #}
+
+<form method="post">
+	<input type="hidden" value="{{ stock.id }}" name="id">
+	<input type="text" value="{{ stock.name }}" name="name">
+	<textarea id="story" name="description"
+			  rows="5" cols="55"  >{{ stock.description }}
+</textarea>
+	<input type="number" value="{{ stock.avalaibleNumber }}" name="avalaibleNumber">
+	<input type="number" value="{{ stock.price }}" name="price">
+	<input type="submit" value="Valider">
+</form>
