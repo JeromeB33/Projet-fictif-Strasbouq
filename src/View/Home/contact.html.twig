@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% block content %}
-        <form method="post">
+    {% if envoi is defined %}
+        {{ envoi }}
+    {% endif %}
+
+        <form method="post" action="/Contact/contactUs">
             <fieldset>
                 <legend>
                     Contactez-nous
