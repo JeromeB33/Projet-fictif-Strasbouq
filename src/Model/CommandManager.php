@@ -12,8 +12,14 @@ class CommandManager extends AbstractManager
      */
     public function insertCommand(array $commande): void
     {
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (totalAmount) VALUES (:totalAmount)");
+        $query = "INSERT INTO " . self::TABLE . " (totalAmount, customer_id, dateOrder, datePick) 
+                    VALUES (:totalAmount, :customer_id, :dateOrder, :datePick)";
+        $statement = $this->pdo->prepare($query);
         $statement->bindValue('totalAmount', $commande['totalAmount'], \PDO::PARAM_INT);
+        $statement->bindValue('dateOrder', date('Y-m-d H:i:s', time()));
+        $statement->bindValue('datepick', $commande['datepick']);
+        $statement->bindValue('customer_id', $commande['customer_id'], \PDO::PARAM_INT);
+
         $statement->execute();
     }
 
@@ -23,14 +29,13 @@ class CommandManager extends AbstractManager
          */
     public function insertCommandDetails(array $commande): void
     {
-        $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, command_id, customer_id, dataorder, datapick) 
-                    VALUES (:stock_id, :command_id, :customer_id, :dataorder, :datapick)");
+        $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, command_id, quantity) 
+                    VALUES (:stock_id, :command_id, :quantity)");
         $req = $this->pdo->prepare($query);
         $req->bindValue('stock_id', $commande['stock_id'], \PDO::PARAM_INT);
-        $req->bindValue('customer_id', $commande['customer_id'], \PDO::PARAM_INT);
         $req->bindValue('command_id', $commande['command_id'], \PDO::PARAM_INT);
-        $req->bindValue('dataorder', date('Y-m-d H:i:s', time()));
-        $req->bindValue('datapick', $commande['datapick']);
+        $req->bindValue('quantity', $commande['quantity'], \PDO::PARAM_INT);
+
         $req->execute();
     }
 
@@ -64,20 +69,21 @@ class CommandManager extends AbstractManager
      */
     public function editDatePicksById(int $id, $newDatePick): void
     {
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE_2 . " SET datapick = :datapick WHERE command_id=$id");
-        $statement->bindValue('datapick', $newDatePick);
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE_2 . " SET datePick = :datePick WHERE command_id=$id");
+        $statement->bindValue('datePick', $newDatePick);
         $statement->execute();
     }
 
     /*
-     * select all tuple with same comman_id to have the whole command with each stock id
+     * select all tuple with same command_id to have the whole command with each stock id
      */
 
     public function listCommand(int $id): array
     {
         $query = ("SELECT * FROM commandDetails d 
                     INNER JOIN command c ON d.command_id = c.id 
-                    INNER JOIN commandStatus s ON s.command_id= d.command_id WHERE d.command_id=" . $id);
+                    INNER JOIN commandStatus s ON s.command_id= d.command_id 
+                    WHERE d.command_id=" . $id);
         $statement = $this->pdo->query($query);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }

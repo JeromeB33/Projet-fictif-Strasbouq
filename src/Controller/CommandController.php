@@ -89,7 +89,7 @@ class CommandController extends AbstractController
             $commandStatusManager->insertStatus($commande);
         }
 
-        header("Location: /Commande/showAll");
+        header("Location: /Command/showAll");
     }
 
     /*
@@ -100,7 +100,7 @@ class CommandController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $commandeManager = new CommandManager();
             $commandeManager->delete($id);
-            header("Location: /Commande/showAll");
+            header("Location: /Command/showAll");
         }
     }
 
@@ -110,11 +110,11 @@ class CommandController extends AbstractController
     public function editDatePickById($id): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $newDate = $_POST['newDataPick'];
+            $newDate = $_POST['newDatePick'];
             $commandManager = new CommandManager();
 
             $commandManager->editDatePicksById($id, $newDate);
-            header("Location: /Commande/showAll");
+            header("Location: /Command/showAll");
         }
     }
 
@@ -128,4 +128,6 @@ class CommandController extends AbstractController
 
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
     }
+    //TODO : add a command with multiple stock id and quantity
+    // explode and take each id and quantity to add in database
 }

@@ -5,7 +5,7 @@
 
     <!-- Display all commands with button to show details by id and button to delete a command -->
     {% for commande in commandes %}
-        {{ commande.totalAmount }} || {{ commande.id }}
+        total : {{ commande.totalAmount }} || ID :  {{ commande.id }} || Pick date : {{ commande.datePick }}
         <form action="/Command/suppr/{{ commande.id }}" method="POST">
             <button>Delete</button>
         </form>
@@ -23,9 +23,9 @@
         {% if details is empty %}
             Nothing to display
             {% else %}
+                {{ dump(details) }}
                 Commande id : {{ details.command_id }} </br>
-                Customer id : {{ details.customer_id }} </br>
-                Pick date : {{ details.datapick }}
+                Customer id : {{ details.stock_id }} </br>
 
                 <form action="/CommandStatus/showById/{{ details.command_id }}" method="POST">
                     <button>Show status</button>
@@ -34,7 +34,7 @@
                 <h1>Edit pick date</h1>
 
                 <form action="/Command/editDatePickById/{{ details.command_id }}" method="POST">
-                    <label for="newDataPick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="newDataPick"></label><br/>
+                    <label for="newDatePick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="newDatePick"></label><br/>
                     <input type="submit">
                 </form>
         {% endif %}
@@ -94,7 +94,8 @@
         <label for="totalAMount"> Total amount<input type="number" name="totalAmount"></label><br/>
         <label for="customer_id"> customer <input type="number" name="customer_id"></label><br/>
         <label for="stock_id"> stock<input type="number" name="stock_id"></label><br/>
-        <label for="datapick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="datapick"></label><br/>
+        <label for="quantity"> quantity <input type="number" name="quantity"></label><br/>
+        <label for="datepick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="datepick"></label><br/>
         <input type="hidden" name="command_id" >
         <input type="hidden" name="isprepared" value="false" >
         <input type="hidden" name="ispick" value="false" >
