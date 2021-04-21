@@ -23,9 +23,10 @@
         {% if details is empty %}
             Nothing to display
             {% else %}
-                {{ dump(details) }}
                 Commande id : {{ details.command_id }} </br>
                 Customer id : {{ details.stock_id }} </br>
+                Stock id : {{ details.stock_id }} </br>
+                Quantity : {{ details.quantity }}
 
                 <form action="/CommandStatus/showById/{{ details.command_id }}" method="POST">
                     <button>Show status</button>
@@ -47,6 +48,7 @@
         {% else %}
             is prepared ?  : {{ status.isprepared }} </br>
             is pick ?  : {{ status.ispick}} <br/>
+
 
             <!-- form to edit status -->
             <h1>Edit status </h1>
@@ -83,7 +85,6 @@
             quantity : {{ list.quantity }}
             <br/>
         {% endfor %}
-        {{ dump(commandList) }}
     {% endif %}
 
 

@@ -53,7 +53,7 @@ class CommandController extends AbstractController
                 $commande['stock_id'] = (int) $commande['stock_id'];
             }
 
-            // if validation is ok, insert and redirection
+            //TODO if validation is ok, insert and redirection
             /*
              * insert command
             */
@@ -125,6 +125,17 @@ class CommandController extends AbstractController
     {
         $commandManager = new CommandManager();
         $commandList = $commandManager->listCommand($id);
+
+        if ($commandList['0']['isprepared'] === '0') {
+            $commandList['0']['isprepared'] = 'Nop';
+        } elseif ($commandList['O']['isprepared'] === "1") {
+            $commandList['0']['isprepared'] = 'Yup';
+        }
+        if ($commandList['0']['ispick'] === '0') {
+            $commandList['0']['ispick'] = 'Nop';
+        } elseif ($commandList['O']['ispick'] === "1") {
+            $commandList['0']['ispick'] = 'Yup';
+        }
 
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
     }

@@ -25,8 +25,8 @@ class CommandManager extends AbstractManager
 
 
     /*
-         *  insert command details in database
-         */
+    *  insert command details in database
+    */
     public function insertCommandDetails(array $commande): void
     {
         $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, command_id, quantity) 
@@ -38,8 +38,6 @@ class CommandManager extends AbstractManager
 
         $req->execute();
     }
-
-
 
     /*
      * Get one row from database by ID.
