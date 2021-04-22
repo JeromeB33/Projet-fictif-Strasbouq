@@ -25,8 +25,6 @@
             {% else %}
                 Commande id : {{ details.command_id }} </br>
                 Customer id : {{ details.stock_id }} </br>
-                Stock id : {{ details.stock_id }} </br>
-                Quantity : {{ details.quantity }}
 
                 <form action="/CommandStatus/showById/{{ details.command_id }}" method="POST">
                     <button>Show status</button>
@@ -54,18 +52,18 @@
             <h1>Edit status </h1>
 
             <form action="/CommandStatus/editStatus/{{ status.command_id }}" method="POST">
-                <label for="isprepared"> is prepared?
-                    <select  name="isprepared">
-                        <option value="default" selected disabled>Pick a option but not this one</option>
-                        <option value="false">False</option>
-                        <option value="true">True</option>
+                <label for="isPrepared"> is prepared?
+                    <select  name="isPrepared">
+                        <option name="isPrepared" value="default" selected disabled>Pick a option but not this one</option>
+                        <option name="isPrepared" value="false">False</option>
+                        <option name="isPrepared"value="true">True</option>
                     </select>
                 </label><br/>
-                <label for="ispick"> is pick?
-                    <select  name="ispick">
-                        <option value="default" selected disabled>Pick a option but not this one</option>
-                        <option value="false">False</option>
-                        <option value="true">True</option>
+                <label for="isPick"> is pick?
+                    <select  name="isPick">
+                        <option name="isPick" value="default" selected disabled>Pick a option but not this one</option>
+                        <option name="isPick" value="false">False</option>
+                        <option name="isPick" value="true">True</option>
                     </select>
                 </label><br/>
                 <input type="submit">
@@ -77,14 +75,24 @@
     <!-- show the whole command -->
     {% if commandList is defined %}
         command id : {{ commandList.0.command_id }}  <br/>
-        prepared ? {{ commandList.0.isprepared }}<hr/>
-
+        customer id : {{ commandList.0.customer_id }}
+        <form action="/CommandStatus/showById/{{ commandList.0.command_id }}" method="POST">
+            <button>Show status</button>
+        </form>
         <!-- display each stock_id with quantity  -->
         {% for list in commandList %}
             id stock : {{ list.stock_id }}
             quantity : {{ list.quantity }}
             <br/>
         {% endfor %}
+
+        <h1>Edit pick date</h1>
+
+        <form action="/Command/editDatePickById/{{ commandList.0.command_id }}" method="POST">
+            <label for="newDatePick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="newDatePick"></label><br/>
+            <input type="submit">
+        </form>
+
     {% endif %}
 
 
@@ -94,13 +102,16 @@
     <form method="post" action="/Command/add">
         <label for="totalAMount"> Total amount<input type="number" name="totalAmount"></label><br/>
         <label for="customer_id"> customer <input type="number" name="customer_id"></label><br/>
-        <label for="stock_id"> stock<input type="number" name="stock_id"></label><br/>
-        <label for="quantity"> quantity <input type="number" name="quantity"></label><br/>
-        <label for="datepick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="datepick"></label><br/>
-        <input type="hidden" name="command_id" >
+        <label for="stock_id">
+            <label>Stock 1, Its quantity? <input type="number" name="stock_id[1][quantity]" value="0"></label><br/>
+            <label>Stock 2, Its quantity? <input type="number" name="stock_id[2][quantity]" value="0"></label><br/>
+            <label>Stock 3, Its quantity? <input type="number" name="stock_id[3][quantity]" value="0"></label><br/>
+            <label>Stock 4, Its quantity? <input type="number" name="stock_id[4][quantity]" value="0"></label><br/>
+        </label><br/>
+        <label for="datePick"> date pick<input type="date" placeholder="2011-01-13 08:08:08" name="datePick"></label><br/>
+        <input type="hidden" name="command_id">
         <input type="hidden" name="isprepared" value="false" >
         <input type="hidden" name="ispick" value="false" >
         <input type="submit" value="add">
     </form>
-
 {% endblock %}

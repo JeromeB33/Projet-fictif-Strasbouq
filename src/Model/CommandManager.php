@@ -17,7 +17,7 @@ class CommandManager extends AbstractManager
         $statement = $this->pdo->prepare($query);
         $statement->bindValue('totalAmount', $commande['totalAmount'], \PDO::PARAM_INT);
         $statement->bindValue('dateOrder', date('Y-m-d H:i:s', time()));
-        $statement->bindValue('datepick', $commande['datepick']);
+        $statement->bindValue('datePick', $commande['datePick']);
         $statement->bindValue('customer_id', $commande['customer_id'], \PDO::PARAM_INT);
 
         $statement->execute();
@@ -58,16 +58,16 @@ class CommandManager extends AbstractManager
     public function selectLastId()
     {
         // prepared request
-        $statement = $this->pdo->query("SELECT max(id)  FROM " . static::TABLE);
+        $statement = $this->pdo->query("SELECT MAX(id)  FROM " . static::TABLE);
         return $statement->fetch(\PDO::FETCH_NUM);
     }
 
     /*
-     * Edit by id command details : date pick
+     * Edit by id command : date pick
      */
     public function editDatePicksById(int $id, $newDatePick): void
     {
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE_2 . " SET datePick = :datePick WHERE command_id=$id");
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET datePick = :datePick WHERE id=$id");
         $statement->bindValue('datePick', $newDatePick);
         $statement->execute();
     }
@@ -78,9 +78,8 @@ class CommandManager extends AbstractManager
 
     public function listCommand(int $id): array
     {
-        $query = ("SELECT * FROM commandDetails d 
-                    INNER JOIN command c ON d.command_id = c.id 
-                    INNER JOIN commandStatus s ON s.command_id= d.command_id 
+        $query = ("SELECT * FROM " . self::TABLE_2 . " d 
+                    INNER JOIN " . self::TABLE . " c ON d.command_id = c.id  
                     WHERE d.command_id=" . $id);
         $statement = $this->pdo->query($query);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

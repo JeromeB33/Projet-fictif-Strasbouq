@@ -15,6 +15,7 @@ class CommandStatusController extends AbstractController
             $commandStatusManager = new CommandStatusManager();
             $status = $commandStatusManager->selectOneById($id);
 
+
             if (!empty($status)) {
                 if ($status['ispick'] === '0') {
                     $status['ispick'] = 'Nop';
@@ -39,8 +40,8 @@ class CommandStatusController extends AbstractController
     public function editStatus($id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $ispick = $_POST['ispick'];
-            $isprepared = $_POST['isprepared'];
+            $ispick = $_POST['isPick'];
+            $isprepared = $_POST['isPrepared'];
 
             if ($ispick === 'false') {
                 $ispick = 0;

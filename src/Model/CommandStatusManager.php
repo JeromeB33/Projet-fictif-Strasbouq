@@ -37,10 +37,10 @@ class CommandStatusManager extends AbstractManager
     */
     public function editStatus(int $id, $ispick, $isprepared)
     {
-        $query = ("UPDATE " . self::TABLE . " SET isprepared = :isprepared, ispick= :ispick WHERE command_id=$id");
+        $query = ("UPDATE " . self::TABLE . " SET isPrepared = :isPrepared, isPick= :isPick WHERE command_id=$id");
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue('ispick', $ispick);
-        $statement->bindValue('isprepared', $isprepared);
+        $statement->bindValue('isPick', $ispick);
+        $statement->bindValue('isPrepared', $isprepared);
         $statement->execute();
 
         header("Location: /Command/showAll");
