@@ -41,26 +41,21 @@ class CommandController extends AbstractController
      */
     public function add(): void
     {
-        //TODO : add a command with multiple stock id and quantity : one tuple for one id
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // TODO validations (length, format...)
             if (!empty($_POST)) {
-                //clean $_POST data
-                //$commande = array_map('trim', $_POST);
                 $commande = $_POST;
+
                 //insert command
                 $commandeManager = new CommandManager();
                 $commandeManager->insertCommand($commande);
 
-                //TODO if validation is ok, insert and redirection
+                // TODO validations (length, format...)
 
                 //take id of the last input in command to associate the command details and status
                 $lastID = $commandeManager->selectLastId();
                 $commande['command_id'] = (int)$lastID[0];
 
-                //insert command details :
-                //for each stock id if tis quantity > 0 add a tuple
+                //insert command details : for each stock_id if its quantity != 0 add a tuple
                 foreach ($commande['stock_id'] as $stockId => $quantities) {
                     foreach ($quantities as $quantity) {
                         if (!empty($quantity) && $quantity !== '0') {
@@ -71,7 +66,7 @@ class CommandController extends AbstractController
                     }
                 }
 
-                    //test to transform value in tinyint (bool) (status table)
+                //test to transform value in tinyint (bool) (to fit into status table)
                 if ($commande['ispick'] === 'false') {
                     $commande['ispick'] = 0;
                 } elseif ($commande['ispick'] === 'true') {
@@ -127,6 +122,7 @@ class CommandController extends AbstractController
         $commandManager = new CommandManager();
         $commandList = $commandManager->listCommand($id);
 
+        //transform text to better comprehension for the customer or webowner
         for ($i = 1; $i < 1; $i++) {
             if ($commandList[$i]['isprepared'] === '0') {
                 $commandList[$i]['isprepared'] = 'Nop';

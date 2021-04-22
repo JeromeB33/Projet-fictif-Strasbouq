@@ -15,7 +15,7 @@ class CommandStatusController extends AbstractController
             $commandStatusManager = new CommandStatusManager();
             $status = $commandStatusManager->selectOneById($id);
 
-
+            //transfrom value for more comprehension for the view
             if (!empty($status)) {
                 if ($status['ispick'] === '0') {
                     $status['ispick'] = 'Nop';
@@ -43,6 +43,7 @@ class CommandStatusController extends AbstractController
             $ispick = $_POST['isPick'];
             $isprepared = $_POST['isPrepared'];
 
+            //transform value to fit in the table
             if ($ispick === 'false') {
                 $ispick = 0;
             } elseif ($ispick === 'true') {
