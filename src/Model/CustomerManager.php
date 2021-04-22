@@ -5,14 +5,15 @@ namespace App\Model;
 class CustomerManager extends AbstractManager
 {
     public const TABLE = 'customer';
-    public const TABLE2 = 'bouquetCustomer';
 
     /**
      * Insert new item in database.
      */
     public function insert(array $customer): int
     {
-        $statement = $this->pdo->prepare('INSERT INTO '.self::TABLE.' (`firstname`,`lastname`,`email`,`phone`,`password`) VALUES (:firstname, :lastname, :email, :phone, :password)');
+        $statement = $this->pdo->prepare('INSERT INTO ' . self::TABLE .
+        ' (`firstname`,`lastname`,`email`,`phone`,`password`) 
+        VALUES (:firstname, :lastname, :email, :phone, :password)');
         $statement->bindValue('firstname', $customer['firstname'], \PDO::PARAM_STR);
         $statement->bindValue('lastname', $customer['lastname'], \PDO::PARAM_STR);
         $statement->bindValue('email', $customer['email'], \PDO::PARAM_STR);
@@ -29,7 +30,10 @@ class CustomerManager extends AbstractManager
      */
     public function update(array $customer): bool
     {
-        $statement = $this->pdo->prepare('UPDATE '.self::TABLE.' SET `firstname` = :firstname, `lastname` = :lastname, `email` = :email,`phone` = :phone, `password` = :password WHERE id=:id');
+        $statement = $this->pdo->prepare('UPDATE ' . self::TABLE .
+        ' SET `firstname` = :firstname, `lastname` = :lastname,
+         `email` = :email,`phone` = :phone, `password` = :password 
+        WHERE id=:id');
         $statement->bindValue('id', $customer['id'], \PDO::PARAM_INT);
         $statement->bindValue('firstname', $customer['firstname'], \PDO::PARAM_STR);
         $statement->bindValue('lastname', $customer['lastname'], \PDO::PARAM_STR);

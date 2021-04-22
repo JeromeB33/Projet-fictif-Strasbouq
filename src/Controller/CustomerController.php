@@ -33,6 +33,8 @@ class CustomerController extends AbstractController
      */
     public function edit(int $id): string
     {
+        $errors = [];
+
         $customerManager = new CustomerManager();
         $customer = $customerManager->selectOneById($id);
 
@@ -46,7 +48,7 @@ class CustomerController extends AbstractController
             // if validation is ok, update and redirection
             if (empty($errors)) {
                 $customerManager->update($customer);
-                header('Location: /customer/show/'.$id);
+                header('Location: /customer/show/' . $id);
             }
         }
 
@@ -73,7 +75,7 @@ class CustomerController extends AbstractController
             if (empty($errors)) {
                 $customerManager = new CustomerManager();
                 $id = $customerManager->insert($customer);
-                header('Location:/customer/show/'.$id);
+                header('Location:/customer/show/' . $id);
             }
         }
 
@@ -94,6 +96,8 @@ class CustomerController extends AbstractController
 
     private function validate(array $customer): array
     {
+        $errors = [];
+
         if (empty($customer['firstname'])) {
             $errors[] = 'Prénom requis';
         }
@@ -114,5 +118,13 @@ class CustomerController extends AbstractController
         }
 
         return $errors ?? [];
+    }
+
+    public function indexBouquetCustomer(): string
+    {
+        $customerManager = new CustomerManager();
+        $customers = $customerManager->selectAll('name');
+
+        return $this->twig->render('Customer/index.html.twig', ['customers' => $customers]);
     }
 }
