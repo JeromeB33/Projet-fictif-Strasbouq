@@ -23,4 +23,8 @@ class HomeController extends AbstractController
     {
         return $this->twig->render('Home/index.html.twig');
     }
+
+    public function panier(){
+        return $this->twig->render('Home/panier.html.twig');
+    }
 }
