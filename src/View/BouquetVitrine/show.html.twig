@@ -1,11 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1>Stock {{ stock.name }}</h1>
-    <p>{{ stock.id }}. {{ stock.name }}</p>
-    <a href="/stock/edit/{{ stock.id }}">Edit</a>
-    <form action="/stock/delete/{{stock.id}}" method="POST">
+    <h1>Stock {{ bouquetVitrine.name }}</h1>
+    <p>{{ bouquetVitrine.id }}. {{ bouquetVitrine.name }}</p>
+    <a href="/bouquetVitrine/edit/{{ bouquetVitrine.id }}">Edit</a>
+    <form action="/bouquetVitrine/delete/{{bouquetVitrine.id}}" method="POST">
         <button>Delete</button>
     </form>
-    <a href="/stock/index">Back</a>
+    <a href="/bouquetVitrine/index">Back</a>
 {% endblock %}
