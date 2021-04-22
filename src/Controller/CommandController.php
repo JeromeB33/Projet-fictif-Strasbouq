@@ -67,17 +67,8 @@ class CommandController extends AbstractController
                 }
 
                 //test to transform value in tinyint (bool) (to fit into status table)
-                if ($commande['ispick'] === 'false') {
-                    $commande['ispick'] = 0;
-                } elseif ($commande['ispick'] === 'true') {
-                    $commande['ispick'] = 1;
-                }
-
-                if ($commande['isprepared'] === 'false') {
-                    $commande['isprepared'] = 0;
-                } elseif ($commande['isprepared'] === 'true') {
-                    $commande['isprepared'] = 1;
-                }
+                $commande['ispick'] === 'false' ? $commande['ispick'] = 0 : $commande['ispick'] = 1;
+                $commande['isprepared'] === 'false' ?  $commande['isprepared'] = 0 : $commande['isprepared'] = 1;
 
                     // insert command status
                     $commandStatusManager = new CommandStatusManager();
