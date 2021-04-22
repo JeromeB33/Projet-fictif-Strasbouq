@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Inscription - {{ parent() }} {% endblock %}
+
+{% block content %}
+    <!-- form inscription-->
+    <form method="post">
+        <fieldset>
+            <legend>Inscription</legend>
+            <input required type="text" name = "firstname" placeholder="Votre nom"><br/>
+            <input required type="text" name = "lastname" placeholder="Votre prénom"><br/>
+            <input required type="email" name = "email" placeholder="Votre email"><br/>
+            <input required type="password" name = "password" placeholder="Mot de passe"><br/>
+            <input required type="password" name = "passwordVerif" placeholder="Retapez votre mot de passe (sans lui faire mal)"><br/>
+            <input type="submit" value="Sign In">
+        </fieldset>
+    </form>
+    <p>Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Connection - {{ parent() }} {% endblock %}
+
+{% block content %}
+    <!-- form connection-->
+    <form method="post">
+        <fieldset>
+            <legend>Connection</legend>
+            <input required type="email" name = "email" placeholder="Votre email"><br/>
+            <input required type="password" name = "password" placeholder="Mot de passe"><br/>
+            <input type="submit" value="Connection">
+        </fieldset>
+    </form>
+    <p>Pas encore inscrit ? <a href="/Home/signIn">Inscription</a></p>
+
+{% endblock %}
