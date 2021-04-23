@@ -13,7 +13,6 @@ class ConnectionController extends AbstractController
     public function userExists($userTest): bool
     {
         //TODO : verifier si user existe dans la base (si son email est dans la base et/ou tel)
-
         $customerManager = new CustomerManager();
         $users = $customerManager->selectAll();
         $retour = true;
@@ -25,6 +24,27 @@ class ConnectionController extends AbstractController
                 $retour =  false;
             }
         }
+        return $retour;
+    }
+
+    /*
+     * test if couple password + email exist in base
+     */
+    public function coupleExist($userTest)
+    {
+        $customerManager = new CustomerManager();
+        $id = $customerManager->selectIdByEmail($userTest['email']);
+        $user = $customerManager->selectOneById($id['id']);
+        $retour = false;
+
+        if ($user) {
+            if ($userTest['email'] === $user['email'] && $userTest['password'] === $user['password']) {
+                $retour = true;
+            }
+        } else {
+            $retour =  false;
+        }
+
         return $retour;
     }
 
@@ -51,13 +71,22 @@ class ConnectionController extends AbstractController
     /*
      * connection
      */
-    public function connection()
+    public function connect()
     {
-        //TODO : si user existe (email) et POST bon password : connection + redirection ver accueil site
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //user know then redirection to home page
+            if ($this->coupleExist($_POST) === true) {
+                //user know : any insertion in base, redirection accueil
+                return $this->twig->render('Home/index.html.twig');
+            } else {
+                //unknow then error message
+                $userExist = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
+                return $this->twig->render('Home/logIn.html.twig', ['userExist' => $userExist]);
+            }
+        }
+
         // et si cookie créer connection direct ??
         // (+ ajout id en session pour connection sur toutes les pages) ??
-
-        //TODO: si existe pas : message mauvais mdp / user innexistant
     }
 
     /*

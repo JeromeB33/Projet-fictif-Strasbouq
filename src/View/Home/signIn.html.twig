@@ -5,24 +5,6 @@
 
 
 {% block content %}
-    {#  include("Customer/_form.html.twig") #}
-    <!-- form inscription
-    <form method="post">
-        <fieldset>
-            <legend>Inscription</legend>
-            <input required type="text" name = "firstname" placeholder="Votre nom"><br/>
-            <input required type="text" name = "lastname" placeholder="Votre prénom"><br/>
-            <input required type="email" name = "email" placeholder="Votre email"><br/>
-            <input required type="tel" name = "phone" placeholder="Votre telephone"><br/>
-            <input required type="password" name = "password" placeholder="Mot de passe"><br/>
-            <input required type="password" name = "passwordVerif" placeholder="Retapez votre mot de passe (sans lui faire mal)"><br/>
-            <input type="submit" value="Sign In">
-        </fieldset>
-    </form>
-    <p>Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
--->
-
-    {# TODO : manage errors display #}
     <ul>
         {% for error in errors %}
             <li> {{ error }} </li>
@@ -54,7 +36,7 @@
         </div>
         <div>
             <label for="password">Mot de passe</label><br>
-            <input type="text" value="{{ customer.password }}" name="password">
+            <input type="password" value="{{ customer.password }}" name="password">
         </div>
 
         <input type="submit" value="Valider">

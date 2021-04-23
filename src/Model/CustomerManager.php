@@ -43,4 +43,14 @@ class CustomerManager extends AbstractManager
 
         return $statement->execute();
     }
+
+    public function selectIdByEmail(string $email)
+    {
+        // prepared request
+        $statement = $this->pdo->prepare("SELECT id FROM " . static::TABLE . " WHERE email=:email");
+        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
 }
