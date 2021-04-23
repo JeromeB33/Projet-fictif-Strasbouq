@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Controller\CustomerController;
 use App\Model\CustomerManager;
 
-class ConnectionController extends AbstractController
+class ConnexionController extends AbstractController
 {
     /*
      * verification if user is already in the database
@@ -61,11 +61,13 @@ class ConnectionController extends AbstractController
             if ($this->userExists($_POST) === false) {
                 $customerController = new CustomerController();
                 $customerController->add();
+                $message = "Inscription réussie, vous pouvez à présent vous connecter";
+                return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
 
             //user know : any insertion in base, return message
             } else {
-                $userExist = 'Utilisateur connu';
-                return $this->twig->render('Home/signIn.html.twig', ['userExist' => $userExist]);
+                $message = 'Utilisateur connu';
+                return $this->twig->render('Home/signIn.html.twig', ['message' => $message]);
             }
         }
         //TODO  ajout cookie pour avoir id prochaine connection ??
@@ -80,6 +82,7 @@ class ConnectionController extends AbstractController
             //user know then redirection to home page
             if ($this->coupleExist($_POST) === true) {
                 //user know : any insertion in base, redirection accueil
+                $_SESSION['user'] = $_POST['email'];
                 return $this->twig->render('Home/index.html.twig');
             } else {
                 //unknow then error message
@@ -101,5 +104,11 @@ class ConnectionController extends AbstractController
         //TODO : si log in avec droit admin définira accès aux pages admins
         // si la session en cours est log avec l'email définit alors droit admin
         // : definit $_session admin true, ou ajouter en base le droit admin ?
+    }
+
+    public function deconnexion()
+    {
+        session_destroy();
+        return $this->twig->render('/Home/index.html.twig');
     }
 }
