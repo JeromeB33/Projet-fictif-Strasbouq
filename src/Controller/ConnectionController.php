@@ -33,18 +33,21 @@ class ConnectionController extends AbstractController
     public function coupleExist($userTest)
     {
         $customerManager = new CustomerManager();
+        //get id of the customer
         $id = $customerManager->selectIdByEmail($userTest['email']);
-        $user = $customerManager->selectOneById($id['id']);
         $retour = false;
 
-        if ($user) {
+        if ($id) {
+            //if there is an id , we search his informations
+            $user = $customerManager->selectOneById($id['id']);
+
+            //test if email and password matched
             if ($userTest['email'] === $user['email'] && $userTest['password'] === $user['password']) {
                 $retour = true;
             }
         } else {
             $retour =  false;
         }
-
         return $retour;
     }
 
@@ -94,6 +97,9 @@ class ConnectionController extends AbstractController
      */
     public function isAdmin()
     {
+        define('ADMIN', 'email@admin.fr');
         //TODO : si log in avec droit admin définira accès aux pages admins
+        // si la session en cours est log avec l'email définit alors droit admin
+        // : definit $_session admin true, ou ajouter en base le droit admin ?
     }
 }
