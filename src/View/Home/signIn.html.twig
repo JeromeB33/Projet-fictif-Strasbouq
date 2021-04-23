@@ -2,19 +2,65 @@
 
 {% block title %} Inscription - {{ parent() }} {% endblock %}
 
+
+
 {% block content %}
-    <!-- form inscription-->
+    {#  include("Customer/_form.html.twig") #}
+    <!-- form inscription
     <form method="post">
         <fieldset>
             <legend>Inscription</legend>
             <input required type="text" name = "firstname" placeholder="Votre nom"><br/>
             <input required type="text" name = "lastname" placeholder="Votre prénom"><br/>
             <input required type="email" name = "email" placeholder="Votre email"><br/>
+            <input required type="tel" name = "phone" placeholder="Votre telephone"><br/>
             <input required type="password" name = "password" placeholder="Mot de passe"><br/>
             <input required type="password" name = "passwordVerif" placeholder="Retapez votre mot de passe (sans lui faire mal)"><br/>
             <input type="submit" value="Sign In">
         </fieldset>
     </form>
     <p>Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
+-->
+
+    {# TODO : manage errors display #}
+    <ul>
+        {% for error in errors %}
+            <li> {{ error }} </li>
+        {% endfor %}
+
+        {% if userExist is defined %}
+            <li> {{ userExist }} </li>
+        {% endif %}
+    </ul>
+
+    <form method="post" action="/connection/addUser">
+        <input type="hidden" value="{{ customer.id }}" name="id">
+
+        <div>
+            <label for="firstname">Prénom</label><br>
+            <input type="text" value="{{ customer.firstname }}" name="firstname">
+        </div>
+        <div>
+            <label for="lastname">Nom</label><br>
+            <input type="text" value="{{ customer.lastname }}" name="lastname">
+        </div>
+        <div>
+            <label for="email">Email</label><br>
+            <input type="email" value="{{ customer.email }}" name="email">
+        </div>
+        <div>
+            <label for="phone">Numéro de téléphone</label><br>
+            <input type="tel" value="{{ customer.phone }}" name="phone">
+        </div>
+        <div>
+            <label for="password">Mot de passe</label><br>
+            <input type="text" value="{{ customer.password }}" name="password">
+        </div>
+
+        <input type="submit" value="Valider">
+    </form>
+    <p>Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
+
+
 
 {% endblock %}

@@ -2,26 +2,50 @@
 
 namespace App\Controller;
 
+use App\Controller\CustomerController;
+use App\Model\CustomerManager;
+
 class ConnectionController extends AbstractController
 {
     /*
      * verification if user is already in the database
      */
-    public function userExists()
+    public function userExists($userTest): bool
     {
         //TODO : verifier si user existe dans la base (si son email est dans la base et/ou tel)
+
+        $customerManager = new CustomerManager();
+        $users = $customerManager->selectAll();
+        $retour = true;
+
+        foreach ($users as $user) {
+            if ($userTest['email'] === $user['email'] || $userTest['phone'] === $user['phone']) {
+                $retour =  true;
+            } else {
+                $retour =  false;
+            }
+        }
+        return $retour;
     }
 
     /*
-     * add a user depending his existence in database
+     * add a user depending of his existence in database
      */
     public function addUser()
     {
-        //TODO Verifications (si formulaire bien transmis pas vide etc
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //user unknow = add to databse
+            if ($this->userExists($_POST) === false) {
+                $customerController = new CustomerController();
+                $customerController->add();
 
-        //TODO : si email user n'existe pas : appel crud customer pour ajouter le user
-        // sinon return message 'email ou tel ' est deja relié à utilisateur
-        // (+ ajout cookie pour avoir id prochaine connection) ??
+            //user know : any insertion in base, return message
+            } else {
+                $userExist = 'Utilisateur connu';
+                return $this->twig->render('Home/signIn.html.twig', ['userExist' => $userExist]);
+            }
+        }
+        //TODO  ajout cookie pour avoir id prochaine connection ??
     }
 
     /*
