@@ -65,7 +65,7 @@ class ConnexionController extends AbstractController
                 return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
 
             //user know : any insertion in base, return message
-            } else {
+            } elseif ($this->userExists($_POST) === true) {
                 $message = 'Utilisateur connu';
                 return $this->twig->render('Home/signIn.html.twig', ['message' => $message]);
             }
@@ -81,13 +81,12 @@ class ConnexionController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //user know then redirection to home page
             if ($this->coupleExist($_POST) === true) {
-                //user know : any insertion in base, redirection accueil
-                $_SESSION['user'] = $_POST['email'];
+                //user know :  redirection accueil
                 return $this->twig->render('Home/index.html.twig');
             } else {
                 //unknow then error message
-                $userExist = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
-                return $this->twig->render('Home/logIn.html.twig', ['userExist' => $userExist]);
+                $message = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
+                return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
             }
         }
 
