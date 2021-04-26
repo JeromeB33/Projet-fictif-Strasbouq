@@ -25,8 +25,8 @@ class BouquetVitrineController extends AbstractController
     public function edit(int $id): string
     {
         $bouquVitrineManager = new BouquetVitrineManager();
-        $bouquetVitrine = $bouquVitrineManager->selectOneById($id);
-
+        $bouquetVitrine = $bouquVitrineManager->stockByIdBouquet($id);
+        var_dump($bouquetVitrine);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bouquetVitrine = array_map('trim', $_POST);
 

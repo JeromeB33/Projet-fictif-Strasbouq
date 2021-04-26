@@ -7,6 +7,7 @@ class BouquetVitrineManager extends AbstractManager
 
     public const TABLE = 'bouquetVitrine';
     public const TABLE_2 = 'stock_bouquetVitrine';
+
     public function insert(array $stock): int
     {
         $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (name, price ) VALUES (:name, :price)");
@@ -17,17 +18,16 @@ class BouquetVitrineManager extends AbstractManager
         return (int)$this->pdo->lastInsertId();
     }
 
-    public function insertStockBouquetVitrine(array $commande): void
+    public function insertStockBouquetVitrine(array $bouquetV): void
     {
-        $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, command_id) 
-                    VALUES (:stock_id, :command_id)");
+        $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, bouquetVitrine_id) 
+                    VALUES (:stock_id, :bouquetVitrine_id)");
         $req = $this->pdo->prepare($query);
-        $req->bindValue('stock_id', $commande['stock_id'], \PDO::PARAM_INT);
-        $req->bindValue('command_id', $commande['command_id'], \PDO::PARAM_INT);
+        $req->bindValue('stock_id', $bouquetV['stock_id'], \PDO::PARAM_INT);
+        $req->bindValue('bouquetVitrine_id', $bouquetV['bouquetVitrine_id'], \PDO::PARAM_INT);
 
         $req->execute();
     }
-
 
     public function update(array $stock): bool
     {
@@ -38,5 +38,15 @@ class BouquetVitrineManager extends AbstractManager
         $statement->bindValue('price', $stock['price'], \PDO::PARAM_INT);
 
         return  $statement->execute();
+    }
+
+    public function stockByIdBouquet(int $id): array
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " b, stock_bouquetVitrine sb, stock s 
+        WHERE b.id=sb.bouquetVitrine_id AND sb.stock_id=s.id AND b.id=:id ");
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+
+       /* $fleur = $statement->execute(); */
+        return $statement->fetchAll();
     }
 }
