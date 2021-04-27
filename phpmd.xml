@@ -10,6 +10,12 @@
         <exclude name="ElseExpression" />
         <exclude name="StaticAccess" />
     </rule>
+    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
+        <priority>1</priority>
+        <properties>
+            <property name="reportLevel" value="20" />
+        </properties>
+    </rule>
     <rule ref="rulesets/codesize.xml" />
     <rule ref="rulesets/controversial.xml" >
         <exclude name="Superglobals" />
