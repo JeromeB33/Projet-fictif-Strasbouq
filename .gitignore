@@ -4,5 +4,9 @@
 *.cache
 db.php
 .idea
+<<<<<<< HEAD
 .DS_Store
 
+=======
+.DS_Store
+>>>>>>> 8385b4bb4695d1cbaa5f37e3c6ca4acccd9c1f75
