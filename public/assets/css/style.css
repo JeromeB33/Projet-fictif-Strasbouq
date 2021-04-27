@@ -13,7 +13,7 @@ nav .uk-logo{
 /* banner*/
 .banner{
     text-align: center;
-    margin: 3vw 20vw 1vw 20vw;
+    margin: 3vw 15vw 1vw 15vw;
 }
 .banner p {
     color: #285097;
@@ -23,19 +23,12 @@ nav .uk-logo{
     color: #373F41;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    column-gap: 5vw;
-    margin : 4vw 7vw 4vw 7vw;
-}
-
-.container .button{
+.banner .button{
     color: white;
     padding: 14px;
 }
 
-.container .button:hover{
+.banner .button:hover{
     color: #666;
     text-decoration: none;
     /*box-shadow: 5px 5px 5px #373F41;*/
@@ -45,13 +38,11 @@ nav .uk-logo{
 
 /*responsive*/
 @media screen and (min-width: 1025px){
-    nav #mobile{
-        display: none;
-    }
+
 }
 
 @media screen and (max-width: 800px){
-    nav #desktop{
-        display: none;
+    h1{
+        font-size: 1vw;
     }
 }
