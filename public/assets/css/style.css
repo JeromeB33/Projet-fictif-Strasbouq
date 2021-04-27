@@ -5,11 +5,45 @@ body{
 .button{
     background-color: #285097;
 }
-
+/*navbar*/
 nav .uk-logo{
     width: 15vw;
 }
 
+/* banner*/
+.banner{
+    text-align: center;
+    margin: 3vw 20vw 1vw 20vw;
+}
+.banner p {
+    color: #285097;
+}
+
+.banner h1{
+    color: #373F41;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    column-gap: 5vw;
+    margin : 4vw 7vw 4vw 7vw;
+}
+
+.container .button{
+    color: white;
+    padding: 14px;
+}
+
+.container .button:hover{
+    color: #666;
+    text-decoration: none;
+    /*box-shadow: 5px 5px 5px #373F41;*/
+}
+
+
+
+/*responsive*/
 @media screen and (min-width: 1025px){
     nav #mobile{
         display: none;
