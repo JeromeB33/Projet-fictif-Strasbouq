@@ -36,17 +36,6 @@ class BouquetVitrineManager extends AbstractManager
 
         return  $statement->execute();
     }
-    /*
-    public function stockByIdBouquet(int $id): array
-    {
-        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " b, stock_bouquetVitrine sb, stock s
-        WHERE b.id=sb.bouquetVitrine_id AND sb.stock_id=s.id AND b.id=:id ");
-        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-
-        $statement->execute();
-        return $statement->fetchAll();
-    }
-    */
 
     public function showBouquet(int $id): array
     {
@@ -57,6 +46,7 @@ class BouquetVitrineManager extends AbstractManager
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
 
         $statement->execute();
+
         return $statement->fetchAll();
     }
 
