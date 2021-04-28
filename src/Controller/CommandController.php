@@ -44,6 +44,8 @@ class CommandController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_POST)) {
                 $commande = $_POST;
+
+                //format date pick to fit in base
                 $commande['datePick'] = $_POST['datePick'] . ' ' . $_POST['timePick'];
 
                 //insert command
@@ -56,10 +58,10 @@ class CommandController extends AbstractController
                 $lastID = $commandeManager->selectLastId();
                 $commande['command_id'] = (int)$lastID[0];
 
-                //insert command details : for each stock_id if its quantity != 0 add a tuple
+                //insert command details : for each stock_id if its quantity > 0 add a tuple
                 foreach ($commande['stock_id'] as $stockId => $quantities) {
                     foreach ($quantities as $quantity) {
-                        if (!empty($quantity) && $quantity !== '0') {
+                        if (!empty($quantity) && (int) $quantity > 0) {
                             $commande['stock_id'] = (int)$stockId;
                             $commande['quantity'] = (int)$quantity;
                             $commandeManager->insertCommandDetails($commande);
@@ -67,7 +69,7 @@ class CommandController extends AbstractController
                     }
                 }
 
-                //test to transform value in tinyint (bool) (to fit into status table)
+                //transform value in tinyint (bool) (to fit into status table)
                 $commande['ispick'] === 'false' ? $commande['ispick'] = 0 : $commande['ispick'] = 1;
                 $commande['isprepared'] === 'false' ?  $commande['isprepared'] = 0 : $commande['isprepared'] = 1;
 
@@ -98,9 +100,10 @@ class CommandController extends AbstractController
     public function editDatePickById($id): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //format date pick to fit in base
             $newDate = $_POST['datePick'] . ' ' . $_POST['timePick'];
-            $commandManager = new CommandManager();
 
+            $commandManager = new CommandManager();
             $commandManager->editDatePicksById($id, $newDate);
             header("Location: /Command/showAll");
         }
@@ -117,14 +120,14 @@ class CommandController extends AbstractController
         //transform text to better comprehension for the customer or webowner
         for ($i = 1; $i < 1; $i++) {
             if ($commandList[$i]['isprepared'] === '0') {
-                $commandList[$i]['isprepared'] = 'Nop';
+                $commandList[$i]['isprepared'] = 'Non';
             } elseif ($commandList[$i]['isprepared'] === "1") {
-                $commandList[$i]['isprepared'] = 'Yup';
+                $commandList[$i]['isprepared'] = 'Oui';
             }
             if ($commandList[$i]['ispick'] === '0') {
-                $commandList[$i]['ispick'] = 'Nop';
+                $commandList[$i]['ispick'] = 'Non';
             } elseif ($commandList[$i]['ispick'] === "1") {
-                $commandList[$i]['ispick'] = 'Yup';
+                $commandList[$i]['ispick'] = 'Oui';
             }
         }
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
