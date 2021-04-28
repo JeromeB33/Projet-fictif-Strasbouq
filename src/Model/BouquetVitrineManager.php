@@ -7,6 +7,7 @@ class BouquetVitrineManager extends AbstractManager
 
     public const TABLE = 'bouquetVitrine';
     public const TABLE_2 = 'stock_bouquetVitrine';
+    public const TABLE_3 = 'stock';
 
     public function insert(array $stock): int
     {
@@ -18,15 +19,11 @@ class BouquetVitrineManager extends AbstractManager
         return (int)$this->pdo->lastInsertId();
     }
 
-    public function insertStockBouquetVitrine(array $bouquetV): void
+    public function insertStockBouquetVitrine(array $bouquetVitrine): void
     {
-        $query = ("INSERT INTO " . self::TABLE_2 . " (stock_id, bouquetVitrine_id) 
-                    VALUES (:stock_id, :bouquetVitrine_id)");
-        $req = $this->pdo->prepare($query);
-        $req->bindValue('stock_id', $bouquetV['stock_id'], \PDO::PARAM_INT);
-        $req->bindValue('bouquetVitrine_id', $bouquetV['bouquetVitrine_id'], \PDO::PARAM_INT);
-
-        $req->execute();
+        $query = "INSERT INTO " . self::TABLE_2 . " 
+        VALUES(" . $bouquetVitrine['idStock'] . "," . $bouquetVitrine['bouquetV_id'] . ")";
+        $this->pdo->exec($query);
     }
 
     public function update(array $stock): bool
@@ -39,14 +36,46 @@ class BouquetVitrineManager extends AbstractManager
 
         return  $statement->execute();
     }
-
+    /*
     public function stockByIdBouquet(int $id): array
     {
-        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " b, stock_bouquetVitrine sb, stock s 
+        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " b, stock_bouquetVitrine sb, stock s
         WHERE b.id=sb.bouquetVitrine_id AND sb.stock_id=s.id AND b.id=:id ");
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
 
-       /* $fleur = $statement->execute(); */
+        $statement->execute();
         return $statement->fetchAll();
+    }
+    */
+
+    public function showBouquet(int $id): array
+    {
+        $statement = $this->pdo->prepare("SELECT *, count(sbv.stock_id) as number 
+        FROM " . self::TABLE_2 . " sbv  
+        JOIN " . self:: TABLE_3 . " s 
+        ON s.id=sbv.stock_id WHERE sbv.bouquetVitrine_id=:id GROUP BY sbv.stock_id  ");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    public function selectLastId()
+    {
+        $statement = $this->pdo->query("SELECT max(id) FROM " . self::TABLE);
+
+        return $statement->fetch(\PDO::FETCH_NUM);
+    }
+
+    public function deleteFleur(int $id, $bouquet): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE_2 . " 
+        WHERE stock_id =:id 
+        AND bouquetVitrine_id=:bouquet LIMIT 1");
+
+            $statement->bindValue('id', $id, \PDO::PARAM_INT);
+            $statement->bindValue('bouquet', $bouquet, \PDO::PARAM_INT);
+
+            $statement->execute();
     }
 }
