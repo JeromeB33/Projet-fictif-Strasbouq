@@ -18,15 +18,15 @@ class CommandStatusController extends AbstractController
             //transfrom value for more comprehension for the view
             if (!empty($status)) {
                 if ($status['ispick'] === '0') {
-                    $status['ispick'] = 'Nop';
+                    $status['ispick'] = 'Non';
                 } elseif ($status['ispick'] === '1') {
-                    $status['ispick'] = 'Yup';
+                    $status['ispick'] = 'Oui';
                 }
 
                 if ($status['isprepared'] === '0') {
-                    $status['isprepared'] = 'Nop';
+                    $status['isprepared'] = 'Non';
                 } elseif ($status['isprepared'] === '1') {
-                    $status['isprepared'] = 'Yup';
+                    $status['isprepared'] = 'Oui';
                 }
             }
 
