@@ -4,6 +4,11 @@ body{
 
 .button{
     background-color: #285097;
+    color: white;
+}
+
+.uk-text-center a {
+    color: #285097;
 }
 
 svg{
@@ -36,6 +41,11 @@ nav .uk-logo{
 .banner .button:hover{
     color: #666;
     text-decoration: none;
+}
+
+/*formulaires*/
+.uk-input:hover{
+    border-color: #373F41;
 }
 
 

@@ -15,33 +15,31 @@
         {% endif %}
     </ul>
 
-    <form method="post" action="/connexion/addUser">
-        <input type="hidden" value="{{ customer.id }}" name="id">
+    <form method="post" action="/connexion/addUser" class="uk-form-width-large uk-align-center">
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend">Inscription</legend>
 
-        <div>
-            <label for="firstname">Prénom</label><br>
-            <input type="text" value="{{ customer.firstname }}" name="firstname">
-        </div>
-        <div>
-            <label for="lastname">Nom</label><br>
-            <input type="text" value="{{ customer.lastname }}" name="lastname">
-        </div>
-        <div>
-            <label for="email">Email</label><br>
-            <input type="email" value="{{ customer.email }}" name="email">
-        </div>
-        <div>
-            <label for="phone">Numéro de téléphone</label><br>
-            <input type="tel" value="{{ customer.phone }}" name="phone">
-        </div>
-        <div>
-            <label for="password">Mot de passe</label><br>
-            <input type="password" value="{{ customer.password }}" name="password">
-        </div>
-
-        <input type="submit" value="Valider">
+            <div class="uk-inline">
+                <input required class="uk-input"type="text"  name="firstname" placeholder="Votre nom">
+            </div>
+            <div class="uk-inline">
+                <input required class="uk-input" type="text" name="lastname" placeholder="Votre prénom">
+            </div>
+            <div class="uk-inline">
+                <input required class="uk-input" type="email" name="email" placeholder="Votre Email">
+            </div>
+            <div class="uk-inline">
+                <input required class="uk-input" type="tel"  name="phone" placeholder="Votre numéro de téléphone">
+            </div>
+            <div class="uk-inline">
+                <input required class="uk-input" type="password"  name="password" placeholder="Votre mot de passe">
+            </div>
+            <div class="uk-inline">
+                <input class="uk-input" type="submit" value="Valider">
+            </div>
+        </fieldset>
     </form>
-    <p>Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
+    <p class="uk-text-center">Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
 
 
 
