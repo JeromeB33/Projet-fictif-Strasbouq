@@ -83,7 +83,7 @@ class ConnexionController extends AbstractController
             if ($this->coupleExist($_POST) === true) {
                 //user know :  redirection accueil
                 $_SESSION['login'] = $_POST['email'];
-                return $this->twig->render('Home/index.html.twig');
+                header('Location: /Home/index');
             } else {
                 //unknow then error message
                 $message = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
@@ -109,9 +109,9 @@ class ConnexionController extends AbstractController
     /*
      * deconnexion session
      */
-    public function deconnexion()
+    public function deconnexion(): void
     {
         session_destroy();
-        return $this->twig->render('/Home/index.html.twig');
+        header('Location: /Home/index');
     }
 }
