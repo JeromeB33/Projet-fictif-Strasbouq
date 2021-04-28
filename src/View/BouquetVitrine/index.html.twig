@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>BouquetVitrine</h1>
+    <ul>
+        {% for bouquetVitrine in bouquetVitrines %}
+            <li><a href="/bouquetVitrine/show/{{ bouquetVitrine.id }}">{{ bouquetVitrine.name }}. {{ bouquetVitrine.price }}</a></li>
+        {% else %}
+            <li>Nothing to display</li>
+        {% endfor %}
+    </ul>
+    <a href="/bouquetVitrine/add">Ajouter</a>
+{% endblock %}

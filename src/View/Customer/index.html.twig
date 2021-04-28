@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>Customers</h1>
+    <ul>
+        {% for customer in customers %}
+            <li><a href="/customer/show/{{ customer.id }}">{{ customer.id }}. {{ customer.lastname }} {{ customer.firstname }}</a></li>
+        {% else %}
+            <li>Nothing to display</li>
+        {% endfor %}
+    </ul>
+    <a href="/customer/add">Ajouter</a>
+{% endblock %}

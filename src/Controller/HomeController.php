@@ -24,8 +24,25 @@ class HomeController extends AbstractController
         return $this->twig->render('Home/index.html.twig');
     }
 
+
     public function contact()
     {
         return $this->twig->render('Home/contact.html.twig');
+    {
+      
+    /**
+     * Display log in page
+     */
+    public function logIn()
+    {
+        return $this->twig->render('Home/logIn.html.twig');
+    }
+
+    /**
+     * Display sign in page
+     */
+    public function signIn()
+    {
+        return $this->twig->render('Home/signIn.html.twig');
     }
 }
