@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>Edit bouquet {{ bouquetCustomer.name }}</h1>
+    <h3>Compostion actuelle bouquet</h3>
+
+<ul>
+{% for flower in bouquet %}
+<li>
+    {{ flower.nombre }} x {{flower.name}} 
+    <form action="/bouquetCustomer/removeOneFlower/{{flower.stock_id}}" method="POST">
+    <input type='hidden' name='bouquetId' value='{{flower.bouquetCustomer_id}}'><input type='submit' value='delete'>
+    
+    </form>
+
+</li>
+{% endfor %}
+</ul>
+
+    {% include 'BouquetCustomer/_form.html.twig' %}
+    <a href="/bouquetCustomer/show/{{ bouquetCustomer.id }}">Back</a>
+{% endblock %}
