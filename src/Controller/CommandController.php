@@ -44,6 +44,7 @@ class CommandController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_POST)) {
                 $commande = $_POST;
+                $commande['datePick'] = $_POST['datePick'] . ' ' . $_POST['timePick'];
 
                 //insert command
                 $commandeManager = new CommandManager();
@@ -97,7 +98,7 @@ class CommandController extends AbstractController
     public function editDatePickById($id): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $newDate = $_POST['newDatePick'];
+            $newDate = $_POST['datePick'] . ' ' . $_POST['timePick'];
             $commandManager = new CommandManager();
 
             $commandManager->editDatePicksById($id, $newDate);
