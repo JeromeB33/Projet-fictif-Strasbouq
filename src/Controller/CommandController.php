@@ -132,4 +132,12 @@ class CommandController extends AbstractController
         }
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
     }
+
+    public function commander()
+    {
+        //TODO param array $commande
+        //TODO : renvoyer page connexion si user non définit puis renvoi fonctionner connecter (recursivité?)
+
+        //TODO : une fois connecté -> recuperer session panier, ajout commande renvoi message commande validée
+    }
 }

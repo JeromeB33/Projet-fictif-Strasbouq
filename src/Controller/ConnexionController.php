@@ -82,7 +82,10 @@ class ConnexionController extends AbstractController
             //user know then redirection to home page
             if ($this->coupleExist($_POST) === true) {
                 //user know :  redirection accueil
-                $_SESSION['login'] = $_POST['email'];
+
+                $customerManager = new CustomerManager();
+                $_SESSION['user'] = $customerManager->selectUserByEmail($_POST['email']);
+                $_SESSION['login'] = $_SESSION['user']['email'];
                 header('Location: /Home/index');
             } else {
                 //unknow then error message
@@ -92,7 +95,6 @@ class ConnexionController extends AbstractController
         }
 
         // et si cookie créer connection direct ??
-        // (+ ajout id en session pour connection sur toutes les pages) ??
     }
 
     /*
