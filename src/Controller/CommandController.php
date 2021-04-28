@@ -135,9 +135,14 @@ class CommandController extends AbstractController
 
     public function commander()
     {
-        //TODO param array $commande
-        //TODO : renvoyer page connexion si user non définit puis renvoi fonctionner connecter (recursivité?)
-
-        //TODO : une fois connecté -> recuperer session panier, ajout commande renvoi message commande validée
+        /*
+        if (isset($_SESSION['user']) && !empty($_SESSION['user'])){
+            //TODO : une fois connecté -> recuperer session panier, ajout commande renvoi message commande validée
+        }else{
+            //TODO : renvoyer page connexion si user non définit puis renvoi fonctionner connecter (recursivité?)
+            //$this->add($_SESSION['commande']);
+            //TODO -> revoir function add
+        }
+        */
     }
 }
