@@ -50,12 +50,11 @@ nav .uk-logo{
 }
 
 /*formulaires*/
-.uk-input:hover{
+.uk-input:hover, .uk-textarea:hover{
     border-color: #285097;
 }
 
 /*Vitrine*/
-
 .vitrine a:hover {
     text-decoration: none;
     font-variant: none;
