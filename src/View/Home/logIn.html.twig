@@ -9,15 +9,26 @@
         {% endif %}
     </ul>
     <!-- form connection-->
-    <form method="post" action="/connexion/connect">
-        <fieldset>
-            <legend>Connection</legend>
-            <input required type="email" name = "email" placeholder="Votre email"><br/>
-            <input required type="password" name = "password" placeholder="Mot de passe"><br/>
-            <input type="submit" value="Connection">
+    <form method="post" action="/connexion/connect" class="uk-form-width-large uk-align-center">
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend">Connection</legend>
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: user"></span>
+                <input required class="uk-input" type="email" name = "email" placeholder="Email"><br/>
+            </div>
+
+            <div class="uk-inline">
+                <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                <input required class="uk-input" type="password" name = "password" placeholder="Mot de passe"><br/>
+            </div>
+
+            <div class="uk-block uk-margin">
+                <input class="uk-input uk-form-width-small" type="submit" value="Connection">
+            </div>
         </fieldset>
     </form>
-    <p>Pas encore inscrit ? <a href="/Home/signIn">Inscription</a></p>
+    <p class="uk-text-center">Pas encore inscrit ? <a href="/Home/signIn">Inscription</a></p>
+
 
 
 {% endblock %}

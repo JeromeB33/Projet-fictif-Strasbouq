@@ -57,7 +57,6 @@ class CommandManager extends AbstractManager
      */
     public function selectLastId()
     {
-        // prepared request
         $statement = $this->pdo->query("SELECT MAX(id)  FROM " . static::TABLE);
         return $statement->fetch(\PDO::FETCH_NUM);
     }

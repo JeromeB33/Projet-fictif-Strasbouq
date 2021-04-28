@@ -7,7 +7,7 @@ class ContactController extends AbstractController
     public function contactUs()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $destinataire = "mail@exemple.fr";
+            $destinataire = "mail@example.com";
             $objet = "Retour client site";
             $client = "Nom: " . $_POST['lastname'] . ' Prénom : ' . $_POST['firstname'];
             $message = $_POST['message'] . '<br/>' . $client;
@@ -16,8 +16,7 @@ class ContactController extends AbstractController
 
             //envoi du mail
             $retour = mail($destinataire, $objet, $message, $entete);
-            var_dump(mail($destinataire, $objet, $message, $entete));
-            ($retour) ? $envoi = 'Votre message à bien était envoyé' : $envoi = "Erreur lors de l'envoi";
+            $retour ? $envoi = 'Votre message à bien était envoyé' : $envoi = "Erreur lors de l'envoi";
             return $this->twig->render('Home/contact.html.twig', ['envoi' => $envoi]);
         }
     }

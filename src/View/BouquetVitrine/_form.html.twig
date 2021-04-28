@@ -4,5 +4,12 @@
 	<input type="hidden" value="{{ bouquetVitrine.id }}" name="id">
 	<input type="text" value="{{ bouquetVitrine.name }}" name="name">
 	<input type="number" value="{{ bouquetVitrine.price }}" name="price">
+	<h3> Contenu bouquet</h3>
+	{% for fleurs in fleursVitrine  %}
+		{{ fleurs.name }}
+		<input type="number" name="idStock[{{ fleurs.id }}][quantity]" value="{{ fleurs.nombre }}"><br>
+	{% endfor %}
 	<input type="submit" value="Valider">
 </form>
+
+

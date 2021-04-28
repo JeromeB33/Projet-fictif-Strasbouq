@@ -3,6 +3,12 @@
 {% block content %}
     <h1>Stock {{ bouquetVitrine.name }}</h1>
     <p>{{ bouquetVitrine.id }}. {{ bouquetVitrine.name }}</p>
+    <h2> Composition bouquet </h2>
+    <ul>
+    {% for fleur in compoBouquet %}
+    <li>{{ fleur.name }} {{ fleur.number }}</li>
+        {% endfor %}
+    </ul>
     <a href="/bouquetVitrine/edit/{{ bouquetVitrine.id }}">Edit</a>
     <form action="/bouquetVitrine/delete/{{bouquetVitrine.id}}" method="POST">
         <button>Delete</button>
