@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    Contactez-nous | {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% if envoi is defined %}
+        {{ envoi }}
+    {% endif %}
+
+        <form method="post" action="/Contact/contactUs">
+            <fieldset>
+                <legend>
+                    Contactez-nous
+                </legend>
+                <input required type="text" name="firstname" maxlength="255" placeholder="Indique ton prénom ici"><br/>
+                <input required type="text" name="lastname" maxlength="255" placeholder="Indique ton nom ici"><br/>
+                <input required type="email" name="email" maxlength="255" placeholder="Indique ton email ici"><br/>
+                <textarea required placeholder="Indique ton message ici" name="message"></textarea><br/>
+                <input type="submit" name="submit" value="Envoyer 📮">
+            </fieldset>
+        </form>
+{% endblock %}
