@@ -5,20 +5,33 @@
 {% endblock %}
 
 {% block content %}
-    {% if envoi is defined %}
-        {{ envoi }}
-    {% endif %}
+    <p class="uk-text-center">
+        {% if envoi is defined %}
+            {{ envoi }}
+        {% endif %}
+    </p>
 
-        <form method="post" action="/Contact/contactUs">
-            <fieldset>
-                <legend>
+        <form method="post" action="/Contact/contactUs" class="uk-form-width-large uk-align-center">
+            <fieldset class="uk-fieldset">
+                <legend class="uk-legend">
                     Contactez-nous
                 </legend>
-                <input required type="text" name="firstname" maxlength="255" placeholder="Indique ton prénom ici"><br/>
-                <input required type="text" name="lastname" maxlength="255" placeholder="Indique ton nom ici"><br/>
-                <input required type="email" name="email" maxlength="255" placeholder="Indique ton email ici"><br/>
-                <textarea required placeholder="Indique ton message ici" name="message"></textarea><br/>
-                <input type="submit" name="submit" value="Envoyer 📮">
+                <div class="uk-block uk-margin">
+                    <input class="uk-input" required type="text" name="firstname" maxlength="255" placeholder="Indique ton prénom ici"><br/>
+                </div>
+                <div class="uk-block uk-margin">
+                    <input class="uk-input" required type="text" name="lastname" maxlength="255" placeholder="Indique ton nom ici"><br/>
+
+                </div>
+                <div class="uk-block uk-margin">
+                    <input class="uk-input" required type="email" name="email" maxlength="255" placeholder="Indique ton email ici"><br/>
+                </div>
+                <div class="uk-block uk-margin">
+                    <textarea class ="uk-textarea" required placeholder="Indique ton message ici" name="message"></textarea><br/>
+                </div>
+                <div>
+                    <input class="uk-input uk-form-width-small" type="submit" name="submit" value="Envoyer 📮">
+                </div>
             </fieldset>
         </form>
 {% endblock %}
