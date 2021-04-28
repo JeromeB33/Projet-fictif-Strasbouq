@@ -7,6 +7,12 @@ body{
     color: white;
 }
 
+.uk-text-center a:hover {
+    text-decoration: none;
+    font-variant: small-caps;
+    color: #285097;
+}
+
 .uk-text-center a {
     color: #285097;
 }
@@ -45,9 +51,20 @@ nav .uk-logo{
 
 /*formulaires*/
 .uk-input:hover{
-    border-color: #373F41;
+    border-color: #285097;
 }
 
+/*Vitrine*/
+
+.vitrine a:hover {
+    text-decoration: none;
+    font-variant: none;
+    color: #285097;
+}
+
+.vitrine p{
+    color: #285097;
+}
 
 
 /*responsive*/
