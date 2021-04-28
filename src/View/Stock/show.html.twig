@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>Stock {{ stock.name }}</h1>
+    <p>{{ stock.id }}. {{ stock.name }}</p>
+    <a href="/stock/edit/{{ stock.id }}">Edit</a>
+    <form action="/stock/delete/{{stock.id}}" method="POST">
+        <button>Delete</button>
+    </form>
+    <a href="/stock/index">Back</a>
+{% endblock %}

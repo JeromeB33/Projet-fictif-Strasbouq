@@ -13,13 +13,8 @@ class HomeController extends AbstractController
 {
     /**
      * Display home page
-     *
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
-    public function index()
+    public function index(): string
     {
         return $this->twig->render('Home/index.html.twig');
     }
@@ -30,9 +25,17 @@ class HomeController extends AbstractController
     }
 
     /**
+     * Display contact page
+     */
+    public function contact(): string
+    {
+        return $this->twig->render('Home/contact.html.twig');
+    }
+
+    /**
      * Display log in page
      */
-    public function logIn()
+    public function logIn(): string
     {
         return $this->twig->render('Home/logIn.html.twig');
     }
@@ -40,7 +43,7 @@ class HomeController extends AbstractController
     /**
      * Display sign in page
      */
-    public function signIn()
+    public function signIn(): string
     {
         return $this->twig->render('Home/signIn.html.twig');
     }
