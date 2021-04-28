@@ -8,6 +8,12 @@
             <li> {{ message }} </li>
         {% endif %}
     </ul>
+
+    {% if session.login is defined %}
+        <p class ="uk-text-center">Tu es déjà connecté avec l'email suivante : {{ session.login }}</p>
+        <p class ="uk-text-center"><a href="/Connexion/deconnexion">Déconnexion</a></p>
+    {% else %}
+
     <!-- form connection-->
     <form method="post" action="/connexion/connect" class="uk-form-width-large uk-align-center">
         <fieldset class="uk-fieldset">
@@ -28,7 +34,7 @@
         </fieldset>
     </form>
     <p class="uk-text-center">Pas encore inscrit ? <a href="/Home/signIn">Inscription</a></p>
-
+    {% endif %}
 
 
 {% endblock %}

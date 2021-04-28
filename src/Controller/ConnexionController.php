@@ -82,6 +82,7 @@ class ConnexionController extends AbstractController
             //user know then redirection to home page
             if ($this->coupleExist($_POST) === true) {
                 //user know :  redirection accueil
+                $_SESSION['login'] = $_POST['email'];
                 return $this->twig->render('Home/index.html.twig');
             } else {
                 //unknow then error message
@@ -105,6 +106,9 @@ class ConnexionController extends AbstractController
         // : definit $_session admin true, ou ajouter en base le droit admin ?
     }
 
+    /*
+     * deconnexion session
+     */
     public function deconnexion()
     {
         session_destroy();

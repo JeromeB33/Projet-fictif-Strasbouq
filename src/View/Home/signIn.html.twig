@@ -14,33 +14,37 @@
             <li> {{ message }} </li>
         {% endif %}
     </ul>
+    {% if session.login is defined %}
+        <p class ="uk-text-center">Pas la peine de t'inscrire : vous êtes déjà connecté avec l'email suivante : {{ session.login }}</p>
+        <p class ="uk-text-center"><a href="/Connexion/deconnexion">Déconnexion</a></p>
+    {% else %}
 
-    <form method="post" action="/connexion/addUser" class="uk-form-width-large uk-align-center">
-        <fieldset class="uk-fieldset">
-            <legend class="uk-legend">Inscription</legend>
+        <!-- form inscription-->
+        <form method="post" action="/connexion/addUser" class="uk-form-width-large uk-align-center">
+            <fieldset class="uk-fieldset">
+                <legend class="uk-legend">Inscription</legend>
 
-            <div class="uk-block uk-margin">
-                <input required class="uk-input"type="text"  name="firstname" placeholder="Nom">
-            </div>
-            <div class="uk-block uk-margin">
-                <input required class="uk-input" type="text" name="lastname" placeholder="Prénom">
-            </div>
-            <div class="uk-block uk-margin">
-                <input required class="uk-input" type="email" name="email" placeholder="Email">
-            </div>
-            <div class="uk-block uk-margin">
-                <input required class="uk-input" type="tel"  name="phone" placeholder="Numéro de téléphone">
-            </div>
-            <div class="uk-block uk-margin">
-                <input required class="uk-input" type="password"  name="password" placeholder="Mot de passe">
-            </div>
-            <div class="uk-block uk-margin">
-                <input class="uk-input uk-form-width-small" type="submit" value="Valider">
-            </div>
-        </fieldset>
-    </form>
-    <p class="uk-text-center">Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
-
-
+                <div class="uk-block uk-margin">
+                    <input required class="uk-input"type="text"  name="firstname" placeholder="Nom">
+                </div>
+                <div class="uk-block uk-margin">
+                    <input required class="uk-input" type="text" name="lastname" placeholder="Prénom">
+                </div>
+                <div class="uk-block uk-margin">
+                    <input required class="uk-input" type="email" name="email" placeholder="Email">
+                </div>
+                <div class="uk-block uk-margin">
+                    <input required class="uk-input" type="tel"  name="phone" placeholder="Numéro de téléphone">
+                </div>
+                <div class="uk-block uk-margin">
+                    <input required class="uk-input" type="password"  name="password" placeholder="Mot de passe">
+                </div>
+                <div class="uk-block uk-margin">
+                    <input class="uk-input uk-form-width-small" type="submit" value="Valider">
+                </div>
+            </fieldset>
+        </form>
+        <p class="uk-text-center">Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
+    {% endif %}
 
 {% endblock %}
