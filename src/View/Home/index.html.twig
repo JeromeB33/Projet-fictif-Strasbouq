@@ -7,11 +7,10 @@
 {% block content %}
     {{ include('components/_banner.html.twig') }}
 
-    <section class="vitrine uk-margin-large-right uk-margin-large-left uk-margin-large-top ">
-        {#  TODO : afficher le stock#}
+    <section class="vitrine uk-margin-xlarge-right uk-margin-xlarge-left uk-margin-large-top uk-margin-xlarge-bottom uk-card-small">
         <div class="uk-card uk-card-hover uk-card uk-card-default uk-grid-collapse uk-child-width-1-3 " uk-grid>
             <div class="uk-card-media-left uk-cover-container uk-width-1-2">
-                <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center">
+                <a href="#"> <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center"></a>
             </div>
             <div>
                 <div class="uk-card-body uk-width-expand">
@@ -23,18 +22,38 @@
 
         <div class="uk-child-width-expand@s uk-text-center " uk-grid>
             <div>
-                <div class="uk-card uk-card-hover uk-card uk-card-default uk-card-body">
-                    <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center">
+                <div class="uk-card-hover uk-card uk-card-default">
+                    <div class="uk-card-media-top">
+                       <a href="#"> <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center"></a>
+                    </div>
+                    <div class="uk-card-body">
+                        <h3 class="uk-card-title">Media Top</h3>
+                        <p class="uk-visible@s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                    </div>
                 </div>
             </div>
-            <div>
-                <div class="uk-card uk-card-hover uk-card uk-card-default uk-card-body">
-                    <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center">
+                <div>
+                    <div class="uk-card-hover uk-card uk-card-default">
+                        <div class="uk-card-media-top">
+                            <a href="#"> <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center"></a>
+                        </div>
+                        <div class="uk-card-body">
+                            <h3 class="uk-card-title">Media Top</h3>
+                            <p class="uk-visible@s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
             <div>
-                <div class="uk-card uk-card-hover uk-card uk-card-default uk-card-body">
-                    <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center">
+                <div>
+                    <div class="uk-card-hover uk-card uk-card-default">
+                        <div class="uk-card-media-top">
+                            <a href="#"> <img src="assets/images/rose.jpg" alt="rose" uk-contain class="uk-align-center"></a>
+                        </div>
+                        <div class="uk-card-body">
+                            <h3 class="uk-card-title">Media Top</h3>
+                            <p class="uk-visible@s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
