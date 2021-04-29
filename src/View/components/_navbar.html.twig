@@ -6,8 +6,8 @@
     <div class="uk-navbar-center">
         <ul class="uk-navbar-nav">
             <li><a href="/Home/index">Accueil</a></li>
-            <li><a href="#">Compose ton bouquet</a></li>
-            <li><a href="#">Choisi ton bouquet</a></li>
+            <li><a href="/Home/composeBouquet">Compose ton bouquet</a></li>
+            <li><a href="/Home/choisiBouquet">Choisi ton bouquet</a></li>
             <li><a href="/Home/contact">Contact</a></li>
         </ul>
     </div>
@@ -39,9 +39,10 @@
                     <li class="uk-nav-header"><a href="/Home/index">Accueil</a></li>
                 </ul>
                 <ul class="uk-nav uk-nav-default">
-                    <li><a href="#">Compose ton bouquet</a></li>
-                    <li><a href="#">Choisi ton bouquet</a></li>
+                    <li><a href="/Home/composeBouquet">Compose ton bouquet</a></li>
+                    <li><a href="/Home/choisiBouquet">Choisi ton bouquet</a></li>
                 </ul>
+                <hr/>
                 {% if session.login is defined %}
                     <ul class="uk-nav uk-nav-default">
                         <li><a href="/Home/panier">Panier</a></li>
