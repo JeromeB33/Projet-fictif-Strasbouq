@@ -6,18 +6,27 @@
     <div class="uk-navbar-center">
         <ul class="uk-navbar-nav">
             <li><a href="/Home/index">Accueil</a></li>
-            <li><a href="#">Compose ton bouquet</a></li>
-            <li><a href="#">Choisi ton bouquet</a></li>
+            <li><a href="/Home/composeBouquet">Compose ton bouquet</a></li>
+            <li><a href="/Home/choisiBouquet">Choisi ton bouquet</a></li>
             <li><a href="/Home/contact">Contact</a></li>
         </ul>
     </div>
-
-    <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-            <li><a href="/Home/logIn">Connection</a></li>
-            <li><a href="/Home/signIn" class="button">Inscription</a></li>
-        </ul>
-    </div>
+    {% if session.login is defined %}
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+                <li><a href="/Home/panier" class="button">Panier</a></li>
+                <li><a href="#">Compte</a></li>
+                <li><a href="/Connexion/deconnexion">Déconnexion</a></li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+                <li><a href="/Home/logIn">Connection</a></li>
+                <li><a href="/Home/signIn" class="button">Inscription</a></li>
+            </ul>
+        </div>
+    {% endif %}
 </nav>
 
 <!-- Mobile navbar -->
@@ -30,14 +39,22 @@
                     <li class="uk-nav-header"><a href="/Home/index">Accueil</a></li>
                 </ul>
                 <ul class="uk-nav uk-nav-default">
-                    <li><a href="#">Compose ton bouquet</a></li>
-                    <li><a href="#">Choisi ton bouquet</a></li>
-                    <li><a href="/Home/contact">Contact</a></li>
+                    <li><a href="/Home/composeBouquet">Compose ton bouquet</a></li>
+                    <li><a href="/Home/choisiBouquet">Choisi ton bouquet</a></li>
                 </ul>
-                <ul class="uk-nav uk-nav-default">
-                    <li><a href="#">Connexion</a></li>
-                    <li><a href="#">Inscription</a></li>
-                </ul>
+                <hr/>
+                {% if session.login is defined %}
+                    <ul class="uk-nav uk-nav-default">
+                        <li><a href="/Home/panier">Panier</a></li>
+                        <li><a href="#">Compte</a></li>
+                        <li><a href="/Connexion/deconnexion">Déconnexion</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="uk-nav uk-nav-default">
+                        <li><a href="/Home/logIn">Connexion</a></li>
+                        <li><a href="/Home/signIn">Inscription</a></li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </div>

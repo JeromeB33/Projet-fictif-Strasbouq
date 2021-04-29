@@ -20,6 +20,11 @@ class HomeController extends AbstractController
         return $this->twig->render('Home/index.html.twig');
     }
 
+    public function panier()
+    {
+        return $this->twig->render('Home/panier.html.twig');
+    }
+
     /**
      * Display contact page
      */
@@ -42,5 +47,21 @@ class HomeController extends AbstractController
     public function signIn(): string
     {
         return $this->twig->render('Home/signIn.html.twig');
+    }
+
+    /*
+     * display page compose ton bouquet
+     */
+    public function composeBouquet(): string
+    {
+        return $this->twig->render('Home/compose.html.twig');
+    }
+
+    /*
+     * display page choisi ton bouquet
+     */
+    public function choisiBouquet(): string
+    {
+        return $this->twig->render('Home/choisi.html.twig');
     }
 }

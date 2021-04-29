@@ -82,7 +82,11 @@ class ConnexionController extends AbstractController
             //user know then redirection to home page
             if ($this->coupleExist($_POST) === true) {
                 //user know :  redirection accueil
-                return $this->twig->render('Home/index.html.twig');
+
+                $customerManager = new CustomerManager();
+                $_SESSION['user'] = $customerManager->selectUserByEmail($_POST['email']);
+                $_SESSION['login'] = $_SESSION['user']['email'];
+                header('Location: /Home/index');
             } else {
                 //unknow then error message
                 $message = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
@@ -91,7 +95,6 @@ class ConnexionController extends AbstractController
         }
 
         // et si cookie créer connection direct ??
-        // (+ ajout id en session pour connection sur toutes les pages) ??
     }
 
     /*
@@ -105,9 +108,12 @@ class ConnexionController extends AbstractController
         // : definit $_session admin true, ou ajouter en base le droit admin ?
     }
 
-    public function deconnexion()
+    /*
+     * deconnexion session
+     */
+    public function deconnexion(): void
     {
         session_destroy();
-        return $this->twig->render('/Home/index.html.twig');
+        header('Location: /Home/index');
     }
 }
