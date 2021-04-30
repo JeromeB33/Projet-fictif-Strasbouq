@@ -9,7 +9,7 @@ class CustomerManager extends AbstractManager
     /**
      * Insert new item in database.
      */
-    public function insert(array $customer): int
+    public function insert(array $customer): void
     {
         $statement = $this->pdo->prepare('INSERT INTO ' . self::TABLE .
         ' (`firstname`,`lastname`,`email`,`phone`,`password`) 
@@ -21,8 +21,6 @@ class CustomerManager extends AbstractManager
         $statement->bindValue('password', $customer['password'], \PDO::PARAM_STR);
 
         $statement->execute();
-
-        return (int) $this->pdo->lastInsertId();
     }
 
     /**

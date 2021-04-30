@@ -40,15 +40,20 @@ class CustomerController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $customer = array_map('trim', $_POST);
-            $errors = $this->validate($customer);
+            $customerEdit = array_map('trim', $_POST);
+            $errors = $this->validate($customerEdit);
 
             // TODO validations (length, format...)
 
             // if validation is ok, update and redirection
             if (empty($errors)) {
-                $customerManager->update($customer);
-                header('Location: /customer/show/' . $id);
+                if (password_verify($customerEdit['password'], $customer['password'])) {
+                    $customerEdit['password'] = password_hash($customer['password'], PASSWORD_DEFAULT);
+                    $customerManager->update($customer);
+                    header('Location: /customer/show/' . $id);
+                } else {
+                    $errors[] = "Mauvais mot de passe actuel";
+                }
             }
         }
 
@@ -60,7 +65,7 @@ class CustomerController extends AbstractController
     /**
      * Add a new customer.
      */
-    public function add(): string
+    public function add() //: string
     {
         $errors = [];
 
@@ -74,12 +79,11 @@ class CustomerController extends AbstractController
             // if validation is ok, insert and redirection
             if (empty($errors)) {
                 $customerManager = new CustomerManager();
-                $id = $customerManager->insert($customer);
-                header('Location:/customer/show/' . $id);
+                $customer['password'] = password_hash($customer['password'], PASSWORD_DEFAULT);
+                $customerManager->insert($customer);
             }
+            return $errors;
         }
-
-        return $this->twig->render('Customer/add.html.twig', ['errors' => $errors]);
     }
 
     /**
@@ -113,12 +117,20 @@ class CustomerController extends AbstractController
         if (empty($customer['phone'])) {
             $errors[] = 'Numéro de téléphone requis';
         }
-        if (!empty($customer['phone']) && strlen($customer['phone']) != 10) {
+        if (!empty($customer['phone']) && strlen($customer['phone']) !== 10) {
             $errors[] = 'Format du numéro de téléphone invalide';
+        }
+
+        if (empty($customer['password']) || empty($customer['passwordVerif'])) {
+            $errors[] = 'Mot de passe requis';
+        }
+        if ($customer['password'] !== $customer['passwordVerif']) {
+            $errors[] = 'Mots de passe non identiques';
         }
 
         return $errors ?? [];
     }
+
 
     public function indexBouquetCustomer(): string
     {
