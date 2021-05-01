@@ -1,15 +1,39 @@
 {% extends 'layout.html.twig' %}
 
+
 {% block title %}Panier - {{ parent() }}{% endblock %}
 
 {% block content %}
-    {# TODO : afficher les elements du panier #}
+    <h1 class="uk-text-center">Votre panier:</h1>
+    {% set total = 0.00 %}
+    <div class="uk-card uk-width-1-2@m uk-align-center">
+        {% for flowers in session.panier %}
+            {% for flower in flowers %}
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-expand" uk-leader="fill: -">{{ flower.quantity }} x {{ flower.name }}</div>
+                    <div>{{ flower.price }} €
+                        <form action="/Panier/updateQuantity/{{ flower.id }}" class="uk-form-width-small uk-align-right uk-margin-top">
+                            <input class="uk-input uk-border-rounded" type="submit" value="+">
+                        </form></div>
+                </div>
+                {% set total = total + flower.price %}
+            {% endfor %}
+        {% endfor %}
+        <hr/>
+        <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand" uk-leader="fill: -">Total</div>
+            <div>{{ total }} €</div>
+        </div>
 
+        <form action="/command/commander" class="uk-form-width-small uk-align-right uk-margin-top">
+            <input class="uk-input uk-border-rounded" type="submit" value="commander">
+        </form>
+    </div>
 
+    {# TODO : bouton supprimer pour enlever une entité  #}
+    {# TODO : gestion quantité  #}
     {# TODO : bouton commander qui renvoi a la page connexion si pas connecté #}
-    <form action="/command/commander" class="uk-form-width-small ">
-        <input class="uk-input uk-border-rounded" type="submit" value="commander">
-    </form>
-    {# TODO : connexion -> ajout dans commande -> message commande enregistrée #}
 
+
+    {# TODO : connexion -> ajout dans commande -> message commande enregistrée #}
 {% endblock %}
