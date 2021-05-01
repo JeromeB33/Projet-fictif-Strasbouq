@@ -1,0 +1,38 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+    <div>
+    <h1>Mon compte</h1>
+    {{dump(session)}}
+        <div>
+            <h2>Mes informations</h2>
+                <p>Nom : {{ session.user.lastname }} {{ session.user.firstname }}</p>
+                <p>Email : {{ session.user.email }}</p>
+                <p>Phone number : 0{{ session.user.phone }}</p>
+
+        </div>
+        <div>
+            <h2>Mes Bouquets sauvegardés</h2>
+            <ul>
+        {% for bouquet in bouquets %}
+                        <li><button class="uk-button uk-button-default" type="button">{{bouquet.name}}</button><a href="/bouquetCustomer/edit/{{ bouquet.id }}">Modifier</a></li>
+                        <div uk-dropdown="mode: click, pos: top-right">
+                        {% for fleurs in bouq %}
+                        {% if fleurs.0.bouquetCustomer_id is same as (bouquet.id) %}
+                        {% for fleur in fleurs %}
+                        <li>{{fleur.nombre}}x {{fleur.name}}</li>
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+        {% endfor %}
+            </ul>
+        <div>
+    </div>
+    <a href="/customer/edit/{{ session.user.id }}">Modifier mes informations</a>
+    <form action="/customer/delete/{{session.user.id}}" method="POST">
+        <button>Supprimer mon compte</button>
+    </form>
+        </div>
+{% endblock %}

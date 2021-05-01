@@ -1,7 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1>Edit customer {{ customer.title }}</h1>
+    <h2>Modifier mes informations</h2>
     {% include 'Customer/_form.html.twig' %}
-    <a href="/customer/show/{{ customer.id }}">Back</a>
+    {% if session.admin == true %}
+    <a href="/Customer/index">Back</a>
+    {% else %}
+    <a href="/Home/compte">Back</a>
+    {% endif %}
 {% endblock %}

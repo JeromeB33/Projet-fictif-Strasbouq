@@ -11,10 +11,13 @@ class CustomerController extends AbstractController
      */
     public function index(): string
     {
-        $customerManager = new CustomerManager();
-        $customers = $customerManager->selectAll('lastname');
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
+            $customerManager = new CustomerManager();
+            $customers = $customerManager->selectAll('lastname');
 
-        return $this->twig->render('Customer/index.html.twig', ['customers' => $customers]);
+            return $this->twig->render('Customer/index.html.twig', ['customers' => $customers]);
     }
 
     /**
@@ -22,10 +25,13 @@ class CustomerController extends AbstractController
      */
     public function show(int $id): string
     {
-        $customerManager = new CustomerManager();
-        $customer = $customerManager->selectOneById($id);
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
+            $customerManager = new CustomerManager();
+            $customer = $customerManager->selectOneById($id);
 
-        return $this->twig->render('Customer/show.html.twig', ['customer' => $customer]);
+            return $this->twig->render('Customer/show.html.twig', ['customer' => $customer]);
     }
 
     /**
@@ -33,10 +39,13 @@ class CustomerController extends AbstractController
      */
     public function edit(int $id): string
     {
-        $errors = [];
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
+            $errors = [];
 
-        $customerManager = new CustomerManager();
-        $customer = $customerManager->selectOneById($id);
+            $customerManager = new CustomerManager();
+            $customer = $customerManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
@@ -48,13 +57,17 @@ class CustomerController extends AbstractController
             // if validation is ok, update and redirection
             if (empty($errors)) {
                 $customerManager->update($customer);
-                header('Location: /customer/show/' . $id);
+                if ($_SESSION['admin'] == true) {
+                    header('Location: /customer/show/' . $id);
+                } else {
+                    header('Location: /Home/compte');
+                }
             }
         }
 
-        return $this->twig->render('Customer/edit.html.twig', [
-            'customer' => $customer, 'errors' => $errors,
-        ]);
+            return $this->twig->render('Customer/edit.html.twig', [
+                'customer' => $customer, 'errors' => $errors,
+            ]);
     }
 
     /**
@@ -62,7 +75,10 @@ class CustomerController extends AbstractController
      */
     public function add(): string
     {
-        $errors = [];
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
+            $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
@@ -75,11 +91,11 @@ class CustomerController extends AbstractController
             if (empty($errors)) {
                 $customerManager = new CustomerManager();
                 $id = $customerManager->insert($customer);
-                header('Location:/customer/show/' . $id);
+                header('Location: /customer/show/' . $id);
             }
         }
 
-        return $this->twig->render('Customer/add.html.twig', ['errors' => $errors]);
+            return $this->twig->render('Customer/add.html.twig', ['errors' => $errors]);
     }
 
     /**
@@ -90,7 +106,11 @@ class CustomerController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $customerManager = new CustomerManager();
             $customerManager->delete($id);
-            header('Location:/customer/index');
+            if ($_SESSION['admin'] == true) {
+                header('Location:/customer/index');
+            } else {
+                header('Location: /Home/index');
+            }
         }
     }
 

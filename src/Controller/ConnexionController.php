@@ -86,6 +86,7 @@ class ConnexionController extends AbstractController
                 $customerManager = new CustomerManager();
                 $_SESSION['user'] = $customerManager->selectUserByEmail($_POST['email']);
                 $_SESSION['login'] = $_SESSION['user']['email'];
+                $this->isAdmin();
                 header('Location: /Home/index');
             } else {
                 //unknow then error message
@@ -103,6 +104,12 @@ class ConnexionController extends AbstractController
     public function isAdmin()
     {
         define('ADMIN', 'email@admin.fr');
+        if ($_SESSION['user']['email'] === ADMIN) {
+             $_SESSION['admin'] = true;
+        } else {
+             $_SESSION['admin'] = false;
+        }
+
         //TODO : si log in avec droit admin définira accès aux pages admins
         // si la session en cours est log avec l'email définit alors droit admin
         // : definit $_session admin true, ou ajouter en base le droit admin ?
