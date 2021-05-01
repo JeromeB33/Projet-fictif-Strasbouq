@@ -9,7 +9,7 @@
     <div class="uk-card uk-width-1-2@m uk-align-center">
         {% for flowers in session.panier %}
             {% for flower in flowers %}
-                {% if flower is not empty %}
+                {% if flower.quantity > 0 %}
                     <div class="uk-grid-small" uk-grid>
                         <div class="uk-width-expand" uk-leader="fill: -">{{ flower.quantity }} x {{ flower.name }}</div>
                         <div>{{ flower.price }} €

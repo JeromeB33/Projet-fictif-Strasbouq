@@ -46,7 +46,7 @@ class PanierController extends AbstractController
                     $flowerId = $flower['id'];
                     $_SESSION['panier'][$panier][$flowerId]['quantity'] ++;
                     $_SESSION['panier'][$panier][$flowerId]['price']
-                        *= $_SESSION['panier'][$panier][$flowerId]['quantity'];
+                        = $_SESSION['panier'][$panier][$flowerId]['quantity'] * $flower['price'];
                     return true;
                 }
             }
@@ -55,7 +55,7 @@ class PanierController extends AbstractController
     }
 
     /*
-     * decrease quantity of a product
+     * update quantity of a product
      */
     public function updateQuantity($idFlower): void
     {
@@ -72,7 +72,7 @@ class PanierController extends AbstractController
                             $flowerId = $flower['id'];
                             $_SESSION['panier'][$panier][$flowerId]['quantity'] ++;
                             $_SESSION['panier'][$panier][$flowerId]['price']
-                                *= $_SESSION['panier'][$panier][$flowerId]['quantity'];
+                                = $_SESSION['panier'][$panier][$flowerId]['quantity'] * (int) $flower['price'];
                         }
                     }
                 }
@@ -84,10 +84,10 @@ class PanierController extends AbstractController
                             $flowerId = $flower['id'];
                             $_SESSION['panier'][$panier][$flowerId]['quantity'] --;
                             $_SESSION['panier'][$panier][$flowerId]['price']
-                                *= $_SESSION['panier'][$panier][$flowerId]['quantity'];
+                                -= (int) $flower['price'];
 
-                            if ($_SESSION['panier'][$panier][$flowerId]['quantity'] <= 0) {
-                                $_SESSION['panier'][$panier][$flowerId] = [];
+                            if ($_SESSION['panier'][$panier][$flowerId]['quantity'] < 0) {
+                                $_SESSION['panier'][$panier][$flowerId]['quantity'] = 0;
                             }
                         }
                     }
