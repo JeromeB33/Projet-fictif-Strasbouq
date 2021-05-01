@@ -18,7 +18,7 @@ class PanierController extends AbstractController
             $_SESSION['panier'] = [];
         }
 
-        $exists = $this->updateQuantity($flower);
+        $exists = $this->addQuantity($flower);
         if ($exists === false) {
             $_SESSION['panier'][] = [
                 $flowerId => [
@@ -27,6 +27,7 @@ class PanierController extends AbstractController
                     "price" => $flower['price'],
                     "quantity" => 1,
                     "image" => $flower['image'],
+                    "id" => $flower['id'],
                 ],
             ];
         }
@@ -34,16 +35,16 @@ class PanierController extends AbstractController
     }
 
     /*
-     * update quantity of an product
+     * add quantity of a product
     */
-    public function updateQuantity(array $flower)
+    public function addQuantity(array $flower): bool
     {
         foreach ($_SESSION['panier'] as $panier => $id) {
             foreach ($id as $idf => $details) {
                 if ($flower['id'] == $idf) {
                     $details = $details;
                     $flowerId = $flower['id'];
-                    $_SESSION['panier'][$panier][$flowerId]['quantity'] += 1;
+                    $_SESSION['panier'][$panier][$flowerId]['quantity'] ++;
                     $_SESSION['panier'][$panier][$flowerId]['price']
                         *= $_SESSION['panier'][$panier][$flowerId]['quantity'];
                     return true;
@@ -51,5 +52,48 @@ class PanierController extends AbstractController
             }
         }
         return false;
+    }
+
+    /*
+     * decrease quantity of a product
+     */
+    public function updateQuantity($idFlower): void
+    {
+        $idFlower = (int) $idFlower;
+        $stockManager = new StockManager();
+        $flower = $stockManager->selectOneById($idFlower);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['+'])) {
+                foreach ($_SESSION['panier'] as $panier => $id) {
+                    foreach ($id as $idf => $details) {
+                        if ($flower['id'] == $idf) {
+                            $details = $details;
+                            $flowerId = $flower['id'];
+                            $_SESSION['panier'][$panier][$flowerId]['quantity'] ++;
+                            $_SESSION['panier'][$panier][$flowerId]['price']
+                                *= $_SESSION['panier'][$panier][$flowerId]['quantity'];
+                        }
+                    }
+                }
+            } elseif (isset($_POST['-'])) {
+                foreach ($_SESSION['panier'] as $panier => $id) {
+                    foreach ($id as $idf => $details) {
+                        if ($flower['id'] == $idf) {
+                            $details = $details;
+                            $flowerId = $flower['id'];
+                            $_SESSION['panier'][$panier][$flowerId]['quantity'] --;
+                            $_SESSION['panier'][$panier][$flowerId]['price']
+                                *= $_SESSION['panier'][$panier][$flowerId]['quantity'];
+
+                            if ($_SESSION['panier'][$panier][$flowerId]['quantity'] <= 0) {
+                                $_SESSION['panier'][$panier][$flowerId] = [];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }

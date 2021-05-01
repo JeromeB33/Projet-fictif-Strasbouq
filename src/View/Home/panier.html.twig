@@ -9,13 +9,17 @@
     <div class="uk-card uk-width-1-2@m uk-align-center">
         {% for flowers in session.panier %}
             {% for flower in flowers %}
-                <div class="uk-grid-small" uk-grid>
-                    <div class="uk-width-expand" uk-leader="fill: -">{{ flower.quantity }} x {{ flower.name }}</div>
-                    <div>{{ flower.price }} €
-                        <form action="/Panier/updateQuantity/{{ flower.id }}" class="uk-form-width-small uk-align-right uk-margin-top">
-                            <input class="uk-input uk-border-rounded" type="submit" value="+">
-                        </form></div>
-                </div>
+                {% if flower is not empty %}
+                    <div class="uk-grid-small" uk-grid>
+                        <div class="uk-width-expand" uk-leader="fill: -">{{ flower.quantity }} x {{ flower.name }}</div>
+                        <div>{{ flower.price }} €
+                        <form action="/Panier/updateQuantity/{{ flower.id }}" method="post" class="uk-form-width-xsmall">
+                            <input type="submit" value="+" name="+">
+                            <input type="submit" value="-" name="-">
+                        </form>
+                        </div>
+                    </div>
+                {% endif %}
                 {% set total = total + flower.price %}
             {% endfor %}
         {% endfor %}
