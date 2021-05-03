@@ -37,7 +37,7 @@ class CommandController extends AbstractController
     }
 
     /**
-     * Add a new command with its details and status from form
+     * Add a new command (with its details and status) from form
     */
     public function add(): void
     {
@@ -73,9 +73,9 @@ class CommandController extends AbstractController
                 $commande['ispick'] === 'false' ? $commande['ispick'] = 0 : $commande['ispick'] = 1;
                 $commande['isprepared'] === 'false' ?  $commande['isprepared'] = 0 : $commande['isprepared'] = 1;
 
-                    // insert command status
-                    $commandStatusManager = new CommandStatusManager();
-                    $commandStatusManager->insertStatus($commande);
+                // insert command status
+                $commandStatusManager = new CommandStatusManager();
+                $commandStatusManager->insertStatus($commande);
             }
             //redirection
             header("Location: /Command/showAll");
@@ -160,16 +160,15 @@ class CommandController extends AbstractController
                 $_SESSION['panier'] = [];
                 $message = "Merci de votre commande, celle-ci a bien été enregistrée";
                 return $this->twig->render("/Home/panier.html.twig", ['message' => $message]);
-            } else {
-                $message = "Veuillez vous connecter pour passer commande";
-                return $this->twig->render("/Home/login.html.twig", ['message' => $message]);
-                //TODO : renvoyer page connexion si user non définit puis renvoi fonctionner connecter (recursivité?)
             }
+            //if not connect redirection connexion page
+            $message = "Veuillez vous connecter pour passer commande";
+            return $this->twig->render("/Home/login.html.twig", ['message' => $message]);
         }
     }
 
     /*
-     * add a command from cart
+     * add a command (with its details and status) from cart
      */
     public function addCommand(array $commande): void
     {
@@ -183,7 +182,7 @@ class CommandController extends AbstractController
         $lastID = $commandeManager->selectLastId();
         $commande['command_id'] = (int)$lastID[0];
 
-        //insert command details : for each stock_id if its quantity > 0 add a tuple
+        //insert command details : for each stock_id insert one tuple
         foreach ($commande['stock'] as $i => $stock) {
             $i = $i; //pas le choix pour sinon je peux pas commit
             $commande['stock_id'] = (int) $stock['stock_id'];
