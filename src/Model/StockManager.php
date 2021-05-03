@@ -31,4 +31,33 @@ class StockManager extends AbstractManager
 
         return  $statement->execute();
     }
+
+    public function selectAvalaibleNumberById(int $id)
+    {
+        $statement = $this->pdo->prepare("SELECT avalaibleNumber FROM " . static::TABLE . " WHERE id=:id");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    /*
+     * decrease avalaible number
+     */
+    public function decreaseAvalaibleNumber(int $id, int $quantity)
+    {
+        //get avalaible number
+        $avalaibleNumber = $this->selectAvalaibleNumberById($id);
+
+        //get the new avalaible number
+        $quantity = $avalaibleNumber['avalaibleNumber'] - $quantity;
+
+        // request
+        $query = "UPDATE " . self::TABLE . "  SET `avalaibleNumber` = :avalaibleNumber WHERE id=:id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->bindValue('avalaibleNumber', $quantity, \PDO::PARAM_INT);
+
+        $statement->execute();
+    }
 }
