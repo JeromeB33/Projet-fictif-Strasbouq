@@ -2003,16 +2003,16 @@ select.uk-form-width-xsmall {
  * Default
  */
 .uk-button-default {
-  background-color: transparent;
+  background-color: white;
   color: #333;
   border: 1px solid #e5e5e5;
 }
 /* Hover + Focus */
 .uk-button-default:hover,
 .uk-button-default:focus {
-  background-color: transparent;
-  color: #333;
-  border-color: #b2b2b2;
+  background-color: white;
+  color: #285097;
+  border-color: #285097;
 }
 /* OnClick + Active */
 .uk-button-default:active,
@@ -3140,7 +3140,7 @@ select.uk-form-width-xsmall {
 .uk-label {
   display: inline-block;
   padding: 0 10px;
-  background: #1e87f0;
+  background: #285097;
   line-height: 1.5;
   font-size: 0.875rem;
   color: #fff;
@@ -10770,7 +10770,7 @@ iframe.uk-cover {
 .uk-overlay-primary .uk-button-default.uk-active,
 .uk-offcanvas-bar .uk-button-default:active,
 .uk-offcanvas-bar .uk-button-default.uk-active {
-  background-color: transparent;
+  background-color: #285097;
   color: #fff;
   border-color: #fff;
 }

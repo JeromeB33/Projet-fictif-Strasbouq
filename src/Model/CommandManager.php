@@ -19,7 +19,7 @@ class CommandManager extends AbstractManager
         $statement->bindValue('totalAmount', $commande['totalAmount'], \PDO::PARAM_INT);
         $statement->bindValue('dateOrder', date('Y-m-d H:i:s', time()));
         $statement->bindValue('datePick', $commande['datePick']);
-        $statement->bindValue('customer_id', $commande['customer_id'], \PDO::PARAM_INT);
+        $statement->bindValue('customer_id', $_SESSION['user']['id'], \PDO::PARAM_INT);
 
         $statement->execute();
     }

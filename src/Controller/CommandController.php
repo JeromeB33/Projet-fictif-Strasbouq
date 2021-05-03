@@ -37,8 +37,8 @@ class CommandController extends AbstractController
     }
 
     /**
-     * Add a new command with its details and status
-     */
+     * Add a new command with its details and status from form
+    */
     public function add(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -135,15 +135,69 @@ class CommandController extends AbstractController
 
     public function commander()
     {
-        /*
-        if (isset($_SESSION['user']) && !empty($_SESSION['user'])){
-            //TODO : une fois connecté -> recuperer session panier, ajout commande renvoi message commande validée
-        }else{
-            //TODO : renvoyer page connexion si user non définit puis renvoi fonctionner connecter (recursivité?)
-            //$this->add($_SESSION['commande']);
-            //TODO -> revoir function add
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            //test if user is already connected
+            if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+                foreach ($_SESSION['panier'] as $panier => $id) {
+                    $panier = $panier; //pas le choix pour sinon je peux pas commit
+                    foreach ($id as $idf => $details) {
+                        $_SESSION['panier']['stock'][] = [
+                            'stock_id' => $idf,
+                            'quantity' => $details['quantity'],
+                        ];
+                    }
+                }
+                //insert data in session
+                $_SESSION['panier']['datePick'] = $_POST['datePick'] . ' ' . $_POST['timePick'];
+                $_SESSION['panier']['isPrepared'] = $_POST['isPrepared'];
+                $_SESSION['panier']['isPick'] = $_POST['isPick'];
+                $_SESSION['panier']['totalAmount'] = $_POST['totalAmount'];
+
+                //add the command
+                $this->addCommand($_SESSION['panier']);
+
+                //clear the cart and redirection
+                $_SESSION['panier'] = [];
+                $message = "Merci de votre commande, celle-ci a bien été enregistrée";
+                return $this->twig->render("/Home/panier.html.twig", ['message' => $message]);
+            } else {
+                $message = "Veuillez vous connecter pour passer commande";
+                return $this->twig->render("/Home/login.html.twig", ['message' => $message]);
+                //TODO : renvoyer page connexion si user non définit puis renvoi fonctionner connecter (recursivité?)
+            }
         }
-        */
+    }
+
+    /*
+     * add a command from cart
+     */
+    public function addCommand(array $commande): void
+    {
+        //insert command
+        $commandeManager = new CommandManager();
+        $commandeManager->insertCommand($commande);
+
+        // TODO validations (length, format...)
+
+        //take id of the last input in command to associate the command details and status
+        $lastID = $commandeManager->selectLastId();
+        $commande['command_id'] = (int)$lastID[0];
+
+        //insert command details : for each stock_id if its quantity > 0 add a tuple
+        foreach ($commande['stock'] as $i => $stock) {
+            $i = $i; //pas le choix pour sinon je peux pas commit
+            $commande['stock_id'] = (int) $stock['stock_id'];
+            $commande['quantity'] = (int) $stock['quantity'];
+            $commandeManager->insertCommandDetails($commande);
+        }
+
+        //transform value in tinyint (bool) (to fit into status table)
+        $commande['isPick'] === 'false' ? $commande['isPick'] = 0 : $commande['isPick'] = 1;
+        $commande['isPrepared'] === 'false' ?  $commande['isPrepared'] = 0 : $commande['isPrepared'] = 1;
+
+        // insert command status
+        $commandStatusManager = new CommandStatusManager();
+        $commandStatusManager->insertStatus($commande);
     }
 
     public function showArchiveCommand()

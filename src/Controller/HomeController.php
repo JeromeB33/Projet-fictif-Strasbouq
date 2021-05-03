@@ -9,6 +9,7 @@
 
 namespace App\Controller;
 
+
 use App\Model\BouquetCustomerManager;
 use App\Model\StockManager;
 
@@ -57,7 +58,9 @@ class HomeController extends AbstractController
      */
     public function composeBouquet(): string
     {
-        return $this->twig->render('Home/compose.html.twig');
+        $stockManager = new StockManager();
+        $stock = $stockManager->selectAll();
+        return $this->twig->render('Home/compose.html.twig', ['stock' => $stock]);
     }
 
     /*
