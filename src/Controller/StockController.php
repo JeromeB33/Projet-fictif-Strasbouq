@@ -29,7 +29,7 @@ class StockController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stock = array_map('trim', $_POST);
-
+            $stock['image'] = $this->gererImage($_FILES);
             $stockManager->update($stock);
             header('Location: /stock/show/' . $id);
         }
@@ -43,6 +43,7 @@ class StockController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stock = array_map('trim', $_POST);
+            $stock['image'] = $this->gererImage($_FILES);
             $stockManager = new StockManager();
             $id = $stockManager->insert($stock);
             header('Location:/stock/show/' . $id);
@@ -58,5 +59,28 @@ class StockController extends AbstractController
             $stockManager->delete($id);
             header('Location:/stock/index');
         }
+    }
+
+    public function gererImage(array $files)
+    {
+        $fileTmpName = $files['fleur']['tmp_name'];
+        $fileNameNew = uniqid('filename -', true);
+
+        $baseName = basename($files['fleur']['name']);
+        $fileDestination = "./assets/images/" . $fileNameNew . $baseName;
+        move_uploaded_file($fileTmpName, $fileDestination);
+        $extension = pathinfo($files['fleur']['name'], PATHINFO_EXTENSION);
+        $extensionsOk = ['jpg', 'jpeg', 'png', 'webp'];
+        $maxFileSize = 2000000;
+
+        if ((!in_array($extension, $extensionsOk))) {
+            $errors = 'Veuillez sélectionner une image de type Jpg ou Jpeg ou Png ou webp !';
+            echo $errors;
+        }
+        if (file_exists($files['fleur']['tmp_name']) && filesize($files['fleur']['tmp_name']) > $maxFileSize) {
+            $errors = "Votre fichier doit faire moins de 2M !";
+            echo $errors;
+        }
+        return $fileNameNew . $baseName;
     }
 }
