@@ -50,7 +50,7 @@ class CustomerController extends AbstractController
 
             $customerManager = new CustomerManager();
             $customer = $customerManager->selectOneById($id);
-            var_dump($customer);
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $customer = array_map('trim', $_POST);
