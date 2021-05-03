@@ -59,4 +59,15 @@ class StockController extends AbstractController
             header('Location:/stock/index');
         }
     }
+
+    public function decreaseAvalaibleNumber(int $id, int $quantity): void
+    {
+        //get avalaible number
+        $stockManager = new StockManager();
+        $avalaibleNumber = $stockManager->selectAvalaibleNumberById($id);
+
+        //get the new avalaible number
+        $quantity = $avalaibleNumber['avalaibleNumber'] - $quantity;
+        $stockManager->decreaseAvalaibleNumber($id, $quantity);
+    }
 }

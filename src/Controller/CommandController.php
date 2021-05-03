@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\CommandManager;
 use App\Model\CommandStatusManager;
 use App\Model\StockManager;
+use App\Controller\StockController;
 
 class CommandController extends AbstractController
 {
@@ -66,6 +67,10 @@ class CommandController extends AbstractController
                             $commande['stock_id'] = (int)$stockId;
                             $commande['quantity'] = (int)$quantity;
                             $commandeManager->insertCommandDetails($commande);
+
+                            //delete from the stock the flowers used for the command
+                            $stockController = new StockController();
+                            $stockController->decreaseAvalaibleNumber($stockId, $quantity);
                         }
                     }
                 }
@@ -190,9 +195,9 @@ class CommandController extends AbstractController
             $commande['quantity'] = (int) $stock['quantity'];
             $commandeManager->insertCommandDetails($commande);
 
-            //TODO : delete from the stock the flowers used for the command
-            $stockManager = new StockManager();
-            $stockManager->decreaseAvalaibleNumber($stock['stock_id'], $stock['quantity']);
+            //delete from the stock the flowers used for the command
+            $stockController = new StockController();
+            $stockController->decreaseAvalaibleNumber($stock['stock_id'], $stock['quantity']);
         }
 
         //transform value in tinyint (bool) (to fit into status table)

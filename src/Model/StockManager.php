@@ -44,14 +44,8 @@ class StockManager extends AbstractManager
     /*
      * decrease avalaible number
      */
-    public function decreaseAvalaibleNumber(int $id, int $quantity)
+    public function decreaseAvalaibleNumber(int $id, int $quantity): void
     {
-        //get avalaible number
-        $avalaibleNumber = $this->selectAvalaibleNumberById($id);
-
-        //get the new avalaible number
-        $quantity = $avalaibleNumber['avalaibleNumber'] - $quantity;
-
         // request
         $query = "UPDATE " . self::TABLE . "  SET `avalaibleNumber` = :avalaibleNumber WHERE id=:id";
         $statement = $this->pdo->prepare($query);
