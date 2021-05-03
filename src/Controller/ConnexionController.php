@@ -18,7 +18,7 @@ class ConnexionController extends AbstractController
         $retour = true;
 
         foreach ($users as $user) {
-            if ($userTest['email'] === $user['email'] || $userTest['phone'] === $user['phone']) {
+            if ($userTest['email'] === $user['email']) {
                 $retour =  true;
             } else {
                 $retour =  false;
@@ -42,7 +42,7 @@ class ConnexionController extends AbstractController
             $user = $customerManager->selectOneById($id['id']);
 
             //test if email and password matched
-            if ($userTest['email'] === $user['email'] && $userTest['password'] === $user['password']) {
+            if ($userTest['email'] === $user['email'] && password_verify($userTest['password'], $user['password'])) {
                 $retour = true;
             }
         } else {
@@ -60,11 +60,16 @@ class ConnexionController extends AbstractController
             //user unknow = add to databse
             if ($this->userExists($_POST) === false) {
                 $customerController = new CustomerController();
-                $customerController->add();
-                $message = "Inscription réussie, vous pouvez à présent vous connecter";
-                return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
+                $errors = $customerController->add();
 
-            //user know : any insertion in base, return message
+                if (empty($errors)) {
+                    $message = "Inscription réussie, vous pouvez à présent vous connecter";
+                    return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
+                }
+                return $this->twig->render('Home/signin.html.twig', ['errors' => $errors]);
+
+
+                //user know : any insertion in base, return message
             } elseif ($this->userExists($_POST) === true) {
                 $message = 'Utilisateur connu';
                 return $this->twig->render('Home/signIn.html.twig', ['message' => $message]);
