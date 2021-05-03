@@ -9,7 +9,6 @@
 
 namespace App\Controller;
 
-
 use App\Model\BouquetCustomerManager;
 use App\Model\StockManager;
 
@@ -81,7 +80,7 @@ class HomeController extends AbstractController
         $bouquets = $bouqCustomerManager->selectBouquetCustomer($_SESSION['user']['id']);
         foreach ($bouquets as $bouquet) {
             $bouq[] = $bouqCustomerManager->selectBouquetCustomerById($bouquet['id']);
-        };
+        }
         return $this->twig->render('Home/compte.html.twig', ['bouquets' => $bouquets, 'bouq' => $bouq]);
     }
 

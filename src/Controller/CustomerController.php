@@ -60,13 +60,13 @@ class CustomerController extends AbstractController
 
             // if validation is ok, update and redirection
             if (empty($errors)) {
-              if (password_verify($customerEdit['password'], $customer['password'])) {
+                if (password_verify($customerEdit['password'], $customer['password'])) {
                     $customerEdit['password'] = password_hash($customer['password'], PASSWORD_DEFAULT);
                     $customerManager->update($customer);
 
                     if ($_SESSION['admin'] == true) {
-                    header('Location: /customer/show/' . $id);
-                    }else {
+                        header('Location: /customer/show/' . $id);
+                    } else {
                         header('Location: /Home/compte');
                     }
                 } else {
