@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>Customer {{ customer.lastname }}</h1>
+    <p>Name : {{ customer.lastname }} {{ customer.firstname }}</p>
+    <p>Email : {{ customer.email }}</p>
+    <p>Phone number : 0{{ customer.phone }}</p>
+    <p>Password : {{ customer.password }}</p>
+    <a href="/customer/edit/{{ customer.id }}">Edit</a>
+    <form action="/customer/delete/{{customer.id}}" method="POST">
+        <button>Delete</button>
+    </form>
+    <a href="/customer/index">Back</a>
+{% endblock %}

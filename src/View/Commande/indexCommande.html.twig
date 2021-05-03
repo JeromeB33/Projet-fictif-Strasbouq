@@ -1,0 +1,120 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    Hello this is the commande page <hr/>
+
+    <!-- Display all commands with button to show details by id and button to delete a command -->
+    {% for commande in commandes %}
+        total : {{ commande.totalAmount }} || ID :  {{ commande.id }} || Pick date : {{ commande.datePick }}
+        <form action="/Command/suppr/{{ commande.id }}" method="POST">
+            <button>Delete</button>
+        </form>
+        <form action="/Command/showById/{{ commande.id }}" method="POST">
+            <button>Show this entites</button>
+        </form>
+        <form action="/Command/listCommand/{{ commande.id }}" method="POST">
+            <button>Show whole command</button>
+        </form>
+
+    {% endfor %}
+
+    <!-- si les details sont définis display details with button to show status -->
+    {% if details is defined %}
+        {% if details is empty %}
+            Nothing to display
+            {% else %}
+                Commande id : {{ details.command_id }} </br>
+                Customer id : {{ details.stock_id }} </br>
+
+                <form action="/CommandStatus/showById/{{ details.command_id }}" method="POST">
+                    <button>Show status</button>
+                </form>
+                <!-- form to edit pick date -->
+                <h1>Edit pick date</h1>
+
+                <form action="/Command/editDatePickById/{{ details.command_id }}" method="POST">
+                    <label for="newDatePick"> date pick<input required type="date" min="2021-04-01" name="newDatePick"></label><br/>
+                    <label for="newTimePick"> time pick<input required type="time" min="08:00" max="19:00" name="newTimePick"></label><br/>
+                    <input type="submit">
+                </form>
+        {% endif %}
+    {% endif %}
+
+    <!-- if there are status  display command status -->
+    {% if status is defined %}
+        {% if status is empty %}
+            There are any status defined
+        {% else %}
+            is prepared ?  : {{ status.isprepared }} </br>
+            is pick ?  : {{ status.ispick}} <br/>
+
+
+            <!-- form to edit status -->
+            <h1>Edit status </h1>
+
+            <form action="/CommandStatus/editStatus/{{ status.command_id }}" method="POST">
+                <label for="isPrepared"> is prepared?
+                    <select  name="isPrepared">
+                        <option name="isPrepared" value="default" selected disabled>Pick a option but not this one</option>
+                        <option name="isPrepared" value="false">False</option>
+                        <option name="isPrepared" value="true">True</option>
+                    </select>
+                </label><br/>
+                <label for="isPick"> is pick?
+                    <select  name="isPick">
+                        <option name="isPick" value="default" selected disabled>Pick a option but not this one</option>
+                        <option name="isPick" value="false">False</option>
+                        <option name="isPick" value="true">True</option>
+                    </select>
+                </label><br/>
+                <input type="submit">
+            </form>
+
+        {% endif %}
+    {% endif %}
+
+    <!-- show the whole command -->
+    {% if commandList is defined %}
+        command id : {{ commandList.0.command_id }}  <br/>
+        customer id : {{ commandList.0.customer_id }}
+        <form action="/CommandStatus/showById/{{ commandList.0.command_id }}" method="POST">
+            <button>Show status</button>
+        </form>
+        <!-- display each stock_id with quantity  -->
+        {% for list in commandList %}
+            id stock : {{ list.stock_id }}
+            quantity : {{ list.quantity }}
+            <br/>
+        {% endfor %}
+
+        <h1>Edit pick date</h1>
+
+        <form action="/Command/editDatePickById/{{ commandList.0.command_id }}" method="POST">
+            <label for="newDatePick"> date pick<input required type="date" min="2021-04-01" name="newDatePick"></label><br/>
+            <label for="newTimePick"> time pick<input required type="time" min="08:00" max="19:00" name="newTimePick"></label><br/>
+            <input type="submit">
+        </form>
+
+    {% endif %}
+
+
+    <!-- form to add a command -->
+    <h1>add command</h1>
+
+    <form method="post" action="/Command/add">
+        <label for="totalAMount"> Total amount<input type="number" name="totalAmount"></label><br/>
+        <label for="customer_id"> customer <input type="number" name="customer_id"></label><br/>
+        <label for="stock_id">
+            <label>Stock 1, Its quantity? <input type="number" name="stock_id[1][quantity]" value="0"></label><br/>
+            <label>Stock 2, Its quantity? <input type="number" name="stock_id[2][quantity]" value="0"></label><br/>
+            <label>Stock 3, Its quantity? <input type="number" name="stock_id[3][quantity]" value="0"></label><br/>
+            <label>Stock 4, Its quantity? <input type="number" name="stock_id[4][quantity]" value="0"></label><br/>
+        </label><br/>
+        <label for="datePick"> date pick<input required type="date" min="2021-04-01" name="datePick"></label><br/>
+        <label for="timePick"> time pick<input required type="time" min="08:00" max="19:00" name="timePick"></label><br/>
+        <input type="hidden" name="command_id">
+        <input type="hidden" name="isprepared" value="false" >
+        <input type="hidden" name="ispick" value="false" >
+        <input type="submit" value="add">
+    </form>
+{% endblock %}

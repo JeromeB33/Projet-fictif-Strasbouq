@@ -5,7 +5,7 @@
  * User: root
  * Date: 11/10/17
  * Time: 15:38
- * PHP version 7
+ * PHP version 7.
  */
 
 namespace App\Controller;
@@ -16,9 +16,6 @@ use Twig\Loader\FilesystemLoader;
 
 abstract class AbstractController
 {
-    /**
-     * @var Environment
-     */
     protected Environment $twig;
 
     /**
@@ -35,5 +32,6 @@ abstract class AbstractController
             ]
         );
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->addGlobal('session', $_SESSION);
     }
 }
