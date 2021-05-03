@@ -11,9 +11,9 @@ class BouquetVitrineManager extends AbstractManager
 
     public function insert(array $stock): int
     {
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (name, price ) VALUES (:name, :price)");
+        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . "(name, image ) VALUES (:name, :image)");
         $statement->bindValue('name', $stock['name'], \PDO::PARAM_STR);
-        $statement->bindValue('price', $stock['price'], \PDO::PARAM_INT);
+        $statement->bindValue('image', $stock['image'], \PDO::PARAM_STR);
 
         $statement->execute();
         return (int)$this->pdo->lastInsertId();
@@ -28,25 +28,14 @@ class BouquetVitrineManager extends AbstractManager
 
     public function update(array $stock): bool
     {
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `name` = :name , `price` = :price
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `name` = :name , `image` = :image
          WHERE id=:id");
         $statement->bindValue('id', $stock['id'], \PDO::PARAM_INT);
         $statement->bindValue('name', $stock['name'], \PDO::PARAM_STR);
-        $statement->bindValue('price', $stock['price'], \PDO::PARAM_INT);
+        $statement->bindValue('image', $stock['image'], \PDO::PARAM_STR);
 
         return  $statement->execute();
     }
-    /*
-    public function stockByIdBouquet(int $id): array
-    {
-        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " b, stock_bouquetVitrine sb, stock s
-        WHERE b.id=sb.bouquetVitrine_id AND sb.stock_id=s.id AND b.id=:id ");
-        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-
-        $statement->execute();
-        return $statement->fetchAll();
-    }
-    */
 
     public function showBouquet(int $id): array
     {
@@ -57,6 +46,7 @@ class BouquetVitrineManager extends AbstractManager
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
 
         $statement->execute();
+
         return $statement->fetchAll();
     }
 

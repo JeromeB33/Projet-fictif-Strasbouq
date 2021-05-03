@@ -1,13 +1,23 @@
 {# TODO : manage errors display #}
 
-<form method="post">
+<form method="post" enctype="multipart/form-data" class="uk-form-horizontal uk-margin-large">
+	<div class="uk-margin">
+		<label class="uk-form-label" for="form-stacked-text">Nouveau Bouquet</label>
+		<div class="uk-form-controls">
 	<input type="hidden" value="{{ bouquetVitrine.id }}" name="id">
-	<input type="text" value="{{ bouquetVitrine.name }}" name="name">
-	<input type="number" value="{{ bouquetVitrine.price }}" name="price">
-	<h3> Contenu bouquet</h3>
+	<input type="text" value="{{ bouquetVitrine.name }}" name="name" placeholder="Nom du bouquet">
+	<input type="file" value="Ton image" name="fleur" placeholder="path image">
+		</div>
+	</div>
+
+	<h3> Composition bouquet</h3>
 	{% for fleurs in fleursVitrine  %}
 		{{ fleurs.name }}
+	<div class="uk-margin">
+		<div class="uk-form-controls">
 		<input type="number" name="idStock[{{ fleurs.id }}][quantity]" value="{{ fleurs.nombre }}"><br>
+		</div>
+	</div>
 	{% endfor %}
 	<input type="submit" value="Valider">
 </form>
