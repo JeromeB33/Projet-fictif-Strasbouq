@@ -7,7 +7,7 @@ class ContactController extends AbstractController
     public function contactUs()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $destinataire = "kntzmelissa@gmail.com";
+            $destinataire = "example@mail.com";
             $objet = "Retour client site";
             $client = "Nom: " . $_POST['lastname'] . ' Prénom : ' . $_POST['firstname'];
             $message = $_POST['message'] . '<br/>' . $client;
