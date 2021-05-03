@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Inscription - {{ parent() }} {% endblock %}
+
+
+
+{% block content %}
+    <ul>
+        {% for error in errors %}
+            <li> {{ error }} </li>
+        {% endfor %}
+
+        {% if message is defined %}
+            <li> {{ message }} </li>
+        {% endif %}
+    </ul>
+
+    <form method="post" action="/connexion/addUser">
+        <input type="hidden" value="{{ customer.id }}" name="id">
+
+        <div>
+            <label for="firstname">Prénom</label><br>
+            <input type="text" value="{{ customer.firstname }}" name="firstname">
+        </div>
+        <div>
+            <label for="lastname">Nom</label><br>
+            <input type="text" value="{{ customer.lastname }}" name="lastname">
+        </div>
+        <div>
+            <label for="email">Email</label><br>
+            <input type="email" value="{{ customer.email }}" name="email">
+        </div>
+        <div>
+            <label for="phone">Numéro de téléphone</label><br>
+            <input type="tel" value="{{ customer.phone }}" name="phone">
+        </div>
+        <div>
+            <label for="password">Mot de passe</label><br>
+            <input type="password" value="{{ customer.password }}" name="password">
+        </div>
+
+        <input type="submit" value="Valider">
+    </form>
+    <p>Déjà inscrit ? <a href="/Home/LogIn">Connection</a></p>
+
+
+
+{% endblock %}

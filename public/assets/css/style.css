@@ -1,0 +1,23 @@
+body{
+    background: #D7D8EC;
+}
+
+.button{
+    background-color: #285097;
+}
+
+nav .uk-logo{
+    width: 15vw;
+}
+
+@media screen and (min-width: 1025px){
+    nav #mobile{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 800px){
+    nav #desktop{
+        display: none;
+    }
+}

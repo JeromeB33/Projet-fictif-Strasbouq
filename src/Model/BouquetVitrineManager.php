@@ -46,7 +46,6 @@ class BouquetVitrineManager extends AbstractManager
         WHERE b.id=sb.bouquetVitrine_id AND sb.stock_id=s.id AND b.id=:id ");
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
 
-       /* $fleur = $statement->execute(); */
         return $statement->fetchAll();
     }
 }
