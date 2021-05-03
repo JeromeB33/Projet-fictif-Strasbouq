@@ -70,6 +70,9 @@ class HomeController extends AbstractController
 
     public function compte(): string
     {
+        if ($_SESSION['admin'] === true) {
+            header('Location: /Home/compteAdmin');
+        }
         $bouq = [];
         $bouqCustomerManager = new BouquetCustomerManager();
         $bouquets = $bouqCustomerManager->selectBouquetCustomer($_SESSION['user']['id']);
@@ -82,5 +85,10 @@ class HomeController extends AbstractController
     public function accessDenied(): string
     {
         return $this->twig->render('Home/accessdenied.html.twig');
+    }
+
+    public function compteAdmin()
+    {
+        return $this->twig->render('Home/compteAdmin.html.twig');
     }
 }

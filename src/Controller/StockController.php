@@ -8,7 +8,9 @@ class StockController extends AbstractController
 {
     public function index(): string
     {
-
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
         $stockManager = new StockManager();
         $stocks = $stockManager->selectAll('name');
 
@@ -16,6 +18,9 @@ class StockController extends AbstractController
     }
     public function show(int $id): string
     {
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
         $stockManager = new StockManager();
         $stock = $stockManager->selectOneByID($id);
 
@@ -24,6 +29,9 @@ class StockController extends AbstractController
 
     public function edit(int $id): string
     {
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
         $stockManager = new StockManager();
         $stock = $stockManager->selectOneById($id);
 
@@ -41,6 +49,9 @@ class StockController extends AbstractController
 
     public function add(): string
     {
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stock = array_map('trim', $_POST);
             $stockManager = new StockManager();

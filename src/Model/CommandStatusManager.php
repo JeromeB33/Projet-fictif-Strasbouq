@@ -5,6 +5,8 @@ namespace App\Model;
 class CommandStatusManager extends AbstractManager
 {
     public const TABLE = "commandStatus";
+    public const TABLE_2 = "command";
+    public const TABLE_3 = "customer";
 
     /*
     * insert command status false by default
@@ -44,5 +46,28 @@ class CommandStatusManager extends AbstractManager
         $statement->execute();
 
         header("Location: /Command/showAll");
+    }
+
+    public function archiveCommand(string $orderBy = '', string $direction = 'ASC')
+    {
+        $query = 'SELECT * FROM ' . static::TABLE . ' JOIN ' . static::TABLE_2 . '
+         c ON c.id=command_id WHERE ispick = 1 and isprepared = 1';
+        if ($orderBy) {
+            $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
+        }
+
+        return $this->pdo->query($query)->fetchAll();
+    }
+
+    public function activeCommand(string $orderBy = '', string $direction = 'DESC')
+    {
+        $query = 'SELECT * FROM ' . static::TABLE . ' JOIN ' . static::TABLE_2 . ' 
+        c ON c.id=command_id JOIN ' . static::TABLE_3 . ' cu ON cu.id=c.customer_id 
+        WHERE ispick = 0 or isprepared = 0';
+        if ($orderBy) {
+            $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
+        }
+
+        return $this->pdo->query($query)->fetchAll();
     }
 }

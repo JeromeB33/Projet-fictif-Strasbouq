@@ -26,7 +26,7 @@ class BouquetCustomerController extends AbstractController
      */
     public function show(int $id): string
     {
-        if ($_SESSION['admin'] === false) {
+        if ($_SESSION['admin'] != true) {
             header('Location: /Home/accessdenied');
         }
             $bouqCustomerManager = new BouquetCustomerManager();
@@ -72,7 +72,7 @@ class BouquetCustomerController extends AbstractController
                         }
                     }
                 }
-                if ($_SESSION['admin'] == true) {
+                if ($_SESSION['admin'] === true) {
                     header('Location: /bouquetCustomer/show/' . $id);
                 } else {
                     header('Location: /Home/compte');
@@ -135,7 +135,11 @@ class BouquetCustomerController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bouqCustomerManager = new BouquetCustomerManager();
             $bouqCustomerManager->delete($id);
-            header('Location:/bouquetCustomer/index');
+            if ($_SESSION['admin'] == true) {
+                header('Location:/bouquetCustomer/index');
+            } else {
+                header('Location: /Home/compte');
+            }
         }
     }
 

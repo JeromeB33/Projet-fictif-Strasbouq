@@ -11,7 +11,7 @@ class CustomerController extends AbstractController
      */
     public function index(): string
     {
-        if ($_SESSION['admin'] === false) {
+        if ($_SESSION['admin'] != true) {
             header('Location: /Home/accessdenied');
         }
             $customerManager = new CustomerManager();
@@ -25,13 +25,17 @@ class CustomerController extends AbstractController
      */
     public function show(int $id): string
     {
-        if ($_SESSION['admin'] === false) {
+        if ($_SESSION['admin'] != true) {
             header('Location: /Home/accessdenied');
         }
             $customerManager = new CustomerManager();
             $customer = $customerManager->selectOneById($id);
+            $customerCommand = $customerManager->selectClientCommand($id);
 
-            return $this->twig->render('Customer/show.html.twig', ['customer' => $customer]);
+            return $this->twig->render(
+                'Customer/show.html.twig',
+                ['customer' => $customer, 'customercommand' => $customerCommand]
+            );
     }
 
     /**
@@ -39,14 +43,14 @@ class CustomerController extends AbstractController
      */
     public function edit(int $id): string
     {
-        if ($_SESSION['admin'] === false) {
+        if ($_SESSION['user']['id'] != $id && $_SESSION['admin'] != true) {
             header('Location: /Home/accessdenied');
         }
             $errors = [];
 
             $customerManager = new CustomerManager();
             $customer = $customerManager->selectOneById($id);
-
+            var_dump($customer);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $customer = array_map('trim', $_POST);
@@ -75,9 +79,6 @@ class CustomerController extends AbstractController
      */
     public function add(): string
     {
-        if ($_SESSION['admin'] === false) {
-            header('Location: /Home/accessdenied');
-        }
             $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -109,6 +110,7 @@ class CustomerController extends AbstractController
             if ($_SESSION['admin'] == true) {
                 header('Location:/customer/index');
             } else {
+                session_destroy();
                 header('Location: /Home/index');
             }
         }

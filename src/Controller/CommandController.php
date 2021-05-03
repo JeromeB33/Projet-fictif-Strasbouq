@@ -145,4 +145,20 @@ class CommandController extends AbstractController
         }
         */
     }
+
+    public function showArchiveCommand()
+    {
+            $commandStatusManager = new CommandStatusManager();
+            $archiveCommand = $commandStatusManager->archiveCommand('dateOrder');
+
+            return $this->twig->render("Commande/archive.html.twig", ['archivecommand' => $archiveCommand]);
+    }
+
+    public function showActiveCommand()
+    {
+            $commandStatusManager = new CommandStatusManager();
+            $activeCommand = $commandStatusManager->activeCommand('datePick');
+
+            return $this->twig->render("Commande/command.html.twig", ['activecommand' => $activeCommand]);
+    }
 }
