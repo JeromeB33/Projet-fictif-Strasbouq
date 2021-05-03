@@ -4,12 +4,11 @@
     <h1>Edit BouquetVitrine {{ bouquetVitrine.name }}</h1>
     <ul>
         {% for fleur in bouquet %}
-            <li>{{ fleur.name }} {{ fleur.number }}</li>
+            <li>{{ fleur.name }} {{ fleur.number }} {{ fleur.image }}</li>
             <form method="post" action="/bouquetVitrine/deleteFleurBouquet/{{ fleur.id }}" >
                 <input type="hidden" value="{{ fleur.bouquetVitrine_id }}" name="bouquet">
                 <input type="submit" value="Désencastrer">
             </form>
-
         {% endfor %}
     </ul>
     {% include 'BouquetVitrine/_form.html.twig' %}
