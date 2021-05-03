@@ -12,11 +12,11 @@ class CommandStatusManager extends AbstractManager
     public function insertStatus(array $command): void
     {
         $query = ("INSERT INTO " . self::TABLE . "(command_id, isprepared, ispick) 
-                    VALUES (:command_id, :isprepared, :ispick)");
+                    VALUES (:command_id, :isPrepared, :isPick)");
         $statement = $this->pdo->prepare($query);
         $statement->bindValue('command_id', $command['command_id']);
-        $statement->bindValue('isprepared', $command['isprepared']);
-        $statement->bindValue('ispick', $command['ispick']);
+        $statement->bindValue('isPrepared', $command['isPrepared']);
+        $statement->bindValue('isPick', $command['isPick']);
         $statement->execute();
     }
 
