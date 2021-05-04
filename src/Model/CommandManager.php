@@ -46,7 +46,9 @@ class CommandManager extends AbstractManager
     public function selectOneById(int $commandId)
     {
         // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM " . static::TABLE_2 . " WHERE command_id=:id");
+        $query = "SELECT * FROM " . static::TABLE_2 . " d 
+        JOIN " . static::TABLE . " c ON d.command_id=c.id WHERE command_id=:id";
+        $statement = $this->pdo->prepare($query);
         $statement->bindValue('id', $commandId, \PDO::PARAM_INT);
         $statement->execute();
 
@@ -76,7 +78,7 @@ class CommandManager extends AbstractManager
      * select all tuple with same command_id to have the whole command with each stock id
      */
 
-    public function listCommand(int $id): array
+    public function getDetails(int $id): array
     {
         $query = ("SELECT * FROM " . self::TABLE_2 . " d 
                     INNER JOIN " . self::TABLE . " c ON d.command_id = c.id  
@@ -84,4 +86,15 @@ class CommandManager extends AbstractManager
         $statement = $this->pdo->query($query);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /*
+    public function editStock(int $id)
+    {
+        $query = "UPDATE " . self::TABLE . " SET stock_id = :stock_id, quantity=:quantity WHERE id=:id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('id', $id);
+        $statement->bindValue('stock_id', $stock_id);
+        $statement->bindValue('quantity', $quantity);
+        $statement->execute();
+    }*/
 }

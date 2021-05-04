@@ -15,11 +15,11 @@
     <tbody>
         {% for command in activecommand %}
         <tr>
-            <td>{{ command.id }}</td>
+            <td>{{ command.command_id }}</td>
             <td>{{ command.dateOrder }}</td>
             <td><a href="/customer/show/{{ command.customer_id }}">{{ command.lastname }}</a></td>
             <td>{{ command.isprepared }}</td>
-            <td><a href="/Command/edit/{{ command.id }}"><button>Modifier</button></a></td>
+            <td><a href="/Command/edit/{{ command.command_id }}"><button>Modifier</button></a></td>
         </tr>
         {% endfor %}
     </tbody>

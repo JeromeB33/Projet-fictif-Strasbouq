@@ -14,6 +14,24 @@ class CommandController extends AbstractController
         return $this->twig->render("Commande/indexCommande.html.twig");
     }
 
+    /*
+     * display edit command page
+     */
+    public function edit(int $id)
+    {
+        //get all stock id and quantity
+        $details = $this->getDetails($id);
+
+        //get all stock
+        $stockManger = new StockManager();
+        $stock = $stockManger->selectAll();
+
+        return $this->twig->render(
+            "Commande/edit.html.twig",
+            ['details' => $details, "stock" => $stock]
+        );
+    }
+
     /**
      * Show all informations
      */
@@ -101,44 +119,32 @@ class CommandController extends AbstractController
     }
 
     /*
-     * edit a command details : date pick
+     * get all stock_id of one command
      */
-    public function editDatePickById($id): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //format date pick to fit in base
-            $newDate = $_POST['datePick'] . ' ' . $_POST['timePick'];
-
-            $commandManager = new CommandManager();
-            $commandManager->editDatePicksById($id, $newDate);
-            header("Location: /Command/showAll");
-        }
-    }
-
-    /*
-     * liste the whole command
-     */
-    public function listCommand($id)
+    public function getDetails($id)
     {
         $commandManager = new CommandManager();
-        $commandList = $commandManager->listCommand($id);
+        $details = $commandManager->getDetails($id);
 
         //transform text to better comprehension for the customer or webowner
         for ($i = 1; $i < 1; $i++) {
-            if ($commandList[$i]['isprepared'] === '0') {
-                $commandList[$i]['isprepared'] = 'Non';
-            } elseif ($commandList[$i]['isprepared'] === "1") {
-                $commandList[$i]['isprepared'] = 'Oui';
+            if ($details[$i]['isprepared'] === '0') {
+                $details[$i]['isprepared'] = 'Non';
+            } elseif ($details[$i]['isprepared'] === "1") {
+                $details[$i]['isprepared'] = 'Oui';
             }
-            if ($commandList[$i]['ispick'] === '0') {
-                $commandList[$i]['ispick'] = 'Non';
-            } elseif ($commandList[$i]['ispick'] === "1") {
-                $commandList[$i]['ispick'] = 'Oui';
+            if ($details[$i]['ispick'] === '0') {
+                $details[$i]['ispick'] = 'Non';
+            } elseif ($details[$i]['ispick'] === "1") {
+                $details[$i]['ispick'] = 'Oui';
             }
         }
-        return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
+        return $details;
     }
 
+    /*
+     * to command via cart
+     */
     public function commander()
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
@@ -209,19 +215,33 @@ class CommandController extends AbstractController
         $commandStatusManager->insertStatus($commande);
     }
 
-    public function showArchiveCommand()
+
+
+    /*
+     * edit a command
+
+    public function editCommand($id)
     {
-            $commandStatusManager = new CommandStatusManager();
-            $archiveCommand = $commandStatusManager->archiveCommand('dateOrder');
+        //TODO : EDTI COMMAND
 
-            return $this->twig->render("Commande/archive.html.twig", ['archivecommand' => $archiveCommand]);
-    }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        }
 
-    public function showActiveCommand()
+        //TODO caluler prix
+    }*/
+
+    /*
+     * edit a command details : date pick
+     */
+    public function editDatePickById($id): void
     {
-            $commandStatusManager = new CommandStatusManager();
-            $activeCommand = $commandStatusManager->activeCommand('datePick');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //format date pick to fit in base
+            $newDate = $_POST['datePick'] . ' ' . $_POST['timePick'];
 
-            return $this->twig->render("Commande/command.html.twig", ['activecommand' => $activeCommand]);
+            $commandManager = new CommandManager();
+            $commandManager->editDatePicksById($id, $newDate);
+            header("Location: /Command/showAll");
+        }
     }
 }

@@ -1,3 +1,45 @@
 {% extends 'layout.html.twig' %}
 
+{% block content %}
+    <form action="/Command/editCommand/{{ detail.id }}" method="POST" class="uk-form-width-large uk-align-center">
+
+                {% for allFlowers in stock %}
+                        <label class="uk-label">{{ allFlowers.name }} </label> (quantité) <input class="uk-input" type="number" name="stock_id[{{ allFlowers.id }}][quantity]"
+                        {% for detail in details %}
+                            {% if detail.stock_id is same as allFlowers.id %}
+                                value="{{ detail.quantity }}"
+                            {% else %}
+                                value="0"
+                            {% endif %}
+                        {% endfor %}
+                        ><br/><br/>
+                {% endfor %}
+
+        <br/>
+
+        <label for="newDatePick"> Date à laquelle le bouquet est cherché<input class="uk-date" required type="date" min="2021-04-01" name="newDatePick"></label><br/>
+        <label for="newTimePick"> Et à quelle heure ?<input class="uk-time" required type="time" min="08:00" max="19:00" name="newTimePick"></label><hr/>
+
+        <label for="isPrepared"> Est-elle déjà préparée?
+            <select  name="isPrepared">
+                <option name="isPrepared" value="default" selected disabled>----Choisir une option-----</option>
+                <option name="isPrepared" value="false">Non</option>
+                <option name="isPrepared" value="true">Oui</option>
+            </select>
+        </label><br/>
+        <label for="isPick">Est-elle déjà récupérée?
+            <select  name="isPick">
+                <option name="isPick" value="default" selected disabled>----Choisir une option-----</option>
+                <option name="isPick" value="false">Non</option>
+                <option name="isPick" value="true">Oui</option>
+            </select>
+        </label><br/>
+
+
+        <input type="hidden" value="{{ details.0.id }}" name="command_id"><br/>
+        <input type="hidden" value="{{ details.0.id }}" name="command_id"><br/>
+
+        <input type="submit">
+    </form>
+
 {% endblock %}
