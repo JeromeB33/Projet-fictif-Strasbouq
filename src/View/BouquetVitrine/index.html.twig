@@ -4,7 +4,7 @@
     <h1>BouquetVitrine</h1>
     <ul>
         {% for bouquetVitrine in bouquetVitrines %}
-            <li><a href="/bouquetVitrine/show/{{ bouquetVitrine.id }}">{{ bouquetVitrine.name }}. {{ bouquetVitrine.price }}</a></li>
+            <li><a href="/bouquetVitrine/show/{{ bouquetVitrine.id }}">{{ bouquetVitrine.name }}. <img src="/assets/images/{{ bouquetVitrine.image }}"></a></li>
         {% else %}
             <li>Nothing to display</li>
         {% endfor %}
