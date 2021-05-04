@@ -1,8 +1,11 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1>Edit bouquet {{ bouquetCustomer.name }}</h1>
-    <h3>Compostion actuelle bouquet</h3>
+    <h1>Modifier le bouquet : {{ bouquetCustomer.name }}</h1>
+    <h3>Compostion actuelle du bouquet</h3>
+        <form action="/bouquetCustomer/delete/{{bouquetCustomer.id}}" method="POST">
+            <button>Supprimer le bouquet</button>
+        </form></p>
 
 <ul>
 {% for flower in bouquet %}
@@ -18,5 +21,10 @@
 </ul>
 
     {% include 'BouquetCustomer/_form.html.twig' %}
-    <a href="/bouquetCustomer/show/{{ bouquetCustomer.id }}">Back</a>
+    {% if session.admin == true %}
+    <a href="/BouquetCustomer/index"><button>Back</button></a>
+    {% else %}
+    <a href="/Home/compte"><button>Back</button></a>
+    {% endif %}
+
 {% endblock %}

@@ -4,11 +4,13 @@
 {% block title %}Panier - {{ parent() }}{% endblock %}
 
 {% block content %}
+    <!-- Display message after a command-->
     {% if message is defined %}
         <ul>
             <li>{{ message }}</li>
         </ul>
     {% else %}
+        <!-- Display cart -->
         <section class="panier uk-margin-medium">
             <h1 class="uk-text-center">Votre panier:</h1>
             {% set total = 0.00 %}
@@ -36,7 +38,7 @@
                 </div>
 
 
-                <!-- This is a button toggling the modal -->
+                <!-- button to send command -->
                 <button class="uk-button uk-button-default uk-border-rounded uk-margin-small-right uk-align-right uk-background-blend-color" type="button" uk-toggle="target: #modal-example">Commander</button>
                 <div id="modal-example" uk-modal>
                     <div class="uk-modal-dialog uk-modal-body">

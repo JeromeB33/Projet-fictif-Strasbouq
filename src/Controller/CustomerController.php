@@ -11,10 +11,13 @@ class CustomerController extends AbstractController
      */
     public function index(): string
     {
-        $customerManager = new CustomerManager();
-        $customers = $customerManager->selectAll('lastname');
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
+            $customerManager = new CustomerManager();
+            $customers = $customerManager->selectAll('lastname');
 
-        return $this->twig->render('Customer/index.html.twig', ['customers' => $customers]);
+            return $this->twig->render('Customer/index.html.twig', ['customers' => $customers]);
     }
 
     /**
@@ -22,10 +25,17 @@ class CustomerController extends AbstractController
      */
     public function show(int $id): string
     {
-        $customerManager = new CustomerManager();
-        $customer = $customerManager->selectOneById($id);
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
+            $customerManager = new CustomerManager();
+            $customer = $customerManager->selectOneById($id);
+            $customerCommand = $customerManager->selectClientCommand($id);
 
-        return $this->twig->render('Customer/show.html.twig', ['customer' => $customer]);
+            return $this->twig->render(
+                'Customer/show.html.twig',
+                ['customer' => $customer, 'customercommand' => $customerCommand]
+            );
     }
 
     /**
@@ -33,10 +43,13 @@ class CustomerController extends AbstractController
      */
     public function edit(int $id): string
     {
-        $errors = [];
+        if ($_SESSION['user']['id'] != $id && $_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
+            $errors = [];
 
-        $customerManager = new CustomerManager();
-        $customer = $customerManager->selectOneById($id);
+            $customerManager = new CustomerManager();
+            $customer = $customerManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
@@ -50,16 +63,21 @@ class CustomerController extends AbstractController
                 if (password_verify($customerEdit['password'], $customer['password'])) {
                     $customerEdit['password'] = password_hash($customer['password'], PASSWORD_DEFAULT);
                     $customerManager->update($customer);
-                    header('Location: /customer/show/' . $id);
+
+                    if ($_SESSION['admin'] == true) {
+                        header('Location: /customer/show/' . $id);
+                    } else {
+                        header('Location: /Home/compte');
+                    }
                 } else {
                     $errors[] = "Mauvais mot de passe actuel";
                 }
             }
         }
 
-        return $this->twig->render('Customer/edit.html.twig', [
-            'customer' => $customer, 'errors' => $errors,
-        ]);
+            return $this->twig->render('Customer/edit.html.twig', [
+                'customer' => $customer, 'errors' => $errors,
+            ]);
     }
 
     /**
@@ -67,7 +85,7 @@ class CustomerController extends AbstractController
      */
     public function add() //: string
     {
-        $errors = [];
+            $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
@@ -79,6 +97,7 @@ class CustomerController extends AbstractController
             // if validation is ok, insert and redirection
             if (empty($errors)) {
                 $customerManager = new CustomerManager();
+
                 $customer['password'] = password_hash($customer['password'], PASSWORD_DEFAULT);
                 $customerManager->insert($customer);
             }
@@ -94,7 +113,12 @@ class CustomerController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $customerManager = new CustomerManager();
             $customerManager->delete($id);
-            header('Location:/customer/index');
+            if ($_SESSION['admin'] == true) {
+                header('Location:/customer/index');
+            } else {
+                session_destroy();
+                header('Location: /Home/index');
+            }
         }
     }
 

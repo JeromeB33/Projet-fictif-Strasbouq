@@ -67,4 +67,13 @@ class BouquetCustomerManager extends AbstractManager
         $statement = $this->pdo->query("SELECT MAX(id)  FROM " . static::TABLE);
         return $statement->fetch(\PDO::FETCH_NUM);
     }
+
+    public function selectBouquetCustomer(int $id)
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " WHERE customer_id=:id");
+        $statement->bindvalue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }

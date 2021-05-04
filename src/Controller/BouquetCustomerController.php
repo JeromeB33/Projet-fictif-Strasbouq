@@ -12,10 +12,13 @@ class BouquetCustomerController extends AbstractController
      */
     public function index(): string
     {
-        $bouqCustomerManager = new BouquetCustomerManager();
-        $bouquetCustomers = $bouqCustomerManager->selectAll('name');
+        if ($_SESSION['admin'] === false) {
+            header('Location: /Home/accessdenied');
+        }
+            $bouqCustomerManager = new BouquetCustomerManager();
+            $bouquetCustomers = $bouqCustomerManager->selectAll('name');
 
-        return $this->twig->render('BouquetCustomer/index.html.twig', ['bouquetCustomers' => $bouquetCustomers]);
+            return $this->twig->render('BouquetCustomer/index.html.twig', ['bouquetCustomers' => $bouquetCustomers]);
     }
 
     /**
@@ -23,14 +26,17 @@ class BouquetCustomerController extends AbstractController
      */
     public function show(int $id): string
     {
-        $bouqCustomerManager = new BouquetCustomerManager();
-        $bouquetCustomer = $bouqCustomerManager->selectOneById($id);
-        $bouquet = $bouqCustomerManager->selectBouquetCustomerById($id);
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
+            $bouqCustomerManager = new BouquetCustomerManager();
+            $bouquetCustomer = $bouqCustomerManager->selectOneById($id);
+            $bouquet = $bouqCustomerManager->selectBouquetCustomerById($id);
 
-        return $this->twig->render(
-            'BouquetCustomer/show.html.twig',
-            ['bouquet' => $bouquet, 'bouquetCustomer' => $bouquetCustomer]
-        );
+            return $this->twig->render(
+                'BouquetCustomer/show.html.twig',
+                ['bouquet' => $bouquet, 'bouquetCustomer' => $bouquetCustomer]
+            );
     }
 
     /**
@@ -66,7 +72,11 @@ class BouquetCustomerController extends AbstractController
                         }
                     }
                 }
-                header('Location: /bouquetCustomer/show/' . $id);
+                if ($_SESSION['admin'] === true) {
+                    header('Location: /bouquetCustomer/show/' . $id);
+                } else {
+                    header('Location: /Home/compte');
+                }
             }
         }
 
@@ -106,8 +116,11 @@ class BouquetCustomerController extends AbstractController
                         }
                     }
                 }
-
-                header('Location:/bouquetCustomer/show/' . $bouquetCustomer['bouquet_id']);
+                if ($_SESSION['admin'] == true) {
+                    header('Location:/bouquetCustomer/show/' . $bouquetCustomer['bouquet_id']);
+                } else {
+                    header('Location: /Home/compte');
+                }
             }
         }
 
@@ -122,7 +135,11 @@ class BouquetCustomerController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bouqCustomerManager = new BouquetCustomerManager();
             $bouqCustomerManager->delete($id);
-            header('Location:/bouquetCustomer/index');
+            if ($_SESSION['admin'] == true) {
+                header('Location:/bouquetCustomer/index');
+            } else {
+                header('Location: /Home/compte');
+            }
         }
     }
 
