@@ -5,6 +5,7 @@
 {% block content %}
     {{ include('components/_guideCompo.html.twig') }}
 
+    <!-- Display each flower in stock-->
         <div class="uk-child-width-1-4@m uk-grid-small uk-grid-match uk-margin-xlarge-right uk-margin-xlarge-left uk-margin-large-top uk-margin-medium-bottom uk-padding-remove uk-flex-wrap" uk-grid>
         {% for flower in stock %}
             <div>

@@ -15,7 +15,7 @@ class CommandStatusController extends AbstractController
             $commandStatusManager = new CommandStatusManager();
             $status = $commandStatusManager->selectOneById($id);
 
-            //transfrom value for more comprehension for the view
+            //transform value for more comprehension for the view
             if (!empty($status)) {
                 if ($status['ispick'] === '0') {
                     $status['ispick'] = 'Non';

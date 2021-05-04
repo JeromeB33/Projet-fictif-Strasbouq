@@ -61,6 +61,18 @@ class StockController extends AbstractController
         }
     }
 
+
+    public function decreaseAvalaibleNumber(int $id, int $quantity): void
+    {
+        //get avalaible number
+        $stockManager = new StockManager();
+        $avalaibleNumber = $stockManager->selectAvalaibleNumberById($id);
+
+        //get the new avalaible number
+        $quantity = $avalaibleNumber['avalaibleNumber'] - $quantity;
+        $stockManager->decreaseAvalaibleNumber($id, $quantity);
+    }
+
     public function gererImage(array $files)
     {
         $fileTmpName = $files['fleur']['tmp_name'];
