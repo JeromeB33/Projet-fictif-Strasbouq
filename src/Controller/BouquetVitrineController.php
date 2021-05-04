@@ -10,7 +10,9 @@ class BouquetVitrineController extends AbstractController
 {
     public function index(): string
     {
-
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
         $bouquVitrineManager = new BouquetVitrineManager();
         $bouquetVitrines = $bouquVitrineManager->selectAll('name');
 
@@ -19,6 +21,9 @@ class BouquetVitrineController extends AbstractController
 
     public function show(int $id): string
     {
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
         $bouquVitrineManager = new BouquetVitrineManager();
         $bouquetVitrine = $bouquVitrineManager->selectOneByID($id);
 
@@ -32,6 +37,9 @@ class BouquetVitrineController extends AbstractController
 
     public function edit(int $id): string
     {
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
 
         $stockManager = new StockManager();
         $fleursVitrine = $stockManager->selectAll();
@@ -68,6 +76,9 @@ class BouquetVitrineController extends AbstractController
 
     public function add(): string
     {
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
         $stockManager = new StockManager();
         $fleursVitrine = $stockManager->selectAll();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

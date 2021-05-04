@@ -6,6 +6,7 @@ class CommandManager extends AbstractManager
 {
     public const TABLE = "command";
     public const TABLE_2 = "commandDetails";
+    public const TABLE_3 = "commandStatus";
 
     /*
      *  insert command in database

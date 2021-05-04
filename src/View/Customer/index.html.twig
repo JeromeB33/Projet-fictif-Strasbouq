@@ -1,5 +1,4 @@
 {% extends 'layout.html.twig' %}
-
 {% block content %}
     <h1>Customers</h1>
     <ul>
@@ -9,5 +8,6 @@
             <li>Nothing to display</li>
         {% endfor %}
     </ul>
-    <a href="/customer/add">Ajouter</a>
+    <a href="/customer/add"><button>Ajouter</button></a>
+    <a href="/Home/compteAdmin"><button>Back</button></a>
 {% endblock %}

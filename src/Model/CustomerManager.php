@@ -5,6 +5,7 @@ namespace App\Model;
 class CustomerManager extends AbstractManager
 {
     public const TABLE = 'customer';
+    public const TABLE_2 = 'command';
 
     /**
      * Insert new item in database.
@@ -66,5 +67,17 @@ class CustomerManager extends AbstractManager
         $statement->execute();
 
         return $statement->fetch();
+    }
+
+    public function selectClientCommand($id)
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT * FROM " . static::TABLE . " JOIN " . static::TABLE_2 . " c 
+            ON c.customer_id=customer.id  WHERE customer.id=:id "
+        );
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
 }

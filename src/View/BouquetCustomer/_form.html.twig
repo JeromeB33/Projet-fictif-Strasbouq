@@ -10,8 +10,7 @@
 
     <div>
 
-        <label for="customer_id">id customer</label><br>
-        <input type="number" value="{{ bouquetCustomer.customer_id }}" name="customer_id"></br>
+        <input type="hidden" value="{{ session.user.id }}" name="customer_id"></br>
         <label for="name">Nom bouquet</label><br>
         <input type="text" value="{{ bouquetCustomer.name }}" name="name"></br>
 
