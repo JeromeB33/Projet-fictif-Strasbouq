@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Model\BouquetCustomerManager;
 use App\Model\StockManager;
+use App\Model\BouquetVitrineManager;
 
 class HomeController extends AbstractController
 {
@@ -67,7 +68,9 @@ class HomeController extends AbstractController
      */
     public function choisiBouquet(): string
     {
-        return $this->twig->render('Home/choisi.html.twig');
+        $bouquetVitrine = new BouquetVitrineManager();
+        $bouquets = $bouquetVitrine->selectAll();
+        return $this->twig->render('Home/choisi.html.twig', ['bouquets' => $bouquets]);
     }
 
     public function compte(): string
