@@ -169,7 +169,7 @@ class CommandController extends AbstractController
             }
             //if not connect redirection connexion page
             $message = "Veuillez vous connecter pour passer commande";
-            return $this->twig->render("/Home/login.html.twig", ['message' => $message]);
+            return $this->twig->render("/Home/logIn.html.twig", ['message' => $message]);
         }
     }
 

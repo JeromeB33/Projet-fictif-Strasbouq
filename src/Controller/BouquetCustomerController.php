@@ -44,6 +44,7 @@ class BouquetCustomerController extends AbstractController
      */
     public function edit(int $id): string
     {
+        $allId = [];
         $errors = [];
         $stockManager = new stockManager();
         $flowers = $stockManager->selectAll();
@@ -51,7 +52,14 @@ class BouquetCustomerController extends AbstractController
         $bouquetCustomer = $bouqCustomerManager->selectOneById($id);
         $idBouquet = $bouqCustomerManager->selectOneById($id);
         $bouquet = $bouqCustomerManager->selectBouquetCustomerById($id);
+        $allBouquetCustomer = $bouqCustomerManager->selectBouquetCustomer($_SESSION['user']['id']);
+        foreach ($allBouquetCustomer as $bouquetId) {
+            $allId[] = $bouquetId['id'];
+        }
 
+        if (in_array($id, $allId) != true) {
+                        header('Location: /Home/accessdenied');
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $_POST['name'] = trim($_POST['name']);
@@ -90,6 +98,9 @@ class BouquetCustomerController extends AbstractController
      */
     public function add(): string
     {
+        if ($_SESSION['admin'] != true) {
+            header('Location: /Home/accessdenied');
+        }
         $errors = [];
         $stockManager = new StockManager();
         $flowers = $stockManager->selectAll();

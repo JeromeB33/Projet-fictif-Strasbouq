@@ -23,7 +23,7 @@ class BouquetCustomerManager extends AbstractManager
     {
 
             $query = "INSERT INTO " . self::TABLE_2 . " VALUES( 
-                " . $bouquetCustomer['bouquet_id'] . ", " . $bouquetCustomer['stocks'] . ")";
+                " . $bouquetCustomer['stocks'] . ", " . $bouquetCustomer['bouquet_id'] . ")";
             $this->pdo->exec($query);
     }
     /**
