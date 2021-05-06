@@ -1,11 +1,15 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h2>Modifier mes informations</h2>
+    <div class="uk-text-center uk-margin-large-top">
+        <h1>Modifier mes informations</h1>
+    </div>
     {% include 'Customer/_form.html.twig' %}
-    {% if session.admin == true %}
-    <a href="/Customer/index"><button class="uk-button uk-button-default">Back</button></a>
-    {% else %}
-    <a href="/Home/compte"><button class="uk-button uk-button-default">Back</button></a>
-    {% endif %}
+    <div class="uk-text-center">
+        {% if session.admin == true %}
+        <a href="/Customer/index"><button class="uk-button uk-button-default">Back</button></a>
+        {% else %}
+        <a href="/Home/compte"><button class="uk-button uk-button-default">Back</button></a>
+        {% endif %}
+    </div>
 {% endblock %}

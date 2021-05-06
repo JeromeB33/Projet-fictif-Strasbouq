@@ -1,17 +1,15 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+<div class="uk-flex uk-flex-middle uk-flex-column" uk-grid>
+    <div class="uk-width-1-3@m uk-margin-large-top">
 
-    <h2>Informations client</h2>
-    <li>Nom : {{ customer.lastname }}</li>
-    <li>Prénom : {{ customer.firstname }}</li>
-    <li>Email : {{ customer.email }}</li>
-    <li>Téléphone : 0{{ customer.phone }}</li>
-    <li>Mot de passe : {{ customer.password }}</li>
-    <a href="/customer/edit/{{ customer.id }}"><button class="uk-button uk-button-default">Edit</button></a>
-    <form action="/customer/delete/{{customer.id}}" method="POST">
-        <button class="uk-button uk-button-default">Delete</button>
-    </form>
+    <h1>Informations client</h1>
+    <p><span class="uk-label">Nom</span> {{ customer.lastname }}</p>
+    <p><span class="uk-label">Prénom</span> {{ customer.firstname }}</p>
+    <p><span class="uk-label">Email</span> {{ customer.email }}</p>
+    <p><span class="uk-label">Téléphone</span> 0{{ customer.phone }}</p>
+    <a href="/customer/edit/{{ customer.id }}"><button class="uk-button-small">Modifier</button></a>
 
     <h2>Ses commandes</h2>
         <table class="uk-table uk-table-striped">
@@ -29,10 +27,13 @@
             <td>{{ command.dateOrder }}</td>
             <td>{{ command.totalAmount }} €</td>
 
-            <td><a href="/Command/edit/{{ command.id }}"><button class="uk-button uk-button-default">Modifier</button></a></td>
+            <td><a href="/Command/edit/{{ command.id }}"><button class="uk-button-small">Modifier</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
     </table>
-    <a href="/Home/compteAdmin"><button class="uk-button uk-button-default">Back</button></a>
+        <form action="/customer/delete/{{customer.id}}" method="POST">
+            <button class="uk-button-small">Supprimer le compte</button>
+        </form>
+    <a href="/Home/compteAdmin"><button class="uk-button-small">Back</button></a>
 {% endblock %}
