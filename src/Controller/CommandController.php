@@ -139,6 +139,9 @@ class CommandController extends AbstractController
         return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
     }
 
+    /*
+     * save in bdd order the cart
+     */
     public function commander()
     {
         if ($_SERVER['REQUEST_METHOD'] === "POST") {
