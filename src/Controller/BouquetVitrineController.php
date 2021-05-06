@@ -47,8 +47,6 @@ class BouquetVitrineController extends AbstractController
         $bouquetVitrine = $bouquVitrineManager->selectOneById($id);
         $idBouquetV = $bouquVitrineManager->selectOneById($id);
         $bouquet = $bouquVitrineManager->showBouquet($id);
-
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['name'] = trim($_POST['name']);
             $bouquetVitrine = $_POST;

@@ -66,7 +66,7 @@ class ConnexionController extends AbstractController
                     $message = "Inscription réussie, vous pouvez à présent vous connecter";
                     return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
                 }
-                return $this->twig->render('Home/signin.html.twig', ['errors' => $errors]);
+                return $this->twig->render('Home/signIn.html.twig', ['errors' => $errors]);
 
 
                 //user know : any insertion in base, return message
@@ -96,7 +96,7 @@ class ConnexionController extends AbstractController
             } else {
                 //unknow then error message
                 $message = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
-                return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
+                return $this->twig->render('/Home/logIn.html.twig', ['message' => $message]);
             }
         }
 

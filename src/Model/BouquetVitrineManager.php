@@ -39,10 +39,23 @@ class BouquetVitrineManager extends AbstractManager
 
     public function showBouquet(int $id): array
     {
-        $statement = $this->pdo->prepare("SELECT *, count(sbv.stock_id) as number 
+        $statement = $this->pdo->prepare("SELECT *, count(sbv.stock_id) as number
         FROM " . self::TABLE_2 . " sbv  
         JOIN " . self:: TABLE_3 . " s 
         ON s.id=sbv.stock_id WHERE sbv.bouquetVitrine_id=:id GROUP BY sbv.stock_id  ");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function showBouquetPanier(int $id): array
+    {
+        $statement = $this->pdo->prepare("SELECT *
+        FROM " . self::TABLE_2 . " sbv  
+        JOIN " . self:: TABLE_3 . " s 
+        ON s.id=sbv.stock_id WHERE sbv.bouquetVitrine_id=:id ");
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
 
         $statement->execute();
@@ -67,5 +80,20 @@ class BouquetVitrineManager extends AbstractManager
             $statement->bindValue('bouquet', $bouquet, \PDO::PARAM_INT);
 
             $statement->execute();
+    }
+
+    public function showPriceBouquet()
+    {
+        $statement = $this->pdo->prepare("SELECT sbv.bouquetVitrine_id,bv.name,bv.image, sum(s.price) as total
+        FROM " . self::TABLE_2 . " sbv 
+        JOIN " . self::TABLE_3 . " s 
+        ON s.id=sbv.stock_id 
+        JOIN bouquetVitrine bv
+        ON bv.id=sbv.bouquetVitrine_id
+        GROUP BY bouquetVitrine_id");
+
+        $statement->execute();
+
+        return $statement->fetchAll();
     }
 }
