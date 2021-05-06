@@ -30,7 +30,7 @@ class CommandStatusController extends AbstractController
                 }
             }
 
-            return $this->twig->render("Commande/indexCommande.html.twig", ['status' => $status]);
+            return $this->twig->render("Commande/addCommand.html.twig", ['status' => $status]);
         }
     }
 

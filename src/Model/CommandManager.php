@@ -110,13 +110,15 @@ class CommandManager extends AbstractManager
         $statement->execute();
     }
 
+    /*
+     * get name of flowers in command
+     */
     public function getStockCommand(int $id)
     {
                $query = "SELECT * FROM " . self::TABLE_2 . " c
                RIGHT JOIN " . self::TABLE_4 . " s ON s.id= c.stock_id WHERE c.command_id = $id";
 
                $statement = $this->pdo->query($query);
-
                return $statement->fetchAll();
     }
 }

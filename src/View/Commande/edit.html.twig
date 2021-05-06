@@ -2,10 +2,12 @@
 
 {% block content %}
     <form action="/Command/editCommand/{{ id }}" method="POST" class="uk-form-width-large uk-align-center">
+        {# display each flower in the order #}
         {% for flower in stockCommand %}
                 <label class="uk-label">{{ flower.name }} </label> (quantité) <input class="uk-input" type="number" name="stock_id[{{ flower.id }}][quantity]" value="{{ flower.quantity }}">
         {% endfor %}
 
+        {# display each flower in the stock #}
         {% for flowers in stock %}
             {% if flowers is not empty %}
                 <label class="uk-label">{{ flowers.name }} </label> (quantité) <input class="uk-input" type="number" name="stock_id[{{ flower.id }}][quantity]" value="0">

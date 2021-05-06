@@ -7,12 +7,13 @@ use App\Model\CommandStatusManager;
 use App\Model\StockManager;
 use App\Controller\StockController;
 use App\Controller\CommandStatusController;
+use App\Model\CustomerManager;
 
 class CommandController extends AbstractController
 {
     public function index(): string
     {
-        return $this->twig->render("Commande/indexCommande.html.twig");
+        return $this->twig->render("Commande/command.html.twig");
     }
 
     /*
@@ -20,12 +21,15 @@ class CommandController extends AbstractController
      */
     public function edit($id): string
     {
+        //get flowers in order with name
         $commandManager = new CommandManager();
         $stockCommand = $commandManager->getStockCommand($id);
 
+        //get whole stock
         $stockManager = new StockManager();
         $stock = $stockManager->selectAll();
 
+        //if id flower already in order , clean its data
         foreach ($stock as $i => $flower) {
             foreach ($stockCommand as $command) {
                 if ($command['stock_id'] === $flower['id']) {
@@ -40,6 +44,17 @@ class CommandController extends AbstractController
         );
     }
 
+    public function add()
+    {
+        $stockManager = new StockManager();
+        $stock = $stockManager->selectAll();
+
+        $customerManager = new CustomerManager();
+        $customers = $customerManager->selectAll();
+
+        return $this->twig->render("/Commande/addCommand.html.twig", ['stock' => $stock, 'customers' => $customers]);
+    }
+
     /**
      * Show all informations
      */
@@ -48,7 +63,7 @@ class CommandController extends AbstractController
         $commandeManager = new CommandManager();
         $commandes = $commandeManager->selectAll();
 
-        return $this->twig->render("Commande/indexCommande.html.twig", ['commandes' => $commandes]);
+        return $this->twig->render("Commande/addCommand.html.twig", ['commandes' => $commandes]);
     }
 
     /**
@@ -60,21 +75,39 @@ class CommandController extends AbstractController
             $commandeManager = new CommandManager();
             $details = $commandeManager->selectOneById($id);
 
-            return $this->twig->render("Commande/indexCommande.html.twig", ['details' => $details]);
+            return $this->twig->render("Commande/addCommand.html.twig", ['details' => $details]);
         }
     }
 
     /**
      * Add a new command (with its details and status) from form
     */
-    public function add(): void
+    public function addCommandForm(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_POST)) {
                 $commande = $_POST;
+                $commande['totalAmount'] = 0;
+
+                $stockManager = new StockManager();
+                $stock = $stockManager->selectAll();
+
 
                 //format date pick to fit in base
                 $commande['datePick'] = $_POST['datePick'] . ' ' . $_POST['timePick'];
+
+                //get the total amount
+                foreach ($commande['stock_id'] as $stockId => $quantities) {
+                    foreach ($quantities as $quantity) {
+                        if (!empty($quantity) && (int)$quantity > 0) {
+                            foreach ($stock as $flower) {
+                                if ($flower['id'] == $stockId) {
+                                    $commande['totalAmount'] += $flower['price'] * $quantity;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 //insert command
                 $commandeManager = new CommandManager();
@@ -85,6 +118,7 @@ class CommandController extends AbstractController
                 //take id of the last input in command to associate the command details and status
                 $lastID = $commandeManager->selectLastId();
                 $commande['command_id'] = (int)$lastID[0];
+
 
                 //insert command details : for each stock_id if its quantity > 0 add a tuple
                 foreach ($commande['stock_id'] as $stockId => $quantities) {
@@ -101,16 +135,16 @@ class CommandController extends AbstractController
                     }
                 }
 
-                //transform value in tinyint (bool) (to fit into status table)
-                $commande['ispick'] === 'false' ? $commande['ispick'] = 0 : $commande['ispick'] = 1;
-                $commande['isprepared'] === 'false' ?  $commande['isprepared'] = 0 : $commande['isprepared'] = 1;
 
                 // insert command status
+                $commande['isPick'] = (int) $commande['isPick'];
+                $commande['isPrepared'] = (int) $commande['isPrepared'];
+
                 $commandStatusManager = new CommandStatusManager();
                 $commandStatusManager->insertStatus($commande);
             }
             //redirection
-            header("Location: /Command/showAll");
+            header("Location: /Command/add");
         }
     }
 
@@ -222,7 +256,6 @@ class CommandController extends AbstractController
         $commandStatusManager = new CommandStatusManager();
         $commandStatusManager->insertStatus($commande);
     }
-
 
 
     /*
