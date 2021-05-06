@@ -35,35 +35,6 @@ class CommandStatusController extends AbstractController
     }
 
     /*
-    * edit status
-
-    public function editStatus($id)
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $ispick = $_POST['isPick'];
-            $isprepared = $_POST['isPrepared'];
-
-            //transform value to fit in the table
-            if ($ispick === 'false') {
-                $ispick = 0;
-            } elseif ($ispick === 'true') {
-                $ispick = 1;
-            }
-
-            if ($isprepared === 'false') {
-                $isprepared = 0;
-            } elseif ($isprepared === 'true') {
-                $isprepared = 1;
-            }
-
-            $commandStatusManager = new CommandStatusManager();
-            $commandStatusManager->editStatus($id, $ispick, $isprepared);
-        }
-
-        header("Location: /Command/showAll");
-    }*/
-
-    /*
      * display command already picked
      */
     public function showArchiveCommand()
