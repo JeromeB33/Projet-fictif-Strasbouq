@@ -1,9 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-{{dump(archivecommand)}}
 <h2> Commandes archivées</h2>
-    <table>
+    <table class="uk-table uk-table-striped">
     <thead>
         <tr>
             <th>id</th>
@@ -18,10 +17,10 @@
             <td>{{ command.id }}</td>
             <td>{{ command.dateOrder }}</td>
             <td>{{ command.customer_id }}</a></td>
-            <td><a href="/stock/edit/{{ stock.id }}"><button>Voir</button></a></td>
+            <td><a href="/stock/edit/{{ stock.id }}"><button class="uk-button uk-button-default">Voir</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
     </table>
-    <a href="/Home/compteAdmin"><button>Back</button></a>
+    <a href="/Home/compteAdmin"><button class="uk-button uk-button-default">Back</button></a>
 {% endblock %}

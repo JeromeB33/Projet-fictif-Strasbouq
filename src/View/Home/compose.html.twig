@@ -11,11 +11,14 @@
             <div>
                 <div class="uk-border-rounded uk-card-hover uk-card uk-card-default ">
                     <div class="uk-card-media-top uk-padding-remove-bottom ">
-                        <a href="#"> <img src="/assets/images/{{ flower.image }}" alt="{{ flower.name }}" class="uk-height-medium uk-align-center">
+                        <a href="#modal-center" uk-toggle> <img src="/assets/images/{{ flower.image }}" alt="{{ flower.name }}" class="uk-height-medium uk-align-center">
                     </div>
                     <div class="uk-card-body uk-padding-remove">
-                        <h3 class="uk-card-title uk-text-center">{{ flower.name }}</h3>
+                        <h3 class="uk-card-title uk-text-center">{{ flower.name }} <a href="#modal-center" uk-toggle uk-icon="info"></a></h3>
                         </a>
+                        <div id="modal-center" class="uk-flex-top" uk-modal>
+                            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical"><p>{{flower.description}}</p></div>
+                        </div>
                     </div>
                     <div>
                         <p class = "uk-text-center">{{ flower.price }} €</p>

@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <h1>Edit BouquetVitrine {{ bouquetVitrine.name }}</h1>
+    <h1>Modifier le bouquet : {{ bouquetVitrine.name }}</h1>
     <ul>
         {% for fleur in bouquet %}
             <li>{{ fleur.name }} {{ fleur.number }} {{ fleur.image }}</li>

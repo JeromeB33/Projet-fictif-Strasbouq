@@ -8,19 +8,18 @@
     <li>Email : {{ customer.email }}</li>
     <li>Téléphone : 0{{ customer.phone }}</li>
     <li>Mot de passe : {{ customer.password }}</li>
-    <a href="/customer/edit/{{ customer.id }}"><button>Edit</button></a>
+    <a href="/customer/edit/{{ customer.id }}"><button class="uk-button uk-button-default">Edit</button></a>
     <form action="/customer/delete/{{customer.id}}" method="POST">
-        <button>Delete</button>
+        <button class="uk-button uk-button-default">Delete</button>
     </form>
 
     <h2>Ses commandes</h2>
-        <table>
+        <table class="uk-table uk-table-striped">
     <thead>
         <tr>
             <th>id </th>
             <th>Date de commande </th>
             <th>Prix </th>
-
         </tr>
     </thead>
     <tbody>
@@ -28,12 +27,12 @@
         <tr>
             <td>{{ command.id }}</td>
             <td>{{ command.dateOrder }}</td>
-            <td>{{ command.totalAMount }}</td>
+            <td>{{ command.totalAmount }} €</td>
 
-            <td><a href="/Command/edit/{{ command.id }}"><button>Modifier</button></a></td>
+            <td><a href="/Command/edit/{{ command.id }}"><button class="uk-button uk-button-default">Modifier</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
     </table>
-    <a href="/Home/compteAdmin"><button>Back</button></a>
+    <a href="/Home/compteAdmin"><button class="uk-button uk-button-default">Back</button></a>
 {% endblock %}

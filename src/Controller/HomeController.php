@@ -9,6 +9,7 @@
 
 namespace App\Controller;
 
+use App\Model\CustomerManager;
 use App\Model\BouquetCustomerManager;
 use App\Model\StockManager;
 use App\Model\BouquetVitrineManager;
@@ -78,13 +79,16 @@ class HomeController extends AbstractController
         if ($_SESSION['admin'] === true) {
             header('Location: /Home/compteAdmin');
         }
+        $customerManager = new CustomerManager();
+        $customerCommand = $customerManager->selectClientCommand($_SESSION['user']['id']);
         $bouq = [];
         $bouqCustomerManager = new BouquetCustomerManager();
         $bouquets = $bouqCustomerManager->selectBouquetCustomer($_SESSION['user']['id']);
         foreach ($bouquets as $bouquet) {
             $bouq[] = $bouqCustomerManager->selectBouquetCustomerById($bouquet['id']);
         }
-        return $this->twig->render('Home/compte.html.twig', ['bouquets' => $bouquets, 'bouq' => $bouq]);
+        return $this->twig->render('Home/compte.html.twig', ['bouquets' => $bouquets,
+        'bouq' => $bouq, 'customercommand' => $customerCommand ]);
     }
 
     public function accessDenied(): string

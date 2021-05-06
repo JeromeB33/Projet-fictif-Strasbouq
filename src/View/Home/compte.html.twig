@@ -15,7 +15,7 @@
         <div>
             <h2>Mes Bouquets sauvegardés</h2>
             
-            <ul>
+            <ul class="uk-list uk-list-hyphen">
                 {% for bouquet in bouquets %}
                     <li><p><button class="uk-button uk-button-default" type="button">{{bouquet.name}}</button>
                     <a href="/bouquetCustomer/edit/{{ bouquet.id }}"><button>Modifier</button></a>
@@ -34,6 +34,26 @@
         </div>
         <div>
             <h2>Mes Commandes</h2>
+
+                    <table class="uk-table uk-table-striped">
+    <thead>
+        <tr>
+            <th>Date de récupération </th>
+            <th>Prix </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for command in customercommand %}
+        <tr>
+            <td>{{ command.datePick }}</td>
+            <td>{{ command.totalAmount }} €</td>
+
+            <td><a href="/Command/edit/{{ command.id }}"><button>Modifier</button></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
             
         </div>
     </div>

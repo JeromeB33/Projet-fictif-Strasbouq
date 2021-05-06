@@ -19,11 +19,10 @@ class BouquetCustomerManager extends AbstractManager
         $statement->execute();
     }
 
-    public function insertFlowersInBouquet(array $bouquetCustomer)
+    public function insertFlowersInBouquet($stock, $bouquet)
     {
-
             $query = "INSERT INTO " . self::TABLE_2 . " VALUES( 
-                " . $bouquetCustomer['stocks'] . ", " . $bouquetCustomer['bouquet_id'] . ")";
+                " . $stock . ", " . $bouquet . ")";
             $this->pdo->exec($query);
     }
     /**
@@ -51,12 +50,11 @@ class BouquetCustomerManager extends AbstractManager
         return $statement->fetchAll();
     }
 
-    public function deleteOneFlower(int $id, int $bouquetId)
+    public function deleteAllFlower(int $bouquetId)
     {
                 // prepared request
                 $statement = $this->pdo->prepare("DELETE FROM " . static::TABLE_2 . "
-                 WHERE stock_id=:id and bouquetCustomer_id=:bouquet_id LIMIT 1");
-                $statement->bindValue('id', $id, \PDO::PARAM_INT);
+                 WHERE bouquetCustomer_id=:bouquet_id");
                 $statement->bindValue('bouquet_id', $bouquetId, \PDO::PARAM_INT);
                 $statement->execute();
     }

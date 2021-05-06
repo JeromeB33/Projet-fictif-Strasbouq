@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2> Commandes en cours</h2>
-    <table>
+    <table class="uk-table uk-table-striped">
     <thead>
         <tr>
             <th>id </th>
@@ -19,10 +19,10 @@
             <td>{{ command.dateOrder }}</td>
             <td><a href="/customer/show/{{ command.customer_id }}">{{ command.lastname }}</a></td>
             <td>{{ command.isprepared }}</td>
-            <td><a href="/Command/edit/{{ command.id }}"><button>Modifier</button></a></td>
+            <td><a href="/Command/edit/{{ command.id }}"><button class="uk-button uk-button-default">Modifier</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
     </table>
-    <a href="/Home/compteAdmin"><button>Back</button></a>
+    <a href="/Home/compteAdmin"><button class="uk-button uk-button-default">Back</button></a>
 {% endblock %}

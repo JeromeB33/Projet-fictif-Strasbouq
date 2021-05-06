@@ -6,7 +6,7 @@
     <p>{{stock.description}}</p>
     <a href="/stock/edit/{{ stock.id }}">Edit</a>
     <form action="/stock/delete/{{stock.id}}" method="POST">
-        <button>Delete</button>
+        <button class="uk-button uk-button-default">Delete</button>
     </form>
-    <a href="/stock/index">Back</a>
+    <a class="uk-button uk-button-default" href="/stock/index">Back</a>
 {% endblock %}
