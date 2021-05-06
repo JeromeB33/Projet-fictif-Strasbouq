@@ -1,30 +1,28 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-
-    <div>
-    <h1>Mon compte</h1>
-        <div>
+<div class="uk-flex uk-flex-middle uk-flex-column" uk-grid>
+    <div class="uk-width-1-3@m uk-margin-large-top">
             <h2>Mes informations</h2>
-                <p>Nom : {{ session.user.lastname }} {{ session.user.firstname }}</p>
-                <p>Email : {{ session.user.email }}</p>
-                <p>Phone number : 0{{ session.user.phone }}</p>
-                <a href="/customer/edit/{{ session.user.id }}"><button>Modifier mes informations</button></a>
+                <p><span class="uk-label">Nom</span> {{ session.user.lastname }} {{ session.user.firstname }}</p>
+                <p><span class="uk-label">Email</span> {{ session.user.email }}</p>
+                <p><span class="uk-label">Téléphone</span> 0{{ session.user.phone }}</p>
+                <a href="/customer/edit/{{ session.user.id }}"><button class="uk-button-small">Modifier mes informations</button></a>
                 
         </div>
-        <div>
-            <h2>Mes Bouquets sauvegardés</h2>
+        <div class="uk-width-1-3@m">
+            <h2>Mes bouquets sauvegardés</h2>
             
-            <ul class="uk-list uk-list-hyphen">
+            <ul class="uk-list">
                 {% for bouquet in bouquets %}
-                    <li><p><button class="uk-button uk-button-default" type="button">{{bouquet.name}}</button>
-                    <a href="/bouquetCustomer/edit/{{ bouquet.id }}"><button>Modifier</button></a>
+                    <li><p><button class="uk-button uk-button-primary uk-button-small" type="button">{{bouquet.name}}</button>
+                    <a href="/bouquetCustomer/edit/{{ bouquet.id }}"><button class="uk-button-small">Modifier</button></a>
                     </li>
                         <div uk-dropdown="mode: click, pos: top-right">
                             {% for fleurs in bouq %}
                                 {% if fleurs.0.bouquetCustomer_id is same as (bouquet.id) %}
                                     {% for fleur in fleurs %}
-                    <li>{{fleur.nombre}}x {{fleur.name}}</li>
+                        <li>{{fleur.nombre}}x {{fleur.name}}</li>
                                     {% endfor %}
                                 {% endif %}
                             {% endfor %}
@@ -32,8 +30,8 @@
                 {% endfor %}
             </ul>
         </div>
-        <div>
-            <h2>Mes Commandes</h2>
+        <div class="uk-width-1-3@m">
+            <h2>Mes commandes</h2>
 
                     <table class="uk-table uk-table-striped">
     <thead>
@@ -49,17 +47,16 @@
             <td>{{ command.datePick }}</td>
             <td>{{ command.totalAmount }} €</td>
 
-            <td><a href="/Command/edit/{{ command.id }}"><button>Modifier</button></a></td>
+            <td><a href="/Command/edit/{{ command.id }}"><button class="uk-button-small">Modifier</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
-    </table>
-            
+    </table>   
         </div>
-    </div>
-    
-    <form action="/customer/delete/{{session.user.id}}" method="POST">
-        <button>Supprimer mon compte</button>
-    </form>
+        <div class="uk-width-1-3@m">
+            <form action="/customer/delete/{{session.user.id}}" method="POST">
+                <button class="uk-button-small">Supprimer mon compte</button>
+            </form>
+        </div>
         </div>
 {% endblock %}

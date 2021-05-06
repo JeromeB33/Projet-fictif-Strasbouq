@@ -4,8 +4,8 @@
     <h2>Modifier mes informations</h2>
     {% include 'Customer/_form.html.twig' %}
     {% if session.admin == true %}
-    <a href="/Customer/index">Back</a>
+    <a href="/Customer/index"><button class="uk-button uk-button-default">Back</button></a>
     {% else %}
-    <a href="/Home/compte">Back</a>
+    <a href="/Home/compte"><button class="uk-button uk-button-default">Back</button></a>
     {% endif %}
 {% endblock %}
