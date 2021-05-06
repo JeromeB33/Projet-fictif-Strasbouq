@@ -36,7 +36,7 @@ class CommandStatusController extends AbstractController
 
     /*
     * edit status
-    */
+
     public function editStatus($id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -61,7 +61,7 @@ class CommandStatusController extends AbstractController
         }
 
         header("Location: /Command/showAll");
-    }
+    }*/
 
     /*
      * display command already picked
@@ -70,6 +70,7 @@ class CommandStatusController extends AbstractController
     {
         $commandStatusManager = new CommandStatusManager();
         $archiveCommand = $commandStatusManager->archiveCommand('dateOrder');
+
 
         return $this->twig->render("Commande/archive.html.twig", ['archivecommand' => $archiveCommand]);
     }
@@ -83,5 +84,32 @@ class CommandStatusController extends AbstractController
         $activeCommand = $commandStatusManager->activeCommand('datePick');
 
         return $this->twig->render("Commande/command.html.twig", ['activecommand' => $activeCommand]);
+    }
+
+    /*
+     * edit status
+     */
+    public function editStatus($commande)
+    {
+        $ispick = $commande['isPick'];
+        $isprepared = $commande['isPrepared'];
+
+            //transform value to fit in the table
+        if ($ispick === 'false') {
+            $ispick = 0;
+        } elseif ($ispick === 'true') {
+            $ispick = 1;
+        }
+
+        if ($isprepared === 'false') {
+            $isprepared = 0;
+        } elseif ($isprepared === 'true') {
+            $isprepared = 1;
+        }
+
+        $commandStatusManager = new CommandStatusManager();
+        $commandStatusManager->editStatus($commande['command_id'], $ispick, $isprepared);
+
+        header("Location: /Command/showAll");
     }
 }

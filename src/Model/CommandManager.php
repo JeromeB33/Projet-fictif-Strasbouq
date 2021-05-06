@@ -7,6 +7,8 @@ class CommandManager extends AbstractManager
     public const TABLE = "command";
     public const TABLE_2 = "commandDetails";
     public const TABLE_3 = "commandStatus";
+    public const TABLE_4 = "stock";
+
 
     /*
      *  insert command in database
@@ -23,7 +25,6 @@ class CommandManager extends AbstractManager
 
         $statement->execute();
     }
-
 
     /*
     *  insert command details in database
@@ -88,13 +89,34 @@ class CommandManager extends AbstractManager
     }
 
     /*
-    public function editStock(int $id)
+     * edit command
+     */
+    public function editCommand($commande)
     {
-        $query = "UPDATE " . self::TABLE . " SET stock_id = :stock_id, quantity=:quantity WHERE id=:id";
+        $query = "UPDATE " . self::TABLE . " SET totalAmount=:totalAmount WHERE id=:id";
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue('id', $id);
-        $statement->bindValue('stock_id', $stock_id);
-        $statement->bindValue('quantity', $quantity);
+        $statement->bindValue('id', $commande['command_id']);
+        $statement->bindValue('totalAmount', $commande['totalAmount']);
         $statement->execute();
-    }*/
+    }
+
+    /*
+     * delete by command_id in commandDetail table
+     */
+    public function deleteDetails(int $id): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . static::TABLE_2 . " WHERE command_id=:id");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    public function getStockCommand(int $id)
+    {
+               $query = "SELECT * FROM " . self::TABLE_2 . " c
+               RIGHT JOIN " . self::TABLE_4 . " s ON s.id= c.stock_id WHERE c.command_id = $id";
+
+               $statement = $this->pdo->query($query);
+
+               return $statement->fetchAll();
+    }
 }

@@ -6,6 +6,7 @@ use App\Model\CommandManager;
 use App\Model\CommandStatusManager;
 use App\Model\StockManager;
 use App\Controller\StockController;
+use App\Controller\CommandStatusController;
 
 class CommandController extends AbstractController
 {
@@ -17,18 +18,25 @@ class CommandController extends AbstractController
     /*
      * display edit command page
      */
-    public function edit(int $id)
+    public function edit($id): string
     {
-        //get all stock id and quantity
-        $details = $this->getDetails($id);
+        $commandManager = new CommandManager();
+        $stockCommand = $commandManager->getStockCommand($id);
 
-        //get all stock
-        $stockManger = new StockManager();
-        $stock = $stockManger->selectAll();
+        $stockManager = new StockManager();
+        $stock = $stockManager->selectAll();
+
+        foreach ($stock as $i => $flower) {
+            foreach ($stockCommand as $command) {
+                if ($command['stock_id'] === $flower['id']) {
+                    $stock[$i] = [];
+                }
+            }
+        }
 
         return $this->twig->render(
             "Commande/edit.html.twig",
-            ['details' => $details, "stock" => $stock]
+            ["stockCommand" => $stockCommand, 'id' => $id, 'stock' => $stock]
         );
     }
 
@@ -219,16 +227,58 @@ class CommandController extends AbstractController
 
     /*
      * edit a command
-
+    */
     public function editCommand($id)
     {
-        //TODO : EDTI COMMAND
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        }
+            $commandManager = new CommandManager();
+            $stockManager = new StockManager();
+            $statusController = new CommandStatusController();
 
-        //TODO caluler prix
-    }*/
+            $stock = $stockManager->selectAll();
+            $commande = $_POST;
+            $commande['totalAmount'] = 0;
+            $commande['command_id'] = $id;
+
+            //if pick date is modified
+            if ($_POST['newDatePick'] <> '' && $_POST['newTimePick'] <> '') {
+                $newDate = $commande['newDatePick'] . ' ' . $commande['newTimePick'];
+                $commandManager->editDatePicksById($commande['command_id'], $newDate);
+            }
+
+            if (isset($_POST['isPick']) && isset($_POST['isPrepared'])) {
+                $statusController->editStatus($commande);
+            }
+
+            //suppr pour eviter des problemess avec l'update car plusieurs meme id dans commandDetails
+            //on supprimer tout le stock
+            $commandManager->deleteDetails($id);
+
+
+            //on réinsère le nouveau stock
+            foreach ($commande['stock_id'] as $id => $quantities) {
+                foreach ($quantities as $quantity) {
+                    if (!empty($quantity) && (int) $quantity > 0) {
+                        $commande['stock_id'] = (int)$id;
+                        $commande['quantity'] = (int)$quantity;
+                        //Insert new stock id
+                        $commandManager->insertCommandDetails($commande);
+                    }
+                }
+            }
+
+            $details = $commandManager->getDetails($commande['command_id']);
+            foreach ($stock as $flower) {
+                foreach ($details as $detail) {
+                    if ($flower['id'] === $detail['stock_id']) {
+                        $commande['totalAmount'] += $flower['price'] * $detail['quantity'];
+                        $commandManager->editCommand($commande);
+                    }
+                }
+            }
+            header('Location: /CommandStatus/showActiveCommand');
+        }
+    }
 
     /*
      * edit a command details : date pick
