@@ -21,7 +21,11 @@ class HomeController extends AbstractController
      */
     public function index(): string
     {
-        return $this->twig->render('Home/index.html.twig');
+        $bouquetVitrine = new BouquetVitrineManager();
+        $bouquets = $bouquetVitrine->selectAll();
+        $stockFleurs = new StockManager();
+        $stock = $stockFleurs->selectAll();
+        return $this->twig->render('Home/index.html.twig', ['bouquet' => $bouquets, 'fleur' => $stock]);
     }
 
     public function panier()
