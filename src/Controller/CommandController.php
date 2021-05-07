@@ -185,6 +185,7 @@ class CommandController extends AbstractController
     }
 
     /*
+     * save in bdd order the cart
      * to command via cart
      */
     public function commander()
