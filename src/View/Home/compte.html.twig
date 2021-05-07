@@ -17,6 +17,7 @@
                 {% for bouquet in bouquets %}
                     <li><p><button class="uk-button uk-button-primary uk-button-small" type="button">{{bouquet.name}}</button>
                     <a href="/bouquetCustomer/edit/{{ bouquet.id }}"><button class="uk-button-small">Modifier</button></a>
+                    <a href="/Panier/addBouquetCustomer/{{ bouquet.id }}"><button class="uk-button-small">Commander</button></a>
                     </li>
                         <div uk-dropdown="mode: click, pos: top-right">
                             {% for fleurs in bouq %}
