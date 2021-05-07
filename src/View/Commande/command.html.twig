@@ -20,11 +20,11 @@
                     <td>{{ command.datePick }}</td>
                     <td><a href="/customer/show/{{ command.customer_id }}">{{ command.firstname }} {{ command.lastname }}</a></td>
                     <td>{{ command.isprepared }}</td>
-                    <td><a href="/Command/edit/{{ command.command_id }}"><button>Modifier</button></a></td>
+                    <td><a href="/Command/edit/{{ command.command_id }}"><button class="uk-button uk-button-default">Modifier</button></a></td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-        <a href="/Home/compteAdmin"><button>Back</button></a>
+        <a href="/Home/compteAdmin"><button class="uk-button uk-button-default">Back</button></a>
     </div>
 {% endblock %}

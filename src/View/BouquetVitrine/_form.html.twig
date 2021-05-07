@@ -1,25 +1,29 @@
 {# TODO : manage errors display #}
 
-<form method="post" enctype="multipart/form-data" class="uk-form-horizontal uk-margin-large">
-	<div class="uk-margin">
-		<label class="uk-form-label" for="form-stacked-text">Nouveau Bouquet</label>
-		<div class="uk-form-controls">
+<form method="post" enctype="multipart/form-data" class="uk-form-width-large uk-align-center">
 	<input type="hidden" value="{{ bouquetVitrine.id }}" name="id">
-	<input type="text" value="{{ bouquetVitrine.name }}" name="name" placeholder="Nom du bouquet">
-	<input type="file" value="Ton image" name="fleur" placeholder="path image">
+	<fieldset class="uk-fieldset">
+		<div class="uk-block uk-margin">
+			<label class="uk-label" for="name">Nom du bouquet</label>
+			<input required class="uk-input uk-border-rounded" type="text" value="{{ bouquetVitrine.name }}" name="name">
 		</div>
-	</div>
+		<div class="uk-block uk-margin">
+			<label class ="uk-label" for="fleur">Upload ton image</label>
+			<input type="file" value="Ton image" name="fleur">
+		</div>
 
-	<h3> Composition bouquet</h3>
-	{% for fleurs in fleursVitrine  %}
-		{{ fleurs.name }}
-	<div class="uk-margin">
-		<div class="uk-form-controls">
-		<input type="number" name="idStock[{{ fleurs.id }}][quantity]" value="{{ fleurs.nombre }}"><br>
+		<h3> Composition bouquet</h3>
+		{% for fleurs in fleursVitrine  %}
+			
+		<div class="uk-block uk-margin">
+			<label class ="uk-label" for="idStock[{{ fleurs.id }}][quantity]">{{ fleurs.name }}</label>
+			<input class="uk-input uk-border-rounded" type="number" name="idStock[{{ fleurs.id }}][quantity]" value="{{ fleurs.nombre }}">
 		</div>
-	</div>
-	{% endfor %}
-	<input type="submit" value="Valider">
+		{% endfor %}
+		<div class="uk-block uk-margin">
+			<input class="uk-input uk-form-width-small uk-border-rounded" type="submit" value="Valider">
+		</div>
+	</fieldset>
 </form>
 
 

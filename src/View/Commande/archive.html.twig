@@ -17,10 +17,10 @@
             <td>{{ command.command_id }}</td>
             <td>{{ command.datePick }}</td>
             <td>{{ command.customer_id }}</a></td>
-            <td><a href="/stock/edit/{{ stock.id }}"><button>Voir</button></a></td>
+            <td><a href="/stock/edit/{{ stock.id }}"><button class="uk-button uk-button-default">Voir</button></a></td>
         </tr>
         {% endfor %}
     </tbody>
     </table>
-    <a href="/Home/compteAdmin"><button>Back</button></a>
+    <a href="/Home/compteAdmin"><button class="uk-button uk-button-default">Back</button></a>
 {% endblock %}
