@@ -130,6 +130,10 @@ class BouquetVitrineController extends AbstractController
         }
     }
 
+    /*
+     * Upload d'images
+     */
+
     public function gererImage(array $files)
     {
         $fileTmpName = $files['fleur']['tmp_name'];
