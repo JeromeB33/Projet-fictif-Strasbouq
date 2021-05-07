@@ -3,8 +3,9 @@
 {% block content %}
     <h1>Edit BouquetVitrine {{ bouquetVitrine.name }}</h1>
     <ul>
+        {{ dump(bouquet) }}
         {% for fleur in bouquet %}
-            <li>{{ fleur.name }} {{ fleur.number }} {{ fleur.image }}</li>
+            <li>{{ fleur.name }} {{ fleur.number }}</li>
             <form method="post" action="/bouquetVitrine/deleteFleurBouquet/{{ fleur.id }}" >
                 <input type="hidden" value="{{ fleur.bouquetVitrine_id }}" name="bouquet">
                 <input type="submit" value="Désencastrer">

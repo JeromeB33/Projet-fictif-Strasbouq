@@ -95,7 +95,7 @@ class ConnexionController extends AbstractController
             } else {
                 //unknow then error message
                 $message = 'Utilisateur inconnu, veuillez réessayer ou vous inscrire';
-                return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
+                return $this->twig->render('/Home/logIn.html.twig', ['message' => $message]);
             }
         }
     }
