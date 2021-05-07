@@ -12194,7 +12194,7 @@ iframe.uk-cover {
 .uk-card-secondary > :not([class*='uk-card-media']) .uk-slidenav,
 .uk-overlay-primary .uk-slidenav,
 .uk-offcanvas-bar .uk-slidenav {
-  color: rgba(255, 255, 255, 0.7);
+  color: black;
 }
 .uk-light .uk-slidenav:hover,
 .uk-light .uk-slidenav:focus,
