@@ -6,24 +6,23 @@
     </ul>
 
 
-<form method="post">
-
-    <div>
-
+<form method="post" class="uk-form-width-large uk-align-center">
         <input type="hidden" value="{{ session.user.id }}" name="customer_id"></br>
-        <label for="name">Nom bouquet</label><br>
-        <input type="text" value="{{ bouquetCustomer.name }}" name="name"></br>
-
+            <fieldset class="uk-fieldset">
+                <div class="uk-block uk-margin">
+                    <label class ="uk-label" for="name">Nom bouquet</label>
+                    <input required class="uk-input uk-border-rounded" type="text" value="{{ bouquetCustomer.name }}" name="name">
+                </div>
+            <div class="uk-block uk-margin">
+        {% for flower in bouquet %}
+                <label class="uk-label">{{ flower.name }} </label> (quantité) <input class="uk-input" type="number" name="stock_id[{{ flower.id }}][quantity]" value="{{ flower.nombre }}">
+        {% endfor %}
+        {% for fleur in flowers %}
+            {% if fleur is not empty %}
+                <label class="uk-label">{{ fleur.name }} </label> (quantité) <input class="uk-input" type="number" name="stock_id[{{ fleur.id }}][quantity]" value="0">
+            {% endif %}
+        {% endfor %}
     </div>
-    <h1>Ajouter des fleurs</h1>
-{% for flower in flowers %}
-        <ul>
-            <li>{{ flower.name }}</li>
-            <input type="number" name="stocks[{{ flower.id }}][quantity]" value="{{ flower.nombre }}">
-        </ul>
-        
-{% endfor %}
-    </div>
-	<input type="submit" value="Valider">
+	<input class="uk-input uk-form-width-small uk-border-rounded" type="submit" value="Valider">
 </form>
 

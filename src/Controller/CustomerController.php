@@ -103,6 +103,7 @@ class CustomerController extends AbstractController
             }
             return $errors;
         }
+        return $this->twig->render('Customer/add.html.twig', ['errors' => $errors]);
     }
 
     /**

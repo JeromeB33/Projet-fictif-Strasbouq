@@ -53,6 +53,14 @@ class BouquetCustomerController extends AbstractController
         $idBouquet = $bouqCustomerManager->selectOneById($id);
         $bouquet = $bouqCustomerManager->selectBouquetCustomerById($id);
         $allBouquetCustomer = $bouqCustomerManager->selectBouquetCustomer($_SESSION['user']['id']);
+
+        foreach ($flowers as $i => $flower) {
+            foreach ($bouquet as $command) {
+                if ($command['stock_id'] === $flower['id']) {
+                    $flowers[$i] = [];
+                }
+            }
+        }
         foreach ($allBouquetCustomer as $bouquetId) {
             $allId[] = $bouquetId['id'];
         }
@@ -67,14 +75,19 @@ class BouquetCustomerController extends AbstractController
             $errors = $this->validate($bouquetCustomer);
 
             if (empty($errors)) {
+                $this->removeAllFlower($id);
                 $bouquetCustomer['bouquet_id'] = $idBouquet['id'];
                 $bouqCustomerManager->update($bouquetCustomer);
-                foreach ($bouquetCustomer['stocks'] as $idflower => $quantity) {
+
+                foreach ($bouquetCustomer['stock_id'] as $idflower => $quantity) {
                     foreach ($quantity as $number) {
                         if ($number > '0') {
-                            $bouquetCustomer['stocks'] = $idflower;
+                            $bouquetCustomer['stock_id'] = $idflower;
                             while ((int) $number > 0) {
-                                $bouqCustomerManager->insertFlowersInBouquet($bouquetCustomer);
+                                $bouqCustomerManager->insertFlowersInBouquet(
+                                    $bouquetCustomer['stock_id'],
+                                    $idBouquet['id']
+                                );
                                 $number--;
                             }
                         }
@@ -110,6 +123,7 @@ class BouquetCustomerController extends AbstractController
             $_POST['name'] = trim($_POST['name']);
             $bouquetCustomer = $_POST;
             $errors = $this->validate($bouquetCustomer);
+
             if (empty($errors)) {
                 $bouqCustomerManager = new BouquetCustomerManager();
                 $bouqCustomerManager->insert($bouquetCustomer);
@@ -121,7 +135,10 @@ class BouquetCustomerController extends AbstractController
                         if ((int) $number > '0') {
                             $bouquetCustomer['stocks'] = $idflower;
                             while ($number > 0) {
-                                $bouqCustomerManager->insertFlowersInBouquet($bouquetCustomer);
+                                $bouqCustomerManager->insertFlowersInBouquet(
+                                    $bouquetCustomer['stock_id'],
+                                    $bouquetCustomer['bouquet_id']
+                                );
                                 $number--;
                             }
                         }
@@ -155,17 +172,13 @@ class BouquetCustomerController extends AbstractController
     }
 
     /*
-     * delete one flower
+     * delete all flower
      */
-    public function removeOneFlower($id)
+    public function removeAllFlower($bouquetId)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bouqCustomerManager = new BouquetCustomerManager();
-
-            $bouquetId = $_POST['bouquetId'];
-            $bouqCustomerManager->deleteOneFlower($id, $bouquetId);
+            $bouqCustomerManager->deleteAllFlower($bouquetId);
             header('Location:/bouquetCustomer/edit/' . $bouquetId);
-        }
     }
 
     /*
