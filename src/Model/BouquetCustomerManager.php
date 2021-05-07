@@ -94,4 +94,17 @@ class BouquetCustomerManager extends AbstractManager
                 " . $bouquetCustomer['stock'] . ", " . $bouquetCustomer['bouquet_id'] . ")";
         $this->pdo->exec($query);
     }
+
+    public function showBouquetCuPanier(int $id): array
+    {
+        $statement = $this->pdo->prepare("SELECT *
+        FROM " . self::TABLE_2 . " sbc  
+        JOIN " . self:: TABLE_3 . " s 
+        ON s.id=sbc.stock_id WHERE sbc.bouquetCustomer_id=:id ");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }

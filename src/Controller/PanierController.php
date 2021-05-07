@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\BouquetCustomerManager;
 use App\Model\BouquetVitrineManager;
 use App\Model\StockManager;
 
@@ -103,6 +104,16 @@ class PanierController extends AbstractController
         $_SESSION['bouquet_id'] = [];
         $bouquVitrineManager = new BouquetVitrineManager();
         $bouquet = $bouquVitrineManager->showBouquetPanier($id);
+        foreach ($bouquet as $flower) {
+            $this->add($flower['id']);
+        }
+    }
+
+    public function addBouquetCustomer(int $id)
+    {
+        $_SESSION['bouquet_id'] = [];
+        $bouquCustomerManager = new BouquetCustomerManager();
+        $bouquet = $bouquCustomerManager->showBouquetCuPanier($id);
         foreach ($bouquet as $flower) {
             $this->add($flower['id']);
         }
