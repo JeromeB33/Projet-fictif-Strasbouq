@@ -17,11 +17,10 @@
     </div>
     <h1>Ajouter des fleurs</h1>
 {% for flower in flowers %}
-        <div style="width: 150px; float: left;">
-        <img src="https://via.placeholder.com/150" /><br/>
-       {{ flower.name }}<br/>
-        <input type="number" name="stocks[{{ flower.id }}][quantity]" value="{{ flower.nombre }}">
-        </div>
+        <ul>
+            <li>{{ flower.name }}</li>
+            <input type="number" name="stocks[{{ flower.id }}][quantity]" value="{{ flower.nombre }}">
+        </ul>
         
 {% endfor %}
     </div>

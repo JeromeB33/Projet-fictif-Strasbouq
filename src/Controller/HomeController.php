@@ -69,10 +69,10 @@ class HomeController extends AbstractController
     public function choisiBouquet(): string
     {
         $bouquetVitrine = new BouquetVitrineManager();
-        $bouquets = $bouquetVitrine->selectAll();
         $aBouquets = $bouquetVitrine->showPriceBouquet();
 
         return $this->twig->render('Home/choisi.html.twig', ['bouquets' => $bouquets, 'total' => $aBouquets]);
+
     }
 
     public function compte(): string
