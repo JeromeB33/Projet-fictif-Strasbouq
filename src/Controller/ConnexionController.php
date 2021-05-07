@@ -75,7 +75,6 @@ class ConnexionController extends AbstractController
                 return $this->twig->render('Home/signIn.html.twig', ['message' => $message]);
             }
         }
-        //TODO  ajout cookie pour avoir id prochaine connection ??
     }
 
     /*
@@ -99,8 +98,6 @@ class ConnexionController extends AbstractController
                 return $this->twig->render('Home/logIn.html.twig', ['message' => $message]);
             }
         }
-
-        // et si cookie créer connection direct ??
     }
 
     /*
@@ -114,10 +111,6 @@ class ConnexionController extends AbstractController
         } else {
              $_SESSION['admin'] = false;
         }
-
-        //TODO : si log in avec droit admin définira accès aux pages admins
-        // si la session en cours est log avec l'email définit alors droit admin
-        // : definit $_session admin true, ou ajouter en base le droit admin ?
     }
 
     /*

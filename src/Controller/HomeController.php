@@ -28,6 +28,9 @@ class HomeController extends AbstractController
         return $this->twig->render('Home/index.html.twig', ['bouquet' => $bouquets, 'fleur' => $stock]);
     }
 
+    /*
+     * display cart
+     */
     public function panier()
     {
         return $this->twig->render('Home/panier.html.twig');
@@ -77,6 +80,9 @@ class HomeController extends AbstractController
         return $this->twig->render('Home/choisi.html.twig', ['bouquets' => $bouquets]);
     }
 
+    /*
+     * display compte
+     */
     public function compte(): string
     {
         if ($_SESSION['admin'] === true) {
@@ -91,11 +97,17 @@ class HomeController extends AbstractController
         return $this->twig->render('Home/compte.html.twig', ['bouquets' => $bouquets, 'bouq' => $bouq]);
     }
 
+    /*
+     * display page access denided
+     */
     public function accessDenied(): string
     {
         return $this->twig->render('Home/accessdenied.html.twig');
     }
 
+    /*
+     * display compte admin
+     */
     public function compteAdmin()
     {
         return $this->twig->render('Home/compteAdmin.html.twig');
