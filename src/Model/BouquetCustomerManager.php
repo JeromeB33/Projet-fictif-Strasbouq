@@ -74,4 +74,24 @@ class BouquetCustomerManager extends AbstractManager
 
         return $statement->fetchAll();
     }
+
+    /**
+     * save new item in database.
+     */
+    public function save(array $bouquetCustomer)
+    {
+        $statement = $this->pdo->prepare('INSERT INTO ' . self::TABLE . ' VALUES (null, :customer_id, :name)');
+        $statement->bindValue('customer_id', $bouquetCustomer['customer_id'], \PDO::PARAM_INT);
+        $statement->bindValue('name', $bouquetCustomer['name'], \PDO::PARAM_STR);
+
+        $statement->execute();
+    }
+
+    public function saveFlowersInBouquet(array $bouquetCustomer)
+    {
+
+        $query = "INSERT INTO " . self::TABLE_2 . " VALUES( 
+                " . $bouquetCustomer['stock'] . ", " . $bouquetCustomer['bouquet_id'] . ")";
+        $this->pdo->exec($query);
+    }
 }

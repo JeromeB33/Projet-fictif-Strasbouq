@@ -171,12 +171,19 @@ class BouquetCustomerController extends AbstractController
         }
     }
 
+    /*
+     * delete all flower
+     */
     public function removeAllFlower($bouquetId)
     {
             $bouqCustomerManager = new BouquetCustomerManager();
             $bouqCustomerManager->deleteAllFlower($bouquetId);
             header('Location:/bouquetCustomer/edit/' . $bouquetId);
     }
+
+    /*
+     * check
+     */
     private function validate(array $customer): array
     {
         $errors = [];
@@ -185,5 +192,52 @@ class BouquetCustomerController extends AbstractController
             $errors[] = 'Nom de bouquet requis';
         }
         return $errors ?? [];
+    }
+
+    public function save()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $bouquet = $_POST;
+
+            $bCustomer = new BouquetCustomerManager();
+            $bCustomer->insert($bouquet);
+
+            //TODO recup l'id du bouquet
+            $lastID = $bCustomer->selectLastId();
+            $bouquet['bouquet_id'] = (int)$lastID[0];
+
+
+            //test if user is already connected
+            if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+                foreach ($_SESSION['panier'] as $panier => $id) {
+                    $panier = $panier; //pas le choix pour sinon je peux pas commit
+                    foreach ($id as $idf => $details) {
+                        $bouquet['stock'][] = [
+                            'stock_id' => $idf,
+                            'quantity' => $details['quantity'],
+                        ];
+                    }
+                }
+                foreach ($bouquet['stock'] as $i => $flower) {
+                    $i = $i; //sinon Stan n'est pas content
+                    if ($flower['quantity'] > '0') {
+                        $bouquet['stock'] =  $flower['stock_id'];
+                        while ($flower['quantity'] > 0) {
+                            $bCustomer->saveFlowersInBouquet($bouquet);
+                            $flower['quantity']--;
+                        }
+                    }
+                }
+            }
+
+
+                //clear the cart and redirection
+                $_SESSION['panier'] = [];
+                $message = "Le bouquet a bien était enregistré";
+                return $this->twig->render("/Home/panier.html.twig", ['message' => $message]);
+        }
+            //if not connect redirection connexion page
+            $message = "Veuillez vous connecter pour enregistrer le bouquet";
+            return $this->twig->render("/Home/logIn.html.twig", ['message' => $message]);
     }
 }

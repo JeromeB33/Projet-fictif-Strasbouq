@@ -31,6 +31,7 @@
                         {% set total = total + flower.price %}
                     {% endfor %}
                 {% endfor %}
+
                 <hr/>
                 <div class="uk-grid-small" uk-grid>
                     <div class="uk-width-expand" uk-leader="fill: -">Total</div>
@@ -59,8 +60,25 @@
                         </p>
                     </div>
                 </div>
+                <button class="uk-button uk-button-default uk-border-rounded uk-margin-small-right uk-align-right uk-background-blend-color" type="button" uk-toggle="target: #enregistrer">Enregistrer</button>
+                <div id="enregistrer" uk-modal>
+                    <div class="uk-modal-dialog uk-modal-body">
+                        <h2 class="uk-modal-title">Enregistrer le bouquet dans mon compte </h2>
+                        <div class="uk-modal-body">
+                            <form method="post" action="/BouquetCustomer/save">
+                                    <input type="hidden" value="{{ session.user.id }}" name="customer_id"></br>
+                                    <label for="name">Nom bouquet</label><br>
+                                    <input class="uk-input"  type="text" name="name"></br>
+                        </div>
+                        <div class="uk-modal-footer uk-text-right">
+                            <input class="uk-border-rounded uk-button uk-button-default" type="submit" value="Enregistrer">
+                            <button class="uk-button uk-button-default uk-modal-close uk-border-rounded" type="button">Annuler</button>
+                        </div>
+                            </form>
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
     {% endif %}
-
 {% endblock %}

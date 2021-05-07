@@ -7,6 +7,8 @@ class CommandManager extends AbstractManager
     public const TABLE = "command";
     public const TABLE_2 = "commandDetails";
     public const TABLE_3 = "commandStatus";
+    public const TABLE_4 = "stock";
+
 
     /*
      *  insert command in database
@@ -23,7 +25,6 @@ class CommandManager extends AbstractManager
 
         $statement->execute();
     }
-
 
     /*
     *  insert command details in database
@@ -46,7 +47,9 @@ class CommandManager extends AbstractManager
     public function selectOneById(int $commandId)
     {
         // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM " . static::TABLE_2 . " WHERE command_id=:id");
+        $query = "SELECT * FROM " . static::TABLE_2 . " d 
+        JOIN " . static::TABLE . " c ON d.command_id=c.id WHERE command_id=:id";
+        $statement = $this->pdo->prepare($query);
         $statement->bindValue('id', $commandId, \PDO::PARAM_INT);
         $statement->execute();
 
@@ -76,12 +79,46 @@ class CommandManager extends AbstractManager
      * select all tuple with same command_id to have the whole command with each stock id
      */
 
-    public function listCommand(int $id): array
+    public function getDetails(int $id): array
     {
         $query = ("SELECT * FROM " . self::TABLE_2 . " d 
                     INNER JOIN " . self::TABLE . " c ON d.command_id = c.id  
                     WHERE d.command_id=" . $id);
         $statement = $this->pdo->query($query);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /*
+     * edit command
+     */
+    public function editCommand($commande)
+    {
+        $query = "UPDATE " . self::TABLE . " SET totalAmount=:totalAmount WHERE id=:id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('id', $commande['command_id']);
+        $statement->bindValue('totalAmount', $commande['totalAmount']);
+        $statement->execute();
+    }
+
+    /*
+     * delete by command_id in commandDetail table
+     */
+    public function deleteDetails(int $id): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . static::TABLE_2 . " WHERE command_id=:id");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /*
+     * get name of flowers in command
+     */
+    public function getStockCommand(int $id)
+    {
+               $query = "SELECT * FROM " . self::TABLE_2 . " c
+               RIGHT JOIN " . self::TABLE_4 . " s ON s.id= c.stock_id WHERE c.command_id = $id";
+
+               $statement = $this->pdo->query($query);
+               return $statement->fetchAll();
     }
 }
