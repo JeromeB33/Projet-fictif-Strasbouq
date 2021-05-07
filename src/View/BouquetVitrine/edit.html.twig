@@ -3,7 +3,6 @@
 {% block content %}
     <h1>Modifier le bouquet : {{ bouquetVitrine.name }}</h1>
     <ul>
-        {{ dump(bouquet) }}
         {% for fleur in bouquet %}
             <li>{{ fleur.name }} {{ fleur.number }}</li>
             <form method="post" action="/bouquetVitrine/deleteFleurBouquet/{{ fleur.id }}" >
