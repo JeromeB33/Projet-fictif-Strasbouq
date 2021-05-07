@@ -30,35 +30,56 @@ class CommandStatusController extends AbstractController
                 }
             }
 
-            return $this->twig->render("Commande/indexCommande.html.twig", ['status' => $status]);
+            return $this->twig->render("Commande/addCommand.html.twig", ['status' => $status]);
         }
     }
 
     /*
-    * edit status
-    */
-    public function editStatus($id)
+     * display command already picked
+     */
+    public function showArchiveCommand()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $ispick = $_POST['isPick'];
-            $isprepared = $_POST['isPrepared'];
+        $commandStatusManager = new CommandStatusManager();
+        $archiveCommand = $commandStatusManager->archiveCommand('dateOrder');
+
+
+        return $this->twig->render("Commande/archive.html.twig", ['archivecommand' => $archiveCommand]);
+    }
+
+    /*
+     * display command not picked
+     */
+    public function showActiveCommand()
+    {
+        $commandStatusManager = new CommandStatusManager();
+        $activeCommand = $commandStatusManager->activeCommand('datePick');
+
+        return $this->twig->render("Commande/command.html.twig", ['activecommand' => $activeCommand]);
+    }
+
+    /*
+     * edit status
+     */
+    public function editStatus($commande)
+    {
+        $ispick = $commande['isPick'];
+        $isprepared = $commande['isPrepared'];
 
             //transform value to fit in the table
-            if ($ispick === 'false') {
-                $ispick = 0;
-            } elseif ($ispick === 'true') {
-                $ispick = 1;
-            }
-
-            if ($isprepared === 'false') {
-                $isprepared = 0;
-            } elseif ($isprepared === 'true') {
-                $isprepared = 1;
-            }
-
-            $commandStatusManager = new CommandStatusManager();
-            $commandStatusManager->editStatus($id, $ispick, $isprepared);
+        if ($ispick === 'false') {
+            $ispick = 0;
+        } elseif ($ispick === 'true') {
+            $ispick = 1;
         }
+
+        if ($isprepared === 'false') {
+            $isprepared = 0;
+        } elseif ($isprepared === 'true') {
+            $isprepared = 1;
+        }
+
+        $commandStatusManager = new CommandStatusManager();
+        $commandStatusManager->editStatus($commande['command_id'], $ispick, $isprepared);
 
         header("Location: /Command/showAll");
     }

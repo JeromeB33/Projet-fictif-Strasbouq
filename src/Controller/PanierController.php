@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\BouquetVitrineManager;
 use App\Model\StockManager;
 
 class PanierController extends AbstractController
@@ -95,5 +96,15 @@ class PanierController extends AbstractController
             }
         }
         header('Location: ' . $_SERVER['HTTP_REFERER']);
+    }
+    /* BON COURAGE */
+    public function addBouquetVitrine(int $id)
+    {
+        $_SESSION['bouquet_id'] = [];
+        $bouquVitrineManager = new BouquetVitrineManager();
+        $bouquet = $bouquVitrineManager->showBouquetPanier($id);
+        foreach ($bouquet as $flower) {
+            $this->add($flower['id']);
+        }
     }
 }

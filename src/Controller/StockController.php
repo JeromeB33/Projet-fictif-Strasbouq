@@ -16,6 +16,7 @@ class StockController extends AbstractController
 
         return $this->twig->render('Stock/index.html.twig', ['stocks' => $stocks]);
     }
+
     public function show(int $id): string
     {
         if ($_SESSION['admin'] === false) {
@@ -72,7 +73,9 @@ class StockController extends AbstractController
         }
     }
 
-
+    /*
+     * decrease available number in function of the command
+     */
     public function decreaseAvalaibleNumber(int $id, int $quantity): void
     {
         //get avalaible number

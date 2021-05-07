@@ -6,12 +6,53 @@ use App\Model\CommandManager;
 use App\Model\CommandStatusManager;
 use App\Model\StockManager;
 use App\Controller\StockController;
+use App\Controller\CommandStatusController;
+use App\Model\CustomerManager;
 
 class CommandController extends AbstractController
 {
     public function index(): string
     {
-        return $this->twig->render("Commande/indexCommande.html.twig");
+        return $this->twig->render("Commande/command.html.twig");
+    }
+
+    /*
+     * display edit command page
+     */
+    public function edit($id): string
+    {
+        //get flowers in order with name
+        $commandManager = new CommandManager();
+        $stockCommand = $commandManager->getStockCommand($id);
+
+        //get whole stock
+        $stockManager = new StockManager();
+        $stock = $stockManager->selectAll();
+
+        //if id flower already in order , clean its data
+        foreach ($stock as $i => $flower) {
+            foreach ($stockCommand as $command) {
+                if ($command['stock_id'] === $flower['id']) {
+                    $stock[$i] = [];
+                }
+            }
+        }
+
+        return $this->twig->render(
+            "Commande/edit.html.twig",
+            ["stockCommand" => $stockCommand, 'id' => $id, 'stock' => $stock]
+        );
+    }
+
+    public function add()
+    {
+        $stockManager = new StockManager();
+        $stock = $stockManager->selectAll();
+
+        $customerManager = new CustomerManager();
+        $customers = $customerManager->selectAll();
+
+        return $this->twig->render("/Commande/addCommand.html.twig", ['stock' => $stock, 'customers' => $customers]);
     }
 
     /**
@@ -22,7 +63,7 @@ class CommandController extends AbstractController
         $commandeManager = new CommandManager();
         $commandes = $commandeManager->selectAll();
 
-        return $this->twig->render("Commande/indexCommande.html.twig", ['commandes' => $commandes]);
+        return $this->twig->render("Commande/addCommand.html.twig", ['commandes' => $commandes]);
     }
 
     /**
@@ -34,21 +75,39 @@ class CommandController extends AbstractController
             $commandeManager = new CommandManager();
             $details = $commandeManager->selectOneById($id);
 
-            return $this->twig->render("Commande/indexCommande.html.twig", ['details' => $details]);
+            return $this->twig->render("Commande/addCommand.html.twig", ['details' => $details]);
         }
     }
 
     /**
      * Add a new command (with its details and status) from form
     */
-    public function add(): void
+    public function addCommandForm(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_POST)) {
                 $commande = $_POST;
+                $commande['totalAmount'] = 0;
+
+                $stockManager = new StockManager();
+                $stock = $stockManager->selectAll();
+
 
                 //format date pick to fit in base
                 $commande['datePick'] = $_POST['datePick'] . ' ' . $_POST['timePick'];
+
+                //get the total amount
+                foreach ($commande['stock_id'] as $stockId => $quantities) {
+                    foreach ($quantities as $quantity) {
+                        if (!empty($quantity) && (int)$quantity > 0) {
+                            foreach ($stock as $flower) {
+                                if ($flower['id'] == $stockId) {
+                                    $commande['totalAmount'] += $flower['price'] * $quantity;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 //insert command
                 $commandeManager = new CommandManager();
@@ -59,6 +118,7 @@ class CommandController extends AbstractController
                 //take id of the last input in command to associate the command details and status
                 $lastID = $commandeManager->selectLastId();
                 $commande['command_id'] = (int)$lastID[0];
+
 
                 //insert command details : for each stock_id if its quantity > 0 add a tuple
                 foreach ($commande['stock_id'] as $stockId => $quantities) {
@@ -75,16 +135,16 @@ class CommandController extends AbstractController
                     }
                 }
 
-                //transform value in tinyint (bool) (to fit into status table)
-                $commande['ispick'] === 'false' ? $commande['ispick'] = 0 : $commande['ispick'] = 1;
-                $commande['isprepared'] === 'false' ?  $commande['isprepared'] = 0 : $commande['isprepared'] = 1;
 
                 // insert command status
+                $commande['isPick'] = (int) $commande['isPick'];
+                $commande['isPrepared'] = (int) $commande['isPrepared'];
+
                 $commandStatusManager = new CommandStatusManager();
                 $commandStatusManager->insertStatus($commande);
             }
             //redirection
-            header("Location: /Command/showAll");
+            header("Location: /Command/add");
         }
     }
 
@@ -101,46 +161,32 @@ class CommandController extends AbstractController
     }
 
     /*
-     * edit a command details : date pick
+     * get all stock_id of one command
      */
-    public function editDatePickById($id): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            //format date pick to fit in base
-            $newDate = $_POST['datePick'] . ' ' . $_POST['timePick'];
-
-            $commandManager = new CommandManager();
-            $commandManager->editDatePicksById($id, $newDate);
-            header("Location: /Command/showAll");
-        }
-    }
-
-    /*
-     * liste the whole command
-     */
-    public function listCommand($id)
+    public function getDetails($id)
     {
         $commandManager = new CommandManager();
-        $commandList = $commandManager->listCommand($id);
+        $details = $commandManager->getDetails($id);
 
         //transform text to better comprehension for the customer or webowner
         for ($i = 1; $i < 1; $i++) {
-            if ($commandList[$i]['isprepared'] === '0') {
-                $commandList[$i]['isprepared'] = 'Non';
-            } elseif ($commandList[$i]['isprepared'] === "1") {
-                $commandList[$i]['isprepared'] = 'Oui';
+            if ($details[$i]['isprepared'] === '0') {
+                $details[$i]['isprepared'] = 'Non';
+            } elseif ($details[$i]['isprepared'] === "1") {
+                $details[$i]['isprepared'] = 'Oui';
             }
-            if ($commandList[$i]['ispick'] === '0') {
-                $commandList[$i]['ispick'] = 'Non';
-            } elseif ($commandList[$i]['ispick'] === "1") {
-                $commandList[$i]['ispick'] = 'Oui';
+            if ($details[$i]['ispick'] === '0') {
+                $details[$i]['ispick'] = 'Non';
+            } elseif ($details[$i]['ispick'] === "1") {
+                $details[$i]['ispick'] = 'Oui';
             }
         }
-        return $this->twig->render("Commande/indexCommande.html.twig", ['commandList' => $commandList]);
+        return $details;
     }
 
     /*
      * save in bdd order the cart
+     * to command via cart
      */
     public function commander()
     {
@@ -212,19 +258,74 @@ class CommandController extends AbstractController
         $commandStatusManager->insertStatus($commande);
     }
 
-    public function showArchiveCommand()
-    {
-            $commandStatusManager = new CommandStatusManager();
-            $archiveCommand = $commandStatusManager->archiveCommand('dateOrder');
 
-            return $this->twig->render("Commande/archive.html.twig", ['archivecommand' => $archiveCommand]);
+    /*
+     * edit a command
+    */
+    public function editCommand($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $commandManager = new CommandManager();
+            $stockManager = new StockManager();
+            $statusController = new CommandStatusController();
+
+            $stock = $stockManager->selectAll();
+            $commande = $_POST;
+            $commande['totalAmount'] = 0;
+            $commande['command_id'] = $id;
+
+            //if pick date is modified
+            if ($_POST['newDatePick'] <> '' && $_POST['newTimePick'] <> '') {
+                $newDate = $commande['newDatePick'] . ' ' . $commande['newTimePick'];
+                $commandManager->editDatePicksById($commande['command_id'], $newDate);
+            }
+
+            if (isset($_POST['isPick']) && isset($_POST['isPrepared'])) {
+                $statusController->editStatus($commande);
+            }
+
+            //suppr pour eviter des problemess avec l'update car plusieurs meme id dans commandDetails
+            //on supprimer tout le stock
+            $commandManager->deleteDetails($id);
+
+
+            //on réinsère le nouveau stock
+            foreach ($commande['stock_id'] as $id => $quantities) {
+                foreach ($quantities as $quantity) {
+                    if (!empty($quantity) && (int) $quantity > 0) {
+                        $commande['stock_id'] = (int)$id;
+                        $commande['quantity'] = (int)$quantity;
+                        //Insert new stock id
+                        $commandManager->insertCommandDetails($commande);
+                    }
+                }
+            }
+
+            $details = $commandManager->getDetails($commande['command_id']);
+            foreach ($stock as $flower) {
+                foreach ($details as $detail) {
+                    if ($flower['id'] === $detail['stock_id']) {
+                        $commande['totalAmount'] += $flower['price'] * $detail['quantity'];
+                        $commandManager->editCommand($commande);
+                    }
+                }
+            }
+            header('Location: /CommandStatus/showActiveCommand');
+        }
     }
 
-    public function showActiveCommand()
+    /*
+     * edit a command details : date pick
+     */
+    public function editDatePickById($id): void
     {
-            $commandStatusManager = new CommandStatusManager();
-            $activeCommand = $commandStatusManager->activeCommand('datePick');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //format date pick to fit in base
+            $newDate = $_POST['datePick'] . ' ' . $_POST['timePick'];
 
-            return $this->twig->render("Commande/command.html.twig", ['activecommand' => $activeCommand]);
+            $commandManager = new CommandManager();
+            $commandManager->editDatePicksById($id, $newDate);
+            header("Location: /Command/showAll");
+        }
     }
 }

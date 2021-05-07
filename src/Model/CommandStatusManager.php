@@ -22,6 +22,7 @@ class CommandStatusManager extends AbstractManager
         $statement->execute();
     }
 
+
     /*
      * select by id
      */

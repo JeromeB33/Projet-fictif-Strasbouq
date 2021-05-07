@@ -1,9 +1,8 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-{{dump(archivecommand)}}
 <h2> Commandes archivées</h2>
-    <table>
+    <table class="uk-table uk-table-striped  uk-table-responsive uk-table-small">
     <thead>
         <tr>
             <th>id</th>
@@ -15,8 +14,8 @@
     <tbody>
         {% for command in archivecommand %}
         <tr>
-            <td>{{ command.id }}</td>
-            <td>{{ command.dateOrder }}</td>
+            <td>{{ command.command_id }}</td>
+            <td>{{ command.datePick }}</td>
             <td>{{ command.customer_id }}</a></td>
             <td><a href="/stock/edit/{{ stock.id }}"><button>Voir</button></a></td>
         </tr>
